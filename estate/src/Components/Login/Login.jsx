@@ -12,18 +12,36 @@ const Login = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    try {
-      const loginDetails = {
-        username: username,
-        password: password,
-      };
+     // Create a FormData object to hold the username and password
+     const formData = new FormData();
+     formData.append('Username', username);
+     formData.append('Password', password);
 
-      const response = await axios.post('https://localhost:7137/api/Users/login', loginDetails);
-      
-      if (response.data != null) {
-        navigate('/realestatelisting');
+     try {
+      const response = await axios.post('https://localhost:7137/api/Users/login', formData, {
+        headers: {
+          'accept': '*/*', // Adjust this according to what your backend expects
+        },
+      });
+
+      // Assuming the response.data contains a property 'role' indicating the user's role
+      if (response.data && response.data.roleId) {
+        switch (response.data.roleId) {
+          case 'Investor':
+            navigate('/investordashboard');
+            break;
+          case 'Customer':
+            navigate('/realestatelisting');
+            break;
+          case 'Agency':
+            navigate('/agencydashboard');
+            break;
+          default:
+            setLoginError('Unknown user role.');
+            break;
+        }
       } else {
-        setLoginError('Incorrect username or password.');
+        setLoginError('Login failed: Invalid username');
       }
     } catch (error) {
       console.error('Login failed:', error);
@@ -35,7 +53,6 @@ const Login = () => {
       }
     }
   };
-
   return (
     <div className="login-container">
       <div className="login-form">
