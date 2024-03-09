@@ -3,13 +3,18 @@ import { Route, Routes } from 'react-router-dom';
 import AgencyListing from './Components/Agency/AgencyListing';
 import ListApartmentbyAgency from './Components/Agency/ListApartmentbyAgency';
 import AgencyDetail from './Components/AgencyDetail/AgencyDetail';
+import AddNewAgency from './Components/DashboardInvestor/AddNewAgency';
 import CreateNewProject from './Components/DashboardInvestor/CreateNewBuilding';
 import InvestorDashboard from './Components/DashboardInvestor/DashboardInvestor';
+import DistributeApartment from './Components/DashboardInvestor/DistributeApartment';
+import DistributeFloor from './Components/DashboardInvestor/DistributeFloor';
+import ListDistributeAgency from './Components/DashboardInvestor/ListDistributeAgency';
 import Managerbuildings from './Components/DashboardInvestor/ManagerBuilding';
 import ManagerDistribute from './Components/DashboardInvestor/ManagerDistribute';
 import ManagerTransaction from './Components/DashboardInvestor/ManagerTransaction';
 import ManagerUsers from './Components/DashboardInvestor/ManagerUsers';
 import Footer from './Components/Footer/Footer';
+import Header from './Components/Header/Header';
 import Login from './Components/Login/Login';
 import EditProperty from './Components/Property/EditProperty';
 import PropertyDetail from './Components/Property/PropertyDetail';
@@ -23,16 +28,16 @@ import Registration from './Components/Register/RegistrationForm';
 function App() {
   return (
     <div className="App">
-         <Header/>
+      <Header/>
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/registration" element={<Registration />} />
         <Route path="/addnewagency" element={<AddNewAgency/>} />
-        <Route path="/distributefloor" element={<DistributeFloor />} />
-      <Route path="/distributeapartment" element={<DistributeApartment />} />
-      <Route path="/listdistributeagency" element={<ListDistributeAgency/>} />
+        <Route path="/distributefloor" element={<DistributeFloor/>} />
+        <Route path="/distributeapartment" element={<DistributeApartment/>} />
         <Route path="/createnewproject" element={<CreateNewProject />} />
         <Route path="/managerdistribute" element={<ManagerDistribute />} />
+        <Route path="/listdistributeagency" element={<ListDistributeAgency/>} />
         <Route path="/managerusers" element={<ManagerUsers />} />
         <Route path="/managerbuildings" element={<Managerbuildings />} />
         <Route path="/managertransaction" element={<ManagerTransaction />} />
