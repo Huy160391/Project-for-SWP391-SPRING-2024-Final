@@ -1,9 +1,6 @@
-import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import './ListApartmentbyAgency.css'; // Import file CSS tùy chỉnh
-import Header from '../Header/Header';
-import Footer from '../Footer/Footer';
-import { Link } from 'react-router-dom';
 
 const ListApartmentbyAgency = () => {
     const [apartments, setApartments] = useState([]);
@@ -33,7 +30,6 @@ const ListApartmentbyAgency = () => {
 
     return (
         <>
-            <Header />
             <div className="apartment-list-container">
                 <h1>List of Apartments</h1>
                 <table className="apartment-table">
@@ -66,7 +62,6 @@ const ListApartmentbyAgency = () => {
                     </tbody>
                 </table>
             </div>
-            <Footer />
         </>
     );
 };

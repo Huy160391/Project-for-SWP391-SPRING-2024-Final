@@ -1,11 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { Link } from 'react-router-dom';
-import Header from '../Header/Header';
-import './PropertyList.css';
+import { faBath, faBed, faFilter, faMoneyBill } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBed, faBath, faMoneyBill, faFilter } from '@fortawesome/free-solid-svg-icons';
-import Footer from '../Footer/Footer';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import './PropertyList.css';
 
 const PropertyList = () => {
   const [originalApartments, setOriginalApartments] = useState([]);
@@ -61,7 +59,6 @@ const PropertyList = () => {
 
   return (
     <>
-      <Header />
       <div className="filter-container">
         <div className="filter-bar">
           <div className="filter-item">
@@ -116,7 +113,6 @@ const PropertyList = () => {
           ))}
         </div>
       </div>
-      <Footer />
     </>
   );
 };
