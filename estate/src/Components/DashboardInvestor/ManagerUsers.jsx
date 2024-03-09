@@ -8,14 +8,14 @@ const ManagerUsers = () => {
   const [managersData, setManagersData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [searchQuery, setSearchQuery] = useState(''); // Giá trị tìm kiếm cho cả username và role
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     const fetchManagersData = async () => {
       setLoading(true);
       try {
         const response = await axios.get('https://localhost:7137/api/Users');
-        setManagersData(response.data);
+        setManagersData(response.data.map(user => ({ ...user, isBlocking: false }))); // Add isBlocking state to each user
         setLoading(false);
       } catch (error) {
         setLoading(false);
@@ -26,6 +26,30 @@ const ManagerUsers = () => {
     fetchManagersData();
   }, []);
 
+  const handleBlockToggle = async (userId) => {
+    const userToToggle = managersData.find(user => user.userId === userId);
+    const  isCurrentlyBlocking = userToToggle ? userToToggle.isBlocking : false;
+    const action = isCurrentlyBlocking ? 'unblock' : 'block';
+    const confirmation = window.confirm(`Are you sure you want to ${action} this user?`);
+  
+    if (confirmation) {
+      try {
+        await axios.put(`https://localhost:7137/api/Users/BlockUser/${userId}`);
+        setManagersData(
+          managersData.map(user =>
+            user.userId === userId ? { ...user, isBlocking: !isCurrentlyBlocking } : user
+          )
+        );
+        // Optionally, you might want to display a success message before reloading
+        window.location.reload();
+      } catch (error) {
+        console.error('Error updating user status:', error);
+        setError('Error updating user status');
+      }
+    }
+  };
+  
+
   const filteredData = searchQuery
     ? managersData.filter(
         manager =>
@@ -33,6 +57,9 @@ const ManagerUsers = () => {
           manager.roleId.toLowerCase().includes(searchQuery.toLowerCase())
       )
     : managersData;
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error loading managers: {error}</p>;
 
   return (
     <div className="investor-dashboard">
@@ -69,20 +96,21 @@ const ManagerUsers = () => {
                   <td>{manager.createDate}</td>
                   <td>{manager.status}</td>
                   <td>
-                    <Link to={`/agencydetail/${manager.userId}`} className="view-profile-button">View</Link>
+                    <Link to={`/profile/${manager.userId}`} className="view-profile-button">View</Link>
                   </td>
                   <td>{manager.roleId}</td>
                   <td>
-                    <button>Edit</button>
-                    <button>Delete</button>
-                  </td>
+                  <button onClick={() => handleBlockToggle(manager.userId)}>
+                  {manager.isBlocking ? 'Unblock' : 'Block'}
+                </button>
+
+                  </td> 
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
         <div className="pagination">
-          {/* Pagination logic will go here */}
           <button>1</button>
           <button>2</button>
           <button>3</button>
