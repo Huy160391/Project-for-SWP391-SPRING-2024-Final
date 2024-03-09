@@ -16,11 +16,10 @@ const ManagerTransaction = () => {
       <h1>managers</h1>
       <div className="managers-search">
         <input type="text" placeholder="Search here..." />
-        <select>
-          <option value="newest">Newest</option>
-          {/* Other sort options */}
-        </select>
-        <Link to="/distributeacency" className="add-user-button">
+        <Link to="/distributefloor" className="add-user-button">
+        Distribute for Acency
+      </Link>
+      <Link to="/distributeapartment" className="add-user-button">
         Distribute for Acency
       </Link>
       </div>
@@ -28,12 +27,10 @@ const ManagerTransaction = () => {
         <table>
           <thead>
             <tr>
-              <th>Project Name</th>
-              <th>ID</th>
-              <th>Create Date</th>
+              <th>Agency</th>
+              <th>AgencyId</th>
+              <th>Total Floor</th>
               <th>Detail</th>
-              <th>Reciplent</th>
-              <th>Status</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -41,8 +38,6 @@ const ManagerTransaction = () => {
             {managersData.map((managers, index) => (
               <tr key={index}>
                 <td>{managers.customerName}</td>
-                <td>{managers.id}</td>
-                <td>{managers.createDate}</td>
                 <td>{managers.profile}</td>
                 <td>{managers.role}</td>
                 <td>{managers.status}</td>

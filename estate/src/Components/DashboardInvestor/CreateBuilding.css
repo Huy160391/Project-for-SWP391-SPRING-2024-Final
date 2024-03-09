@@ -1,0 +1,67 @@
+
+.create-new-project {
+  flex-grow: 1;
+  padding: 2rem;
+  background-color: #fff; /* Adjust based on your design */
+}
+
+.project-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-section {
+  display: flex;
+}
+
+.left-column,
+.right-column {
+  flex: 1;
+  margin-right: 2rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+input[type="text"],
+textarea,
+select {
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.upload-area {
+  border: 2px dashed #ccc;
+  padding: 1rem;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+}
+
+.cancel-button,
+.save-button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.cancel-button {
+  background-color: #ccc;
+}
+
+.save-button {
+  background-color: #0062cc;
+  color: white;
+}
+
+/* Add responsive adjustments as needed */
