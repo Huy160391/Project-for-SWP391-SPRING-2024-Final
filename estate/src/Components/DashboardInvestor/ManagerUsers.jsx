@@ -1,21 +1,28 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import './DashboardInvestor.css';
-import Sidebar from './Sidebar';
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import "./DashboardInvestor.css";
+import Sidebar from "./Sidebar";
 
 const ManagerUsers = () => {
   const [managersData, setManagersData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isBlock, setBlock] = useState(false);
+
+  let action;
 
   useEffect(() => {
     const fetchManagersData = async () => {
       setLoading(true);
       try {
-        const response = await axios.get('https://localhost:7137/api/Users');
-        setManagersData(response.data.map(user => ({ ...user, isBlocking: false }))); // Add isBlocking state to each user
+        const response = await axios.get("https://localhost:7137/api/Users");
+        setManagersData(
+          response.data.map((user) => ({
+            ...user,
+          }))
+        ); // Add isBlocking state to each user
         setLoading(false);
       } catch (error) {
         setLoading(false);
@@ -27,32 +34,44 @@ const ManagerUsers = () => {
   }, []);
 
   const handleBlockToggle = async (userId) => {
-    const userToToggle = managersData.find(user => user.userId === userId);
-    const  isCurrentlyBlocking = userToToggle ? userToToggle.isBlocking : false;
-    const action = isCurrentlyBlocking ? 'unblock' : 'block';
-    const confirmation = window.confirm(`Are you sure you want to ${action} this user?`);
-  
+    // const userToToggle = managersData.find((user) => user.userId === userId);
+    // const isCurrentlyBlocking = userToToggle ? userToToggle.isBlocking : false;
+    // console.log (isCurrentlyBlocking)
+
+    //  isCurrentlyBlocking ? 'unblock' : 'block';
+
+    setBlock(!isBlock);
+
+    if (isBlock) {
+      action = "Unblock";
+    } else {
+      action = "Block";
+    }
+
+    const confirmation = window.confirm(
+      `Are you sure you want to ${action} this user?`
+    );
+
     if (confirmation) {
       try {
         await axios.put(`https://localhost:7137/api/Users/BlockUser/${userId}`);
         setManagersData(
-          managersData.map(user =>
-            user.userId === userId ? { ...user, isBlocking: !isCurrentlyBlocking } : user
+          managersData.map((user) =>
+            user.userId === userId ? { ...user } : user
           )
         );
         // Optionally, you might want to display a success message before reloading
         window.location.reload();
       } catch (error) {
-        console.error('Error updating user status:', error);
-        setError('Error updating user status');
+        console.error("Error updating user status:", error);
+        setError("Error updating user status");
       }
     }
   };
-  
 
   const filteredData = searchQuery
     ? managersData.filter(
-        manager =>
+        (manager) =>
           manager.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
           manager.roleId.toLowerCase().includes(searchQuery.toLowerCase())
       )
@@ -73,7 +92,9 @@ const ManagerUsers = () => {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
-          <Link to="/addnewagency" className="add-user-button">+ New User</Link>
+          <Link to="/addnewagency" className="add-user-button">
+            + New User
+          </Link>
         </div>
         <div className="managers-list">
           <table>
@@ -96,15 +117,20 @@ const ManagerUsers = () => {
                   <td>{manager.createDate}</td>
                   <td>{manager.status}</td>
                   <td>
-                    <Link to={`/profile/${manager.userId}`} className="view-profile-button">View</Link>
+                    <Link
+                      to={`/profile/${manager.userId}`}
+                      className="view-profile-button"
+                    >
+                      View
+                    </Link>
                   </td>
                   <td>{manager.roleId}</td>
                   <td>
-                  <button onClick={() => handleBlockToggle(manager.userId)}>
-                  {manager.isBlocking ? 'Unblock' : 'Block'}
-                </button>
-
-                  </td> 
+                    <button onClick={() => handleBlockToggle(manager.userId)}>
+                      {/* {manager.isBlocking ? "Unblock" : "Block"} */}
+                      {manager.status === "Active" ? "Unblock" : manager.status}
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
 import axios from 'axios';
+import React, { useState } from 'react';
 import Header from '../Header/Header';
 import './EditProperty.css';
 const EditProperty = () => {
