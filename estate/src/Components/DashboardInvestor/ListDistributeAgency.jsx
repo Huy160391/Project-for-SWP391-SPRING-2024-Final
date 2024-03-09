@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import './DashboardInvestor.css';
 import Sidebar from './Sidebar';
 
-const ManagerUsers = () => {
+const ListDistributeAgency = () => {
   const [managersData, setManagersData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -46,17 +46,17 @@ const ManagerUsers = () => {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
-          <Link to="/addnewagency" className="add-user-button">+ New User</Link>
+
         </div>
         <div className="managers-list">
           <table>
             <thead>
               <tr>
-                <th>Username</th>
-                <th>Password</th>
+                <th>Builings</th>
+                <th>Apartments</th>
                 <th>Create Date</th>
                 <th>Status</th>
-                <th>Profile</th>
+                <th>Detail</th>
                 <th>Role</th>
                 <th>Actions</th>
               </tr>
@@ -92,4 +92,4 @@ const ManagerUsers = () => {
   );
 };
 
-export default ManagerUsers;
+export default ListDistributeAgency;

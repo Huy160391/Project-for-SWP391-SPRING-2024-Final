@@ -353,3 +353,71 @@
   .add-user-button:hover {
     background-color: #0056b3;
   }
+  .distribute-project {
+    margin-left: 20px; /* Adjust based on your sidebar width */
+    width: calc(100% - 250px); /* Adjust width according to the sidebar */
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+  
+  .distribute-form {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  
+  .distribute-form label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .distribute-form select,
+  .distribute-form textarea,
+  .distribute-form input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .distribute-form textarea {
+    height: 100px; /* Or whatever height you want */
+  }
+  
+  .buttons {
+    grid-column: span 2;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .cancel-button,
+  .send-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .cancel-button {
+    background-color: #f5f5f5;
+  }
+  
+  .send-button {
+    background-color: #0047AB; /* Or any other color you prefer */
+    color: white;
+  }
+  
+  /* You may need to adjust the breakpoints and styles for responsiveness */
+  @media (max-width: 768px) {
+    .distribute-form {
+      grid-template-columns: 1fr;
+    }
+  
+    .buttons {
+      grid-column: span 1;
+    }
+  }
+  
+  
