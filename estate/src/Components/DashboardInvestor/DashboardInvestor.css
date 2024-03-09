@@ -1,0 +1,355 @@
+/* InvestorDashboard.css */
+.investor-dashboard {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+}
+  
+  
+.sidebar {
+  /* styles for your sidebar */
+  width: 250px; /* or whatever width you prefer */
+}
+  .logo {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 30px;
+  }
+  
+  .sidebar nav ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .sidebar nav ul li {
+    padding: 10px 0;
+    cursor: pointer;
+    color: #333;
+  }
+  
+  .main-content {
+    flex-grow: 1;
+    background-color: #fff;
+    padding: 20px;
+  }
+  
+  .search-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .search-header input[type="search"] {
+    padding: 10px;
+    width: 100%;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+  }
+  
+  .statistics {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .stat-card {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    padding: 20px;
+    width: calc(33.333% - 10px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+  }
+  
+  .stat-card strong {
+    display: block;
+    font-size: 30px;
+    color: #333;
+    margin-top: 10px;
+  }
+  
+  .details-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+  
+  /* Further styling for icons, buttons, etc. would be added here */
+  .sidebar {
+    width: 250px; /* Adjust the width as necessary */
+    background-color: #f7f7f7; /* Your preferred background color */
+    min-height: 100vh; /* Full height */
+    padding: 20px 15px;
+  }
+  
+  .sidebar-brand {
+    margin-bottom: 1rem;
+    /* Add styles for your brand or logo here */
+  }
+  
+  .sidebar-nav {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .nav-item {
+    margin-bottom: 0.5rem;
+  }
+  
+  .nav-link {
+    text-decoration: none;
+    color: #333; /* Your preferred color */
+    /* Add hover effects as needed */
+  }
+  
+  .nav-link:hover {
+    color: #007bff; /* Your preferred hover color */
+  }
+  
+  /* Additional styles for icons and active state */
+  .user-dashboard {
+    display: flex;
+  }
+  
+  .sidebar {
+    /* Style your sidebar here */
+  }
+  
+  .header {
+    /* Style your header here */
+  }
+  
+  .main-content {
+    flex-grow: 1;
+    /* Additional styles */
+  }
+  
+  .user-list {
+    /* Styles for the user list */
+  }
+  
+  .user-list-item {
+    /* Styles for user list items */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    /* Additional styles */
+  }
+  
+  .user-actions button {
+    /* Style your buttons here */
+    margin-right: 5px;
+  }
+  /* Add other styles such as colors and hover effects */
+  .managers-container {
+    flex-grow: 1; /* this will make the container take up all available space */
+    padding: 20px; /* Add padding if needed */
+    overflow-y: auto; /* Add scroll to the container */
+  }
+  
+  .managers-search {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .managers-search input,
+  .managers-search select {
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .managers-list table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .managers-list th,
+  .managers-list td {
+    text-align: left;
+    padding: 0.5rem;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+  }
+  
+  .pagination button {
+    padding: 0.5rem 1rem;
+    margin: 0 0.25rem;
+    border: none;
+    border-radius: 4px;
+    background-color: #eee;
+  }
+  
+  .pagination button:hover {
+    background-color: #ddd;
+  }
+
+  /* DistributeProjectForm.css */
+.distribute-project-form-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+  }
+  
+  .form-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  
+  .cancel-button,
+  .send-button {
+    padding: 10px 20px;
+    border: none;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .cancel-button {
+    background-color: #ccc;
+  }
+  
+  .send-button {
+    background-color: #007bff;
+  }
+  
+  /* CreateNewProject.css */
+.create-new-project {
+    display: flex;
+  }
+  
+  .sidebar {
+    /* Styles for your sidebar */
+  }
+  
+  .main-content {
+    /* Styles for your main content */
+  }
+  
+  .form-row {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .form-group {
+    margin-bottom: 1rem;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+  
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  /* Additional styles for buttons, file upload input, and form actions */
+  .form-content {
+    margin-left: 250px; /* Make room for the sidebar */
+    padding: 40px; /* Add some padding */
+    background-color: #ecf0f1; /* Light gray background */
+  }
+  
+  .add-user-container {
+    display: flex;
+  }
+  
+  .form-row {
+    display: flex; /* Align the input fields in a row */
+    justify-content: space-between; /* Space them nicely */
+  }
+  
+  .form-group {
+    flex: 1; /* Make input groups flexible */
+    margin-right: 20px; /* Add space between input groups */
+  }
+  
+  .form-group label {
+    display: block; /* Ensure labels are block-level */
+    margin-bottom: 5px; /* Space below labels */
+  }
+  
+  .form-group input {
+    width: 100%; /* Full width */
+    padding: 10px; /* Padding inside inputs */
+    margin-bottom: 20px; /* Space below inputs */
+    border: 1px solid #bdc3c7; /* Border color */
+    border-radius: 4px; /* Rounded corners */
+  }
+  
+  .form-actions {
+    text-align: right; /* Align buttons to the right */
+  }
+  
+  .cancel-button,
+  .save-button {
+    padding: 10px 20px; /* Button padding */
+    border: none; /* Remove borders */
+    border-radius: 4px; /* Rounded corners */
+    margin-left: 10px; /* Space between buttons */
+  }
+  
+  .cancel-button {
+    background-color: #bdc3c7; /* Gray background */
+    /* Other styles for cancel button */
+  }
+  
+  .save-button {
+    background-color: #3498db; /* Blue background */
+    color: white; /* White text */
+    /* Other styles for save button */
+  }
+  
+  .avatar-upload {
+    margin-bottom: 20px; /* Space below avatar upload section */
+  }
+  
+  /* Add responsive styling as needed */
+  .add-user-button {
+    background-color: #007bff; /* Example blue background */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    margin-left: 15px; /* To give space between select and button */
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+  
+  /* Add hover effects */
+  .add-user-button:hover {
+    background-color: #0056b3;
+  }

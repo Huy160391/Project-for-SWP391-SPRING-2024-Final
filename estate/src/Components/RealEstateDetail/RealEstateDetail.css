@@ -1,0 +1,79 @@
+.property-card {
+    max-width: 800px;
+    margin: 20px auto;
+    background-color: #fff;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+  }
+  
+  .property-card-slider {
+    /* Placeholder for the slider component */
+    height: 200px;
+    background-color: #f0f0f0;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    /* Add your slider styles here */
+  }
+  
+  .property-card-content {
+    padding: 20px;
+  }
+  
+  .property-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .property-card-header h2 {
+    font-size: 1.5em;
+    color: #333;
+    margin: 0;
+  }
+  
+  .property-card-price {
+    font-size: 1.5em;
+    color: #007bff;
+    font-weight: bold;
+  }
+  
+  .property-card-status {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  .property-card-info {
+    border-top: 2px solid #eaeaea;
+    padding-top: 20px;
+    margin-top: 20px;
+  }
+  
+  .property-card-info p {
+    margin: 5px 0;
+  }
+  
+  .property-card-description {
+    color: #666;
+    margin: 20px 0;
+  }
+  
+  .property-card-buy {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 1em;
+    cursor: pointer;
+    border-radius: 5px;
+    display: block; /* Make the button block level */
+    width: 100%; /* Stretch to the width of the container */
+    box-sizing: border-box; /* Adjust box sizing */
+    text-align: center; /* Center the text */
+  }
+  
