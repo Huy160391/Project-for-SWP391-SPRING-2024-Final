@@ -17,12 +17,23 @@ const Login = () => {
     formData.append('Username', username);
     formData.append('Password', password);
 
+
+
+=======
+
     try {
       const response = await axios.post('https://localhost:7137/api/Users/login', formData, {
         headers: {
           'accept': '*/*', // Adjust this according to what your backend expects
         },
       });
+
+      let jsonData = JSON.stringify(response);
+      localStorage.setItem('UserData', jsonData);
+      //cách để sử dụng data này trong trang khác 
+      // const data = localStorage.getItem("UserData");
+      // const data2 = JSON.parse(data);
+      // {data2.data.username}
 
       // Assuming the response.data contains a property 'role' indicating the user's role
       if (response.data && response.data.roleId) {
@@ -53,6 +64,7 @@ const Login = () => {
       }
     }
   };
+
   return (
     <div className="login-container">
       <div className="login-form">
