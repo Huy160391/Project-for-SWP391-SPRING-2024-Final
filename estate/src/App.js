@@ -1,7 +1,6 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import AgencyListing from './Components/Agency/AgencyListing';
-import ListApartmentbyAgency from './Components/Agency/ListApartmentbyAgency';
 import AgencyDetail from './Components/AgencyDetail/AgencyDetail';
 import AddNewAgency from './Components/DashboardInvestor/AddNewAgency';
 import CreateNewProject from './Components/DashboardInvestor/CreateNewBuilding';
@@ -47,12 +46,11 @@ function App() {
         <Route path="/investordashboard" element={<InvestorDashboard />} />
         <Route path="/realestatelisting" element={<RealEstateListing />} />
         <Route path="/realestate/:buildingId" element={<RealEstateDetail />} />
-        <Route path="/property" element={<PropertyList />} />
+        <Route path="/property/:buildingId" element={<PropertyList />} />
         <Route path="/agency" element={<AgencyListing />} />
         <Route path="/agencydetail" element={<AgencyDetail />} />
         <Route path="/propertydetail/:apartmentId" element={<PropertyDetail />} />
         <Route path="/editproperty/:apartmentId" element={<EditProperty />} />
-        <Route path="/propertylistbyAgency" element={<ListApartmentbyAgency />} />
         <Route path="/listbooking/:apartmentId" element={<ListBooking />} />
 
 
