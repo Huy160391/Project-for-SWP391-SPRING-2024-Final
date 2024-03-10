@@ -2,6 +2,7 @@ import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import { Fragment } from 'react'
 
+
 const navigation = [
     { name: 'Property', href: '/property', current: false },
     { name: 'Project', href: '/realestatelisting', current: false },

@@ -1,7 +1,7 @@
 // RealEstateListing.js
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import Header from '../Header/Header';
+
 import RealEstateCard from './RealEstateCard';
 import SearchBar from './SearchBar';
 
@@ -57,7 +57,6 @@ const RealEstateListing = () => {
 
   return (
     <>
-      <Header />
       <div className="container real-estate-listing">
         <SearchBar onSearchChange={handleSearchChange} onSearch={handleSearch} />
         <div className="results-count">Có {filteredProperties.length} kết quả phù hợp</div>
