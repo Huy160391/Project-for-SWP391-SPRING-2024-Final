@@ -13,11 +13,17 @@ const Registration = () => {
     confirmPassword: '',
     address: '',
     phone: '',
+    image: null,
   });
   const navigate = useNavigate();
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    // Cập nhật để xử lý file
+    if (e.target.name === 'image') {
+      setFormData({ ...formData, image: e.target.files[0] });
+    } else {
+      setFormData({ ...formData, [e.target.name]: e.target.value });
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -29,14 +35,14 @@ const Registration = () => {
     }
 
     const dataToSend = new FormData();
-    dataToSend.append('FirstName', formData.firstName);
-    dataToSend.append('LastName', formData.lastName);
-    dataToSend.append('Gender', formData.gender);
-    dataToSend.append('Username', formData.username);
-    dataToSend.append('Password', formData.password);
-    dataToSend.append('Address', formData.address);
-    dataToSend.append('Phone', formData.phone);
-
+    Object.entries(formData).forEach(([key, value]) => {
+      // Bỏ qua việc thêm 'image' nếu nó null
+      if (key === 'image' && value) {
+        dataToSend.append(key, value, value.name);
+      } else if (key !== 'image') {
+        dataToSend.append(key, value);
+      }
+    });
     try {
       const response = await axios.post('https://localhost:7137/api/Users/registerNoImage', dataToSend, {
         headers: {
@@ -59,6 +65,7 @@ const Registration = () => {
         confirmPassword: '',
         address: '',
         phone: '',
+        image: null,
       });
     } catch (error) {
       console.error('Registration failed:', error.response?.data?.message || error.message);
@@ -150,6 +157,14 @@ const Registration = () => {
             name="phone"
             placeholder="Enter phone number"
             value={formData.phone}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="form-field">
+          <label>Image</label>
+          <input
+            type="file"
+            name="image"
             onChange={handleChange}
           />
         </div>

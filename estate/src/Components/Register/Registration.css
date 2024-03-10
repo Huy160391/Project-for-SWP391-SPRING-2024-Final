@@ -41,7 +41,7 @@
   width: 100%;
   padding: 10px 0;
   border: none;
-  background-color: #4169e1;
+  background-color: #4169e1 !important;
   color: white;
   border-radius: 5px;
   margin-top: 1rem;
