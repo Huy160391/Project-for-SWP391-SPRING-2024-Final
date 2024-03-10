@@ -12,6 +12,7 @@ const DistributeFloor = () => {
   const [selectFloorId, setSelectFloorId] = useState("");
   const [recipients, setRecipients] = useState([]);
   const [selectedRecipient, setSelectedRecipient] = useState("");
+  const [selectedAgency, setSelectedAgency] = useState();
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -62,36 +63,52 @@ const DistributeFloor = () => {
     };
     fetchRecipients();
   }, []);
+
   useEffect(() => {
     const fetchFloor = async () => {
       try {
         const { data } = await axios.get(
           "https://localhost:7137/api/Buildings"
         );
-        const floorData = data.filter(
-          (d) => d.buildingId === buildingId
-        );
+        const floorData = data.filter((d) => d.buildingId === buildingId);
         setFloors(floorData);
-        console.log("data", buildingId);
-        console.log("first", floorData)
       } catch (error) {
         console.error("Error fetching buildings for project:", error);
         setFloors([]);
       }
     };
     fetchFloor();
-  }, [buildingId]); 
+  }, [buildingId]);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    // Handle form submission here
-    console.log({
-      selectedProjectId,
-      buildingId,
-      floors,
-      selectedRecipient,
-    });
-    alert("Form submitted");
+
+    // Định nghĩa dữ liệu để gửi
+    const distributionData = {
+      buildingId: buildingId,
+      floor: selectFloorId,
+      agencyId: selectedAgency,
+    };
+
+    try {
+      // Gọi API để submit dữ liệu
+      const { buildingId, agencyId, floor } = distributionData;
+      const url = `https://localhost:7137/api/Buildings/DistributeFloor?buildingId=${encodeURIComponent(
+        buildingId
+      )}&agencyId=${encodeURIComponent(agencyId)}&floor=${encodeURIComponent(
+        floor
+      )}`;
+      const response = await axios.post(url);
+      // Xử lý khi gửi thành công
+      console.log("Distribution success:", response.data);
+      alert("Distribution successful!");
+
+      // Có thể reset form hoặc làm gì đó sau khi submit thành công
+    } catch (error) {
+      // Xử lý khi có lỗi
+      console.error("Error distributing project:", error);
+      alert("Error in distribution.");
+    }
   };
 
   return (
@@ -105,7 +122,11 @@ const DistributeFloor = () => {
             <select
               id="project-name"
               value={selectedProjectId}
-              onChange={(e) => setSelectedProjectId(e.target.value)}
+              onChange={(e) => {
+                setSelectedProjectId(e.target.value);
+                setSelectFloorId("0");
+                setSelectedAgency("Select Recipient")
+              }}
             >
               <option value="">Select Project</option>
               {projects.map((project) => (
@@ -138,29 +159,47 @@ const DistributeFloor = () => {
             <label htmlFor="floors">Floors</label>
             <select
               id="floor"
-              value={floors.buildingId}
+              //   value={floors.buildingId}
+              value={selectFloorId}
               onChange={(e) => setSelectFloorId(e.target.value)}
             >
-              <option value="">Select Floor</option>
-              {floors &&
-                floors.map((floors) => (
-                  <option key={floors.buildingId} value={floors.buildingId}>
-                    {floors.numberOfFloors}
+              <option value="0">0</option>
+
+              {/* {floors &&
+                floors.map((floor) => (
+                  <option key={floor.buildingId} value={floor.buildingId}>
+                    {floor.numberOfFloors}
                   </option>
-                ))}
+                ))} */}
+
+              {floors &&
+                floors.map((floor) =>
+                  Array.from(
+                    { length: floor.numberOfFloors },
+                    (_, i) => i + 1
+                  ).map((floorNumber) => (
+                    <option
+                      key={`${floor.buildingId}-${floorNumber}`}
+                      value={floorNumber}
+                    >
+                      {floorNumber}
+                    </option>
+                  ))
+                )}
             </select>
           </div>
+
           <div className="form-group">
             <label htmlFor="recipient">Agency</label>
             <select
               id="recipient"
-              value={selectedRecipient}
-              onChange={(e) => setSelectedRecipient(e.target.value)}
+              value={selectedAgency}
+              onChange={(e) => setSelectedAgency(e.target.value)}
             >
-              <option value="">Select Recipient</option>
+              <option value="Select Recipient">Select Recipient</option>
               {recipients.map((recipient) => (
-                <option key={recipient.userId} value={recipient.userId}>
-                  {recipient.firstName} {recipient.lastName}
+                <option key={recipient.agencyId} value={recipient.agencyId}>
+                  {`${recipient.firstName} ${recipient.lastName}`}
                 </option> // Adjusted for username display
               ))}
             </select>
