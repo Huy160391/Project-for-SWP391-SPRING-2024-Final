@@ -38,13 +38,13 @@ const Registration = () => {
     Object.entries(formData).forEach(([key, value]) => {
       // Bỏ qua việc thêm 'image' nếu nó null
       if (key === 'image' && value) {
-        dataToSend.append(key, value, value.name);
+        dataToSend.append("FileImage", value, value.name);
       } else if (key !== 'image') {
         dataToSend.append(key, value);
       }
     });
     try {
-      const response = await axios.post('https://localhost:7137/api/Users/registerNoImage', dataToSend, {
+      const response = await axios.post('https://localhost:7137/api/Users/register', dataToSend, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -65,7 +65,7 @@ const Registration = () => {
         confirmPassword: '',
         address: '',
         phone: '',
-        image: null,
+        images: null,
       });
     } catch (error) {
       console.error('Registration failed:', error.response?.data?.message || error.message);

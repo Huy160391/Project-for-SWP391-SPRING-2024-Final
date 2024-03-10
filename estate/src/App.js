@@ -6,7 +6,10 @@ import AgencyDetail from './Components/AgencyDetail/AgencyDetail';
 import AddNewAgency from './Components/DashboardInvestor/AddNewAgency';
 import CreateNewProject from './Components/DashboardInvestor/CreateNewBuilding';
 import InvestorDashboard from './Components/DashboardInvestor/DashboardInvestor';
-import DistributeApartment from './Components/DashboardInvestor/DistributeApartment';
+
+
+//import DistributeApartment from './Components/DashboardInvestor/DistributeApartment';
+
 import DistributeFloor from './Components/DashboardInvestor/DistributeFloor';
 import ListDistributeAgency from './Components/DashboardInvestor/ListDistributeAgency';
 import Managerbuildings from './Components/DashboardInvestor/ManagerBuilding';
@@ -22,22 +25,29 @@ import PropertyList from './Components/Property/PropertyList';
 import RealEstateListing from './Components/RealEstate/RealEstateListing';
 import RealEstateDetail from './Components/RealEstateDetail/RealEstateDetail';
 import Registration from './Components/Register/RegistrationForm';
+import ListBooking from './Components/Agency/ListBooking';
+
+
 
 // import Login from './Components/Login/Login';
 
 function App() {
   return (
     <div className="App">
-      <Header/>
+      <Header />
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/registration" element={<Registration />} />
-        <Route path="/addnewagency" element={<AddNewAgency/>} />
-        <Route path="/distributefloor" element={<DistributeFloor/>} />
-        <Route path="/distributeapartment" element={<DistributeApartment/>} />
+
+       
+
+        <Route path="/addnewagency" element={<AddNewAgency />} />
+        <Route path="/distributefloor" element={<DistributeFloor />} />
+
+
         <Route path="/createnewproject" element={<CreateNewProject />} />
         <Route path="/managerdistribute" element={<ManagerDistribute />} />
-        <Route path="/listdistributeagency" element={<ListDistributeAgency/>} />
+        <Route path="/listdistributeagency" element={<ListDistributeAgency />} />
         <Route path="/managerusers" element={<ManagerUsers />} />
         <Route path="/managerbuildings" element={<Managerbuildings />} />
         <Route path="/managertransaction" element={<ManagerTransaction />} />
@@ -50,12 +60,14 @@ function App() {
         <Route path="/propertydetail/:apartmentId" element={<PropertyDetail />} />
         <Route path="/editproperty/:apartmentId" element={<EditProperty />} />
         <Route path="/propertylistbyAgency" element={<ListApartmentbyAgency />} />
+        <Route path="/listbooking/:apartmentId" element={<ListBooking />} />
+
 
         {/* <Route path="/login" element={<Login />} /> */}
         {/* The Route for RealEstateListing should also have a path defined */}
         {/* Define other routes here */}
       </Routes>
-      <Footer/>
+      <Footer />
     </div>
   );
 }
