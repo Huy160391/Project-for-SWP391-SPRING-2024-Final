@@ -6,7 +6,6 @@ import AgencyDetail from './Components/AgencyDetail/AgencyDetail';
 import AddNewAgency from './Components/DashboardInvestor/AddNewAgency';
 import CreateNewProject from './Components/DashboardInvestor/CreateNewBuilding';
 import InvestorDashboard from './Components/DashboardInvestor/DashboardInvestor';
-import DistributeApartment from './Components/DashboardInvestor/DistributeApartment';
 import DistributeFloor from './Components/DashboardInvestor/DistributeFloor';
 import ListDistributeAgency from './Components/DashboardInvestor/ListDistributeAgency';
 import Managerbuildings from './Components/DashboardInvestor/ManagerBuilding';
@@ -34,7 +33,6 @@ function App() {
         <Route path="/registration" element={<Registration />} />
         <Route path="/addnewagency" element={<AddNewAgency/>} />
         <Route path="/distributefloor" element={<DistributeFloor/>} />
-        <Route path="/distributeapartment" element={<DistributeApartment/>} />
         <Route path="/createnewproject" element={<CreateNewProject />} />
         <Route path="/managerdistribute" element={<ManagerDistribute />} />
         <Route path="/listdistributeagency" element={<ListDistributeAgency/>} />
