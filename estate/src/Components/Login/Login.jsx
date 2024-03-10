@@ -12,12 +12,12 @@ const Login = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-     // Create a FormData object to hold the username and password
-     const formData = new FormData();
-     formData.append('Username', username);
-     formData.append('Password', password);
+    // Create a FormData object to hold the username and password
+    const formData = new FormData();
+    formData.append('Username', username);
+    formData.append('Password', password);
 
-     try {
+    try {
       const response = await axios.post('https://localhost:7137/api/Users/login', formData, {
         headers: {
           'accept': '*/*', // Adjust this according to what your backend expects

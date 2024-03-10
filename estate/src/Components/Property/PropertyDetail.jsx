@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
-import Header from '../Header/Header';
+
 import './PropertyDetail.css'
 
 
 const PropertyDetail = () => {
   const { apartmentId } = useParams();
   const [apartment, setApartment] = useState({});
+
 
   useEffect(() => {
     const fetchApartment = async () => {
@@ -26,10 +27,9 @@ const PropertyDetail = () => {
     return <div>Errrrrrrrrrrrrrrrrrr</div>;
   }
 
-
   return (
     <>
-      <Header />
+
 
       <div className="property-detail">
         <div className="top-section">
@@ -44,7 +44,8 @@ const PropertyDetail = () => {
           </p>
           <p>Price: ${apartment.price}</p>
         </div>
-        <button className="buy-button">Đặt mua</button>
+        <Link to={`/createbooking/${apartment.apartmentId}`} className="view-more-button">booking</Link>
+
       </div>
     </>
   );
