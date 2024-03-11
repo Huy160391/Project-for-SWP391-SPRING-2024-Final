@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom'; // Import Link from react-router-dom
 import './DashboardInvestor.css'; // Make sure to create a CSS file for styling
 import Sidebar from './Sidebar';
-const ManagerTransaction = () => {
+const ManagerDistribute = () => {
   // This is dummy data, you would replace this with data from your backend
   const managersData = [
     { customerName: 'Karen Hope', id: '#123456789', createDate: 'March 25, 2021', Detail: 'view', Acency: 'Customer', status :'acp'  },
@@ -65,4 +65,4 @@ const ManagerTransaction = () => {
   );
 };
 
-export default ManagerTransaction;
+export default ManagerDistribute;
