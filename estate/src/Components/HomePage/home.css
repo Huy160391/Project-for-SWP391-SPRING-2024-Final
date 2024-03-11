@@ -1,0 +1,19 @@
+ .agencylist,
+.buildinglist{
+    display: flex;
+    margin: 0 50px;
+    margin-top: 70px;
+    justify-content: space-between;
+}
+.agencylist .image,
+.buildinglist .image {
+    width: 25%;
+    padding: 0 50px;
+    border: 1px solid gray;
+}
+.agencylist .image img,
+.buildinglist .image img {
+    margin-top: 80px;
+    width: 100%;
+    margin-bottom: 30px;
+}

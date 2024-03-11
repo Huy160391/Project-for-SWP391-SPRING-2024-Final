@@ -10,14 +10,14 @@ import InvestorDashboard from './Components/DashboardInvestor/DashboardInvestor'
 
 //import DistributeApartment from './Components/DashboardInvestor/DistributeApartment';
 
+import ListBooking from './Components/Agency/ListBooking';
 import DistributeFloor from './Components/DashboardInvestor/DistributeFloor';
-import ListDistributeAgency from './Components/DashboardInvestor/ListDistributeAgency';
 import Managerbuildings from './Components/DashboardInvestor/ManagerBuilding';
 import ManagerDistribute from './Components/DashboardInvestor/ManagerDistribute';
 import ManagerTransaction from './Components/DashboardInvestor/ManagerTransaction';
 import ManagerUsers from './Components/DashboardInvestor/ManagerUsers';
-import Footer from './Components/Footer/Footer';
 import Header from './Components/Header/Header';
+import Homepage from './Components/HomePage/HomePage';
 import Login from './Components/Login/Login';
 import EditProperty from './Components/Property/EditProperty';
 import PropertyDetail from './Components/Property/PropertyDetail';
@@ -25,7 +25,6 @@ import PropertyList from './Components/Property/PropertyList';
 import RealEstateListing from './Components/RealEstate/RealEstateListing';
 import RealEstateDetail from './Components/RealEstateDetail/RealEstateDetail';
 import Registration from './Components/Register/RegistrationForm';
-import ListBooking from './Components/Agency/ListBooking';
 
 
 
@@ -33,21 +32,18 @@ import ListBooking from './Components/Agency/ListBooking';
 
 function App() {
   return (
-    <div className="App">
+    <div className="App" style={{width:'100vw', height:'100vh'}}>
       <Header />
       <Routes>
-        <Route path="/" element={<Login />} />
+
+        <Route path="/" element={<Homepage />} />
+        <Route path="/login" element={<Login />} />
+
         <Route path="/registration" element={<Registration />} />
-
-       
-
         <Route path="/addnewagency" element={<AddNewAgency />} />
         <Route path="/distributefloor" element={<DistributeFloor />} />
-
-
         <Route path="/createnewproject" element={<CreateNewProject />} />
         <Route path="/managerdistribute" element={<ManagerDistribute />} />
-        <Route path="/listdistributeagency" element={<ListDistributeAgency />} />
         <Route path="/managerusers" element={<ManagerUsers />} />
         <Route path="/managerbuildings" element={<Managerbuildings />} />
         <Route path="/managertransaction" element={<ManagerTransaction />} />
@@ -67,7 +63,7 @@ function App() {
         {/* The Route for RealEstateListing should also have a path defined */}
         {/* Define other routes here */}
       </Routes>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }
