@@ -18,9 +18,6 @@ const Login = () => {
     formData.append('Password', password);
 
 
-
-=======
-
     try {
       const response = await axios.post('https://localhost:7137/api/Users/login', formData, {
         headers: {
@@ -42,7 +39,7 @@ const Login = () => {
             navigate('/investordashboard');
             break;
           case 'Customer':
-            navigate('/realestatelisting');
+            navigate('/editproperty/A002');
             break;
           case 'Agency':
             navigate('/agencydashboard');

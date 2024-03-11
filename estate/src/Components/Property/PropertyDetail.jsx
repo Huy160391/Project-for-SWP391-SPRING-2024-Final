@@ -1,26 +1,83 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
 const PropertyDetail = () => {
   const { apartmentId } = useParams();
   const [apartment, setApartment] = useState({});
+  const [customer, setCustomer] = useState(null);
+  const [bookingStatus, setBookingStatus] = useState(null);
+  const [bookingMessage, setBookingMessage] = useState('');
+  const [userId, setUserId] = useState(null);
+  const [isBookingDisabled, setIsBookingDisabled] = useState(false);
 
   useEffect(() => {
-    const fetchApartment = async () => {
+    const fetchCustomerAndApartment = async () => {
       try {
-        const response = await axios.get(`https://localhost:7137/api/Apartments/${apartmentId}`);
-        setApartment(response.data);
+        // Lấy thông tin khách hàng từ localStorage
+        const userData = JSON.parse(localStorage.getItem("UserData"));
+        const username = userData?.data?.username;
+        const password = userData?.data?.password;
+
+        if (username && password) {
+          const formData = new FormData();
+          formData.append('Username', username);
+          formData.append('Password', password);
+
+          // Gửi yêu cầu đăng nhập và lấy thông tin khách hàng
+          const loginResponse = await axios.post('https://localhost:7137/api/Users/login', formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+          });
+
+          const userIdFromResponse = loginResponse?.data?.userId;
+          setUserId(userIdFromResponse);
+
+          if (userIdFromResponse) {
+            const customerResponse = await axios.get(`https://localhost:7137/api/Customers/GetCustomerByUserID/${userIdFromResponse}`);
+            setCustomer(customerResponse.data);
+          }
+
+        }
+
+        // Lấy thông tin căn hộ dựa trên apartmentId từ đường dẫn
+        const apartmentResponse = await axios.get(`https://localhost:7137/api/Apartments/${apartmentId}`);
+        setApartment(apartmentResponse.data);
       } catch (error) {
-        console.error('Error fetching apartment:', error);
+        console.error('Error fetching data:', error);
       }
     };
 
-    fetchApartment();
-  }, [apartmentId]);
+    fetchCustomerAndApartment();
+  }, [apartmentId, userId]);
 
-  if (!apartment) {
-    return <div className="text-red-500">Error fetching apartment</div>;
+  const handleBooking = async () => {
+    try {
+      if (!customer) {
+        throw new Error('Customer information is not available.');
+      }
+
+      await axios.post(`https://localhost:7137/api/Bookings?customerId=${customer[0].customerId}&apartmentId=${apartmentId}`);
+
+      setBookingStatus('success');
+      setBookingMessage('Booking successful!');
+      setIsBookingDisabled(true); // Ẩn nút đặt trước khi đã đặt thành công
+    } catch (error) {
+      console.error('Error booking:', error);
+
+      if (error.response && error.response.status === 409) {
+        setBookingStatus('error');
+        setBookingMessage('Bạn đã đặt trước rồi');
+      } else {
+        setBookingStatus('error');
+        setBookingMessage('Đặt trước không thành công. Vui lòng thử lại sau.');
+      }
+    }
+  };
+
+  if (!apartment || !customer) {
+    return <div className="text-red-500">Loading...</div>;
   }
 
   return (
@@ -36,9 +93,12 @@ const PropertyDetail = () => {
               <p className="text-sm text-gray-600">{apartment.numberOfBedrooms} phòng ngủ - {apartment.numberOfBathrooms} phòng tắm</p>
               <p className="text-sm text-gray-600">Price: ${apartment.price}</p>
             </div>
-            <Link to={`/editproperty/${apartment.apartmentId}`} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-              Edit(Tạm thời)
-            </Link>
+            {!isBookingDisabled && (
+              <button onClick={handleBooking} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                Book Now
+              </button>
+            )}
+            {bookingStatus && <p className={`text-sm ${bookingStatus === 'success' ? 'text-green-600' : 'text-red-600'}`}>{bookingMessage}</p>}
           </div>
         </div>
         <img src={`https://localhost:7137/api/Apartments/GetApartmentImage/${apartment.apartmentId}`} alt="Apartment" className="object-cover w-full h-64" />

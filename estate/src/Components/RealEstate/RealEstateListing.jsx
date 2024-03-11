@@ -1,7 +1,6 @@
 // RealEstateListing.js
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import Header from '../Header/Header'; // Adjust based on actual file name and path
 import RealEstateCard from './RealEstateCard';
 import SearchBar from './SearchBar';
 
@@ -54,14 +53,14 @@ const RealEstateListing = () => {
     );
     setFilteredProperties(filteredResults);
   };
-  
+
   return (
     <>
 
-      <Header />
-      <div className="">{}</div>
+
+      <div className="">{ }</div>
       <div className="container real-estate-listing">
-        <SearchBar onSearchChange={handleSearchChange} onSearch={handleSearch} /> 
+        <SearchBar onSearchChange={handleSearchChange} onSearch={handleSearch} />
         <div className="results-count">Có {filteredProperties.length} kết quả phù hợp</div>
         <div className="row">
           {filteredProperties.map((property) => (

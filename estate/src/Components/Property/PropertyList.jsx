@@ -20,7 +20,7 @@ const PropertyList = () => {
 
     const fetchApartments = async () => {
       try {
-        const response = await axios.get(`https://localhost:7137/api/Apartments/GetApartmentsByBuildingID?buildingId=${buildingId}`);
+        const response = await axios.get(`https://localhost:7137/api/Apartments/GetApartmentsByBuildingIDForBooking?buildingId=${buildingId}`);
         setOriginalApartments(response.data);
         setApartments(response.data);
       } catch (error) {
