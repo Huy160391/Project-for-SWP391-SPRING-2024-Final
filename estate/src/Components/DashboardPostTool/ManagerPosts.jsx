@@ -9,7 +9,7 @@ const ManagerPosts = () => {
     const [error, setError] = useState('');
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
-  
+
     const [currentPage, setCurrentPage] = useState(1);
     const [postsPerPage] = useState(5);
     const [selectedBuilding, setSelectedBuilding] = useState('');
@@ -25,8 +25,10 @@ const ManagerPosts = () => {
                 const response1 = await axios.get('https://localhost:7137/api/Buildings');
                 setBuildings(response1.data);
 
-                setOriginalPosts(detailedPosts);
-                setPosts(detailedPosts);
+                const sortedPosts = detailedPosts.sort((a, b) => new Date(b.postDate) - new Date(a.postDate));
+
+                setOriginalPosts(sortedPosts);
+                setPosts(sortedPosts);
                 setLoading(false);
             } catch (error) {
                 setError('Failed to fetch posts');
@@ -106,13 +108,13 @@ const ManagerPosts = () => {
     if (error) return <div>{error}</div>;
 
     return (
-        <div className="flex">
+        <div className="flex min-h-screen bg-gray-50">
             {/* <Sidebar /> */}
-            <div className="flex-1 bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 ml-4">
-                <h1 className="text-xl font-bold mb-4">Manager Posts</h1>
-                <div className="mb-6">
+            <div className="flex-1 bg-white shadow-lg rounded-lg mx-8 my-4 p-8">
+                <h1 className="text-3xl font-bold text-gray-800 mb-8">Manager Posts</h1>
+                <div className="mb-8">
                     <select
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        className="block w-full py-3 px-4 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-700"
                         value={selectedBuilding}
                         onChange={(e) => setSelectedBuilding(e.target.value)}
                     >
@@ -121,58 +123,59 @@ const ManagerPosts = () => {
                             <option key={building.id} value={building.name}>{building.name}</option>
                         ))}
                     </select>
-                    <div className="flex space-x-2 mt-4">
-                        <p className='mt-1 shadow border rounded py-2 px-3 text-gray-700 h-50'>Search By Post Date:</p>
+                    <div className="flex space-x-4 mt-4 items-center">
+                        <span className="text-gray-700">Search By Post Date:</span>
                         <input
-                            className="shadow border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            className="py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                             type="date"
                             value={startDate}
                             onChange={(e) => setStartDate(e.target.value)}
-                            
                         />
                         <input
-                            className="shadow border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            className="py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                             type="date"
                             value={endDate}
                             onChange={(e) => setEndDate(e.target.value)}
                         />
-                        <button onClick={handleSearch} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Search</button>
-                        <Link to="/createnewpost" className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">New Post</Link>
+                        <button onClick={handleSearch} className="inline-flex items-center justify-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow-sm transition-colors duration-150">
+                            Search
+                        </button>
+                        <Link to="/createnewpost" className="inline-flex items-center justify-center bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded shadow-sm transition-colors duration-150">
+                            New Post
+                        </Link>
                     </div>
                 </div>
                 <div className="overflow-x-auto mt-6">
-                    <table className="min-w-full leading-normal">
-                        <thead>
-                            <tr>
+                    <table className="min-w-full divide-y divide-gray-200">
+                        <thead className="bg-gray-50">
+                        <tr>
                                 <th className="px-2 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">No.</th>
-                                <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Post ID</th>
+                                <th className="px-3 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Post ID</th>
                                 <th className="px-6 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Description</th>
-                                <th className="px-3 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Sales Opening Date</th>
-                                <th className="px-3 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Sales Closing Date</th>
-                                <th className="px-3 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Post Date</th>
+                                <th className="px-2 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Sales Opening Date</th>
+                                <th className="px-2 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Sales Closing Date</th>
+                                <th className="px-2 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Post Date</th>
                                 <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Images</th>
                                 <th className="px-3 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Priority Method</th>
-                                <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Building Name</th>
+                                <th className="px-6 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Building Name</th>
                                 <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Actions</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody className="bg-white divide-y divide-gray-200">
                             {currentPosts.map((post, index) => (
                                 <tr key={index}>
-                                    <td className="px-2 py-5 border-b border-gray-200 bg-white text-sm">
-                                        {indexOfFirstPost + index + 1}
+                                    <td className="px-2 py-3 whitespace-nowrap text-sm text-gray-500">{indexOfFirstPost + index + 1}</td>
+                                    <td className="break-all px-3 py-3 whitespace-nowrap text-sm text-gray-900">{post.postId}</td>
+                                    <td className="break-all px-6 py-3 whitespace-normal text-sm text-gray-700 break-words">{post.description}</td>
+                                    <td className="px-2 py-3 whitespace-nowrap text-sm text-gray-500">{new Date(post.salesOpeningDate).toLocaleDateString()}</td>
+                                    <td className="px-2 py-3 whitespace-nowrap text-sm text-gray-500">{new Date(post.salesClosingDate).toLocaleDateString()}</td>
+                                    <td className="px-2 py-3 whitespace-nowrap text-sm text-gray-500">{new Date(post.postDate).toLocaleDateString()}</td>
+                                    <td className="px-6 py-3 whitespace-nowrap text-sm text-gray-500">
+                                        <img src={`https://localhost:7137/api/Posts/GetImage/${post.postId}`} alt="Post" className="h-20 w-32 rounded-md" />
                                     </td>
-                                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">{post.postId}</td>
-                                    <td className="break-all px-6 py-5 border-b border-gray-200 bg-white text-sm">{post.description}</td>
-                                    <td className="px-3 py-5 border-b border-gray-200 bg-white text-sm">{new Date(post.salesOpeningDate).toLocaleDateString()}</td>
-                                    <td className="px-3 py-5 border-b border-gray-200 bg-white text-sm">{new Date(post.salesClosingDate).toLocaleDateString()}</td>
-                                    <td className="px-3 py-5 border-b border-gray-200 bg-white text-sm">{new Date(post.postDate).toLocaleDateString()}</td>
-                                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                        <img src={`https://localhost:7137/api/Posts/GetImage/${post.postId}`} alt="Post" className="h-20 w-60 rounded" />
-                                    </td>
-                                    <td className="px-3 py-5 border-b border-gray-200 bg-white text-sm">{post.priorityMethod}</td>
-                                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">{post.buildingName}</td>
-                                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm flex space-x-2">
+                                    <td className="px-3 py-3 whitespace-nowrap text-sm text-gray-500">{post.priorityMethod}</td>
+                                    <td className="px-5 py-3 whitespace-nowrap text-sm text-gray-500">{post.buildingName}</td>
+                                    <td className="px-5 py-3 whitespace-nowrap text-sm text-gray-500 flex space-x-2">
                                         <Link to={`/view-post/${post.postId}`} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded focus:outline-none focus:shadow-outline">View</Link>
                                         <Link to={`/edit-post/${post.postId}`} className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-3 rounded focus:outline-none focus:shadow-outline">Edit</Link>
                                         <button onClick={() => handleDelete(post.postId)} className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded focus:outline-none focus:shadow-outline">Delete</button>
@@ -182,17 +185,18 @@ const ManagerPosts = () => {
                         </tbody>
                     </table>
                 </div>
-                <div className="pagination flex justify-between items-center mt-4">
-                    <button onClick={prevPage} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" disabled={currentPage === 1}>
+                <div className="pagination flex justify-between items-center mt-8">
+                    <button onClick={prevPage} className="bg-gray-300 hover:bg-gray-400 text-gray-900 font-semibold py-2 px-4 rounded-l">
                         Previous
                     </button>
-                    <span>Page {currentPage}</span>
-                    <button onClick={nextPage} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" disabled={currentPage * postsPerPage >= posts.length}>
+                    <span className="text-sm text-gray-700">Page {currentPage}</span>
+                    <button onClick={nextPage} className="bg-gray-300 hover:bg-gray-400 text-gray-900 font-semibold py-2 px-4 rounded-r">
                         Next
                     </button>
                 </div>
             </div>
         </div>
+
     );
 };
 

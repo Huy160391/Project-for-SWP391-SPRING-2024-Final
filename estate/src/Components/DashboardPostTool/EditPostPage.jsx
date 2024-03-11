@@ -71,7 +71,7 @@ const EditPostPage = () => {
 
     const handleImageChange = (e) => {
         if (e.target.files.length) {
-            setImage(e.target.files[0]); // Assuming you want to handle one file
+                setImage(e.target.files[0]); // Assuming you want to handle one file
         }
     };
     const [errors, setErrors] = useState({});
@@ -128,7 +128,7 @@ const EditPostPage = () => {
         }
 
         if (!isValidSelection(post.AgencyId)) {
-            
+
             newErrors.AgencyId = 'Please select an agency.';
         }
 
@@ -141,7 +141,7 @@ const EditPostPage = () => {
         if (Object.keys(newErrors).length > 0) {
             return; // Stop the form from submitting
         }
-        
+
         const formData = new FormData();
         formData.append('SalesOpeningDate', post.SalesOpeningDate);
         formData.append('SalesClosingDate', post.SalesClosingDate);
@@ -167,37 +167,38 @@ const EditPostPage = () => {
     console.log(post.SalesClosingDate)
 
     return (
-        <div className="flex">
+        <div className="flex min-h-screen bg-gray-100">
             <Sidebar />
-            <div className="edit-post-page flex-1 p-8">
-                <h1 className="text-2xl font-bold mb-5">Edit Post</h1>
+            <div className="flex-grow max-w-4xl mx-auto p-8 bg-white shadow-lg rounded-lg">
+                <h1 className="text-3xl font-bold text-gray-900 mb-10">Edit Post</h1>
                 <form onSubmit={handleSubmit} className="space-y-6">
                     <div className="form-group">
                         <label className="text-gray-700 font-semibold block mb-2">Sales Opening Date</label>
-                        <input type="date" name="SalesOpeningDate" className="w-full p-2 border rounded" value={post.SalesClosingDate || ''} onChange={handleChange} />
+                        <input type="date" name="SalesOpeningDate" className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" value={post.SalesOpeningDate || ''} onChange={handleChange} />
                         {errors.SalesOpeningDate && <div className="text-red-500 text-xs mt-2">{errors.SalesOpeningDate}</div>}
                     </div>
+
                     <div className="form-group">
                         <label className="text-gray-700 font-semibold block mb-2">Sales Closing Date</label>
-                        <input type="date" name="SalesClosingDate" className="w-full p-2 border rounded" value={post.SalesClosingDate || ''} onChange={handleChange} />
+                        <input type="date" name="SalesClosingDate" className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" value={post.SalesClosingDate || ''} onChange={handleChange} />
                         {errors.SalesClosingDate && <p className="text-red-500 text-xs mt-2">{errors.SalesClosingDate}</p>}
                     </div>
 
                     <div className="form-group">
                         <label className="text-gray-700 font-semibold block mb-2">Description</label>
-                        <textarea name="Description" className="w-full p-2 border rounded" value={post.Description || ''} onChange={handleChange}></textarea>
+                        <textarea name="Description" className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" value={post.Description || ''} onChange={handleChange}></textarea>
                         {errors.Description && <p className="text-red-500 text-xs mt-2">{errors.Description}</p>}
                     </div>
 
                     <div className="form-group">
                         <label className="text-gray-700 font-semibold block mb-2">Priority Method</label>
-                        <input type="text" name="PriorityMethod" className="w-full p-2 border rounded" value={post.PriorityMethod || ''} onChange={handleChange} />
+                        <input type="text" name="PriorityMethod" className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" value={post.PriorityMethod || ''} onChange={handleChange} />
                         {errors.PriorityMethod && <p className="text-red-500 text-xs mt-2">{errors.PriorityMethod}</p>}
                     </div>
 
                     <div className="form-group">
                         <label className="text-gray-700 font-semibold block mb-2">Building ID</label>
-                        <select name="BuildingId" className="w-full p-2 border rounded" onChange={handleChange} value={post.BuildingId || ''}>
+                        <select name="BuildingId" className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" onChange={handleChange} value={post.BuildingId || ''}>
                             <option value="">Select Building</option>
                             {buildings.map(building => (
                                 <option key={building.buildingId} value={building.buildingId}>{building.name}</option>
@@ -208,23 +209,23 @@ const EditPostPage = () => {
 
                     <div className="form-group">
                         <label className="text-gray-700 font-semibold block mb-2">Upload New Property Image</label>
-                        <input type="file" className="w-full p-2 border rounded" onChange={handleImageChange} />
-                        {image && <img src={URL.createObjectURL(image)} alt="New post" className="mt-4 max-w-xs max-h-60" />}
+                        <input type="file" className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none" onChange={handleImageChange} />
+                        {image && <img src={URL.createObjectURL(image)} alt="New post" className="mt-4 w-auto h-48 rounded-lg" />}
                         {errors.FileImage && <div className="text-red-500 text-xs mt-2">{errors.FileImage}</div>}
                     </div>
 
-
-                    <div className="form-actions flex justify-between">
-                        <button type="button" onClick={() => navigate(-1)} className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+                    <div className="flex justify-between">
+                        <button type="button" onClick={() => navigate(-1)} className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out">
                             Cancel
                         </button>
-                        <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onChange={handleSubmit}>
+                        <button type="submit" className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out">
                             Save
                         </button>
                     </div>
                 </form>
             </div>
         </div>
+
 
     );
 };
