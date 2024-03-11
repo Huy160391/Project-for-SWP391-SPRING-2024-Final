@@ -43,9 +43,9 @@ const ManagerUsers = () => {
     setBlock(!isBlock);
 
     if (isBlock) {
-      action = "Unblock";
-    } else {
       action = "Block";
+    } else {
+      action = "Unblock";
     }
 
     const confirmation = window.confirm(
