@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
-import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
-import Sidebar from "./Sidebar";
+import { Link, useParams } from 'react-router-dom';
+// import Sidebar from "./Sidebar";
 
 const ManagerListApartmentOfAgency = () => {
     const { agencyId, buildingId } = useParams();
@@ -83,7 +83,7 @@ const ManagerListApartmentOfAgency = () => {
 
     return (
         <div className="flex min-h-screen bg-gray-50">
-            <Sidebar />
+            {/* <Sidebar /> */}
             <div className="flex-grow p-10">
                 <h1 className="text-4xl font-bold text-gray-900 mb-10">{buildingName} Apartments</h1>
 

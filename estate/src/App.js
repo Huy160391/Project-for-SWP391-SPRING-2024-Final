@@ -10,6 +10,11 @@ import './output.css';
 //import DistributeApartment from './Components/DashboardInvestor/DistributeApartment';
 
 import ListBooking from './Components/Agency/ListBooking';
+
+
+import EditApartmentPage from './Components/DashboardApartmentTool/EditApartmentPage';
+import ManagerListApartmentOfAgency from './Components/DashboardApartmentTool/ManagerListApartmentOfAgency';
+import ReceiveFloorDistribution from './Components/DashboardApartmentTool/ReceiveFloorDistribution';
 import DistributeFloor from './Components/DashboardInvestor/DistributeFloor';
 import Managerbuildings from './Components/DashboardInvestor/ManagerBuilding';
 import ManagerDistribute from './Components/DashboardInvestor/ManagerDistribute';
@@ -18,7 +23,6 @@ import CreateNewPost from './Components/DashboardPostTool/CreateNewPost';
 import EditPostPage from './Components/DashboardPostTool/EditPostPage';
 import ManagerPosts from './Components/DashboardPostTool/ManagerPosts';
 import ViewPostPage from './Components/DashboardPostTool/ViewPostPage';
-import Header from './Components/Header/Header';
 import Homepage from './Components/HomePage/HomePage';
 import Login from './Components/Login/Login';
 import EditProperty from './Components/Property/EditProperty';
@@ -31,13 +35,12 @@ import Registration from './Components/Register/RegistrationForm';
 
 
 
-
 // import Login from './Components/Login/Login';
 
 function App() {
   return (
     <div className="App" style={{width:'100vw', height:'100vh'}}>
-      <Header />
+      {/* <Header /> */}
       <Routes>
 
         <Route path="/" element={<Homepage />} />
@@ -67,6 +70,9 @@ function App() {
         <Route path="/view-post/:postId" element={<ViewPostPage />} />
         <Route path="/createnewpost" element={<CreateNewPost />} />
         <Route path="/managerpost" element={<ManagerPosts />} />
+        <Route path="/ReceiveFloorDistribution/:agencyId" element={<ReceiveFloorDistribution/>} />
+        <Route path="/ManagerListApartmentOfAgency/:agencyId/:buildingId" element={<ManagerListApartmentOfAgency />} />
+        <Route path="/edit-apartment/:apartmentId" element={<EditApartmentPage />} />
 
         {/* <Route path="/login" element={<Login />} /> */}
         {/* The Route for RealEstateListing should also have a path defined */}

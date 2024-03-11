@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
 
-import Sidebar from "./Sidebar";
+// import Sidebar from "./Sidebar";
 
 const ReceiveFloorDistribution = () => {
-    const { agencyId = 'A002' } = useParams();
+    const { agencyId ='' } = useParams();
     const [buildingAndProjects, setBuildingAndProjects] = useState([]);
 
     useEffect(() => {
@@ -43,7 +43,7 @@ const ReceiveFloorDistribution = () => {
 
     return (
         <div className="flex min-h-screen bg-gray-50"> {/* Change background for lighter shade */}
-    <Sidebar />
+    {/* <Sidebar /> */}
     <div className="flex-grow p-8">
         <h1 className="text-3xl font-bold text-gray-800 mb-8"> {/* Increase size and margin for heading */}
             Building and Project Distribution
