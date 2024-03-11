@@ -25,6 +25,10 @@ import RealEstateListing from './Components/RealEstate/RealEstateListing';
 import RealEstateDetail from './Components/RealEstateDetail/RealEstateDetail';
 import Registration from './Components/Register/RegistrationForm';
 import ListBooking from './Components/Agency/ListBooking';
+import ManagerPosts from './Components/DashboardPostTool/ManagerPosts';
+import EditPostPage from './Components/DashboardPostTool/EditPostPage';
+import ViewPostPage from './Components/DashboardPostTool/ViewPostPage';
+import CreateNewPost from './Components/DashboardPostTool/CreateNewPost';
 
 
 
@@ -59,7 +63,14 @@ function App() {
         <Route path="/propertydetail/:apartmentId" element={<PropertyDetail />} />
         <Route path="/editproperty/:apartmentId" element={<EditProperty />} />
         <Route path="/listbooking/:apartmentId" element={<ListBooking />} />
-
+        
+        
+        
+        {/* Post tool box */}
+        <Route path="/edit-post/:postId" element={<EditPostPage />} />
+        <Route path="/view-post/:postId" element={<ViewPostPage />} />
+        <Route path="/createnewpost" element={<CreateNewPost />} />
+        <Route path="/managerpost" element={<ManagerPosts />} />
 
         {/* <Route path="/login" element={<Login />} /> */}
         {/* The Route for RealEstateListing should also have a path defined */}
