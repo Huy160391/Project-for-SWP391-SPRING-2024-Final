@@ -1,10 +1,10 @@
-// RealEstateListing.js
+// BuildingListing.js
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import RealEstateCard from './RealEstateCard';
+import BuildingCard from './BuildingCard';
 import SearchBar from './SearchBar';
 
-const RealEstateListing = () => {
+const BuildingListing = () => {
   const [properties, setProperties] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredProperties, setFilteredProperties] = useState([]);
@@ -65,7 +65,7 @@ const RealEstateListing = () => {
         <div className="row">
           {filteredProperties.map((property) => (
             <div className="col-md-4" key={property.buildingId}>
-              <RealEstateCard {...property} />
+              <BuildingCard {...property} />
             </div>
           ))}
         </div>
@@ -74,4 +74,4 @@ const RealEstateListing = () => {
   );
 };
 
-export default RealEstateListing;
+export default BuildingListing;

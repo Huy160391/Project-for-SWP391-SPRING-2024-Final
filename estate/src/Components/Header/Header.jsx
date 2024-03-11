@@ -2,8 +2,9 @@ import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { Fragment } from 'react';
 
 const navigation = [
+  { name: 'Home', href: '/', current: false },
   { name: 'Property', href: '/property', current: false },
-  { name: 'Project', href: '/realestatelisting', current: false },
+  { name: 'Project', href: '/projectlisting', current: false },
   { name: 'Agent', href: '/agency', current: false },
   { name: 'About Us', href: '/aboutus', current: false },
 ];
