@@ -1,8 +1,8 @@
 // ViewPostPage.jsx
-import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import './DashboardPostTool.css'; // Make sure this CSS file contains all necessary styles
+
 import Sidebar from './Sidebar';
 
 const ViewPostPage = () => {

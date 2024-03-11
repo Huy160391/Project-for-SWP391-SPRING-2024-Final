@@ -1,8 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import './DashboardPostTool.css';
-import Sidebar from './Sidebar';
 
 const ManagerPosts = () => {
     const [originalPosts, setOriginalPosts] = useState([]);

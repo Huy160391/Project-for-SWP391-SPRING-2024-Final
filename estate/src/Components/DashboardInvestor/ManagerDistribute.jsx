@@ -10,51 +10,58 @@ const ManagerTransaction = () => {
   ];
 
   return (
-    <div className="investor-dashboard">
-    <Sidebar /> {/* Here we include the Sidebar component */}
-    <div className="managers-container">
-      <h1>managers</h1>
-      <div className="managers-search">
-        <input type="text" placeholder="Search here..." />
-        <Link to="/distributefloor" className="add-user-button">
-        Distribute for Acency
+    <div className="flex min-h-screen">
+  <Sidebar /> {/* Giả sử Sidebar đã được style */}
+<div className="flex-1 p-6 bg-gray-50">
+    <h1 className="text-2xl font-bold text-gray-800 mb-4">Managers</h1>
+    <div className="flex justify-between mb-6">
+      <input
+        type="text"
+        placeholder="Search here..."
+        className="flex-grow mr-4 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
+      <Link
+        to="/distributefloor"
+        className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+      >
+        Distribute for Agency
       </Link>
       </div>
-      <div className="managers-list">
-        <table>
-          <thead>
-            <tr>
-              <th>Agency</th>
-              <th>AgencyId</th>
-              <th>Total Floor</th>
-              <th>Detail</th>
-              <th>Actions</th>
+    <div className="mt-6 overflow-x-auto bg-white shadow-md rounded-lg">
+      <table className="min-w-full leading-normal">
+        <thead>
+          <tr className="border-b">
+            <th className="px-5 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Agency</th>
+            <th className="px-5 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">AgencyId</th>
+            <th className="px-5 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Total Floor</th>
+            <th className="px-5 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Detail</th>
+            <th className="px-5 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Actions</th>
+          </tr>
+        </thead>
+        <tbody className="text-gray-600">
+          {managersData.map((manager, index) => (
+            <tr key={index} className="border-b hover:bg-gray-50">
+              <td className="px-5 py-5">{manager.customerName}</td>
+              <td className="px-5 py-5">{manager.profile}</td>
+              <td className="px-5 py-5">{manager.role}</td>
+              <td className="px-5 py-5">{manager.status}</td>
+              <td className="px-5 py-5 flex space-x-2">
+                <button className="px-3 py-1 text-sm bg-yellow-500 hover:bg-yellow-600 text-white font-bold rounded focus:outline-none">Edit</button>
+                <button className="px-3 py-1 text-sm bg-red-500 hover:bg-red-600 text-white font-bold rounded focus:outline-none">Delete</button>
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            {managersData.map((managers, index) => (
-              <tr key={index}>
-                <td>{managers.customerName}</td>
-                <td>{managers.profile}</td>
-                <td>{managers.role}</td>
-                <td>{managers.status}</td>
-                <td>
-                  <button>Edit</button>
-                  <button>Delete</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-      <div className="pagination">
-        {/* Pagination logic will go here */}
-        <button>1</button>
-        <button>2</button>
-        <button>3</button>
-      </div>
+          ))}
+        </tbody>
+      </table>
     </div>
+    <div className="pagination flex justify-center space-x-2 mt-6">
+      <button className="px-4 py-2 text-sm text-blue-600 border border-blue-600 rounded hover:bg-blue-600 hover:text-white">1</button>
+      <button className="px-4 py-2 text-sm text-blue-600 border border-blue-600 rounded hover:bg-blue-600 hover:text-white">2</button>
+      <button className="px-4 py-2 text-sm text-blue-600 border border-blue-600 rounded hover:bg-blue-600 hover:text-white">3</button>
     </div>
+  </div>
+</div>
+
   );
 };
 

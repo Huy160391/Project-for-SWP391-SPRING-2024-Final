@@ -5,7 +5,7 @@ import AgencyDetail from './Components/AgencyDetail/AgencyDetail';
 import AddNewAgency from './Components/DashboardInvestor/AddNewAgency';
 import CreateNewProject from './Components/DashboardInvestor/CreateNewBuilding';
 import InvestorDashboard from './Components/DashboardInvestor/DashboardInvestor';
-
+import './output.css';
 
 //import DistributeApartment from './Components/DashboardInvestor/DistributeApartment';
 
@@ -13,8 +13,11 @@ import ListBooking from './Components/Agency/ListBooking';
 import DistributeFloor from './Components/DashboardInvestor/DistributeFloor';
 import Managerbuildings from './Components/DashboardInvestor/ManagerBuilding';
 import ManagerDistribute from './Components/DashboardInvestor/ManagerDistribute';
-import ManagerTransaction from './Components/DashboardInvestor/ManagerTransaction';
 import ManagerUsers from './Components/DashboardInvestor/ManagerUsers';
+import CreateNewPost from './Components/DashboardPostTool/CreateNewPost';
+import EditPostPage from './Components/DashboardPostTool/EditPostPage';
+import ManagerPosts from './Components/DashboardPostTool/ManagerPosts';
+import ViewPostPage from './Components/DashboardPostTool/ViewPostPage';
 import Header from './Components/Header/Header';
 import Homepage from './Components/HomePage/HomePage';
 import Login from './Components/Login/Login';
@@ -24,11 +27,7 @@ import PropertyList from './Components/Property/PropertyList';
 import RealEstateListing from './Components/RealEstate/RealEstateListing';
 import RealEstateDetail from './Components/RealEstateDetail/RealEstateDetail';
 import Registration from './Components/Register/RegistrationForm';
-import ListBooking from './Components/Agency/ListBooking';
-import ManagerPosts from './Components/DashboardPostTool/ManagerPosts';
-import EditPostPage from './Components/DashboardPostTool/EditPostPage';
-import ViewPostPage from './Components/DashboardPostTool/ViewPostPage';
-import CreateNewPost from './Components/DashboardPostTool/CreateNewPost';
+
 
 
 
@@ -51,7 +50,6 @@ function App() {
         <Route path="/managerdistribute" element={<ManagerDistribute />} />
         <Route path="/managerusers" element={<ManagerUsers />} />
         <Route path="/managerbuildings" element={<Managerbuildings />} />
-        <Route path="/managertransaction" element={<ManagerTransaction />} />
         <Route path="/investordashboard" element={<InvestorDashboard />} />
         <Route path="/realestatelisting" element={<RealEstateListing />} />
         <Route path="/realestate/:buildingId" element={<RealEstateDetail />} />

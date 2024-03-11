@@ -81,68 +81,75 @@ const ManagerUsers = () => {
   if (error) return <p>Error loading managers: {error}</p>;
 
   return (
-    <div className="investor-dashboard">
-      <Sidebar />
-      <div className="managers-container">
-        <h1>Managers</h1>
-        <div className="managers-search">
-          <input
-            type="text"
-            placeholder="Search by username or role..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-          <Link to="/addnewagency" className="add-user-button">
-            + New User
-          </Link>
-        </div>
-        <div className="managers-list">
-          <table>
-            <thead>
-              <tr>
-                <th>Username</th>
-                <th>Password</th>
-                <th>Create Date</th>
-                <th>Status</th>
-                <th>Profile</th>
-                <th>Role</th>
-                <th>Actions</th>
+    <div className="flex min-h-screen">
+    <Sidebar /> {/* Assuming Sidebar is styled appropriately */}
+    <div className="flex-1 p-8">
+      <h1 className="text-2xl font-semibold mb-6">Managers</h1>
+      <div className="flex items-center mb-6">
+        <input
+          type="text"
+          placeholder="Search by username or role..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="w-full p-2 mr-4 text-gray-700 bg-white border border-gray-300 rounded shadow focus:outline-none focus:border-blue-500"
+        />
+        <Link
+          to="/addnewagency"
+          className="flex items-center justify-center px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+        >
+          + New User
+        </Link>
+      </div>
+      <div className="overflow-x-auto">
+        <table className="min-w-full text-sm divide-y divide-gray-200">
+          <thead className="bg-gray-100">
+            <tr>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Username</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Password</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Create Date</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Profile</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+            </tr>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200">
+            {filteredData.map((manager, index) => (
+              <tr key={index} className="hover:bg-gray-50">
+                <td className="px-6 py-4">{manager.username}</td>
+                <td className="px-6 py-4">{manager.password}</td>
+                <td className="px-6 py-4">{manager.createDate}</td>
+                <td className="px-6 py-4">{manager.status}</td>
+                <td className="px-6 py-4">
+                  <Link
+                    to={`/profile/${manager.userId}`}
+                    className="text-blue-600 hover:text-blue-800"
+                  >
+                    View
+                  </Link>
+                </td>
+                <td className="px-6 py-4">{manager.roleId}</td>
+                <td className="px-6 py-4">
+                  <button
+                    onClick={() => handleBlockToggle(manager.userId)}
+                    className={`px-4 py-2 text-white rounded ${manager.status === "Active" ? "bg-red-500 hover:bg-red-600" : "bg-green-500 hover:bg-green-600"}`}
+                  >
+                    {manager.status === "Active" ? "Block" : "Unblock"}
+                  </button>
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {filteredData.map((manager, index) => (
-                <tr key={index}>
-                  <td>{manager.username}</td>
-                  <td>{manager.password}</td>
-                  <td>{manager.createDate}</td>
-                  <td>{manager.status}</td>
-                  <td>
-                    <Link
-                      to={`/profile/${manager.userId}`}
-                      className="view-profile-button"
-                    >
-                      View
-                    </Link>
-                  </td>
-                  <td>{manager.roleId}</td>
-                  <td>
-                    <button onClick={() => handleBlockToggle(manager.userId)}>
-                      {/* {manager.isBlocking ? "Unblock" : "Block"} */}
-                      {manager.status === "Active" ? "Unblock" : manager.status}
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        <div className="pagination">
-          <button>1</button>
-          <button>2</button>
-          <button>3</button>
-        </div>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <div className="flex justify-center mt-4">
+        <button className="mx-1 px-4 py-2 text-sm text-blue-600 border border-blue-600 rounded hover:bg-blue-600 hover:text-white">1</button>
+        <button className="mx-1 px-4 py-2 text-sm text-blue-600 border border-blue-600 rounded hover:bg-blue-600 hover:text-white">2</button>
+        <button className="mx-1 px-4 py-2 text-sm text-blue-600 border border-blue-600 rounded hover:bg-blue-600 hover:text-white">3</button>
       </div>
     </div>
+  </div>
+  
   );
 };
 

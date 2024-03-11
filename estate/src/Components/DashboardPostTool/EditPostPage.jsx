@@ -1,8 +1,7 @@
 // EditPostPage.jsx
-import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams, useNavigate } from 'react-router-dom';
-import './DashboardPostTool.css';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import Sidebar from './Sidebar';
 
 const EditPostPage = () => {
