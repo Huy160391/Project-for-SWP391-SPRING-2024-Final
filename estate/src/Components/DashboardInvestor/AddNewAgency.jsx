@@ -1,10 +1,9 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import './AddAgency.css';
 import Sidebar from './Sidebar';
 
 const AddNewAgency = () => {
-  // Bước 1: Khởi tạo state từ localStorage
   const initialState = JSON.parse(localStorage.getItem('user')) || {
     firstName: '',
     lastName: '',
@@ -16,17 +15,17 @@ const AddNewAgency = () => {
   };
 
   const [user, setUser] = useState(initialState);
+  const [file, setFile] = useState(null); // State for the file
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-
-  // Bước 2: Lưu trữ dữ liệu vào localStorage khi có thay đổi
-  useEffect(() => {
-    localStorage.setItem('user', JSON.stringify(user));
-  }, [user]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUser({ ...user, [name]: value });
+  };
+
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]); // Update the state to hold the selected file
   };
 
   const handleSubmit = async (e) => {
@@ -45,8 +44,13 @@ const AddNewAgency = () => {
     formData.append('Phone', user.phoneNumber);
     formData.append('Password', user.password);
 
+    // Append the file to formData if it exists
+    if (file) {
+      formData.append('FileImage', file);
+    }
+
     try {
-      const response = await axios.post('https://localhost:7137/api/Agencies/PostAgencyWithNoImage', formData, {
+      const response = await axios.post('https://localhost:7137/api/Agencies/PostAgencyWithImage', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -54,17 +58,7 @@ const AddNewAgency = () => {
 
       if (response.status === 201) {
         setSuccess('Agency added successfully!');
-        // Reset form và localStorage sau khi submit thành công nếu bạn muốn
-        // setUser({
-        //   firstName: '',
-        //   lastName: '',
-        //   username: '',
-        //   address: '',
-        //   phoneNumber: '',
-        //   password: '',
-        //   confirmPassword: '',
-        // });
-        // localStorage.removeItem('user');
+        // Optional: Reset form and state
       } else {
         setError('Failed to add agency.');
       }
@@ -83,7 +77,7 @@ const AddNewAgency = () => {
         <form onSubmit={handleSubmit}>
           <div className="avatar-container">
             <div className="avatar" />
-            <button type="button">+ New Avatar</button>
+            <input type="file" name="fileImage" onChange={handleFileChange} />
           </div>
           <div className="form-fields">
             <input type="text" name="firstName" placeholder="First Name" value={user.firstName} onChange={handleChange} />

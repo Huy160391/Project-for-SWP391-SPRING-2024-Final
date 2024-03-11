@@ -19,9 +19,6 @@ const ManagerTransaction = () => {
         <Link to="/distributefloor" className="add-user-button">
         Distribute for Acency
       </Link>
-      <Link to="/distributeapartment" className="add-user-button">
-        Distribute for Acency
-      </Link>
       </div>
       <div className="managers-list">
         <table>
