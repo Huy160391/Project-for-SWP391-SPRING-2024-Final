@@ -23,13 +23,17 @@ import Login from './Components/Login/Login';
 import EditProperty from './Components/Property/EditProperty';
 import PropertyDetail from './Components/Property/PropertyDetail';
 import PropertyList from './Components/Property/PropertyList';
-import RealEstateListing from './Components/RealEstate/RealEstateListing';
-import RealEstateDetail from './Components/RealEstateDetail/RealEstateDetail';
+
 import Registration from './Components/Register/RegistrationForm';
 
-import ReceiveFloorDistribution from './Components/DashboardAgency/ReceiveFloorDistribution';
-import ManagerListApartmentOfAgency from './Components/DashboardAgency/ManagerListApartmentOfAgency';
+import { AboutUs } from './Components/AboutUs/AboutUs';
+import BuildingListing from './Components/Building/BuildingListing';
 import EditApartmentPage from './Components/DashboardAgency/EditApartmentPage';
+import ManagerListApartmentOfAgency from './Components/DashboardAgency/ManagerListApartmentOfAgency';
+import ReceiveFloorDistribution from './Components/DashboardAgency/ReceiveFloorDistribution';
+import Footer from './Components/Footer/Footer';
+import Example from './Components/Header/Header';
+import FeaturedProjects from './Components/Project/FeaturedProjects ';
 
 
 // import Login from './Components/Login/Login';
@@ -37,12 +41,12 @@ import EditApartmentPage from './Components/DashboardAgency/EditApartmentPage';
 function App() {
   return (
     <div className="App" style={{width:'100vw', height:'100vh'}}>
-      {/* <Header /> */}
+      <Example />
       <Routes>
 
         <Route path="/" element={<Homepage />} />
         <Route path="/login" element={<Login />} />
-
+        <Route path="/aboutus" element={<AboutUs />} />
         <Route path="/registration" element={<Registration />} />
         <Route path="/addnewagency" element={<AddNewAgency />} />
         <Route path="/distributefloor" element={<DistributeFloor />} />
@@ -51,16 +55,15 @@ function App() {
         <Route path="/managerusers" element={<ManagerUsers />} />
         <Route path="/managerbuildings" element={<Managerbuildings />} />
         <Route path="/investordashboard" element={<InvestorDashboard />} />
-        <Route path="/realestatelisting" element={<RealEstateListing />} />
-        <Route path="/realestate/:buildingId" element={<RealEstateDetail />} />
+
         <Route path="/property/:buildingId" element={<PropertyList />} />
         <Route path="/agency" element={<AgencyListing />} />
         <Route path="/agencydetail" element={<AgencyDetail />} />
         <Route path="/propertydetail/:apartmentId" element={<PropertyDetail />} />
         <Route path="/editproperty/:apartmentId" element={<EditProperty />} />
         <Route path="/listbooking/:apartmentId" element={<ListBooking />} />
-        
-        
+        <Route path="/projectlisting" element={<FeaturedProjects />} />
+        <Route path="/buildinglisting" element={<BuildingListing />} />
         
         {/* Post tool box */}
         <Route path="/edit-post/:postId" element={<EditPostPage />} />
@@ -75,7 +78,7 @@ function App() {
         {/* The Route for RealEstateListing should also have a path defined */}
         {/* Define other routes here */}
       </Routes>
-      {/* <Footer /> */}
+      <Footer/>
     </div>
   );
 }

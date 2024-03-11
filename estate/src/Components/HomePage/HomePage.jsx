@@ -1,5 +1,6 @@
 import React from 'react';
-import FeaturedProperties from './FeaturedPropertie';
+
+import FeaturedProjects from '../Project/FeaturedProjects ';
 import HeroSection from './HeroSection';
 import WhyChooseUs from './WhyChooseUs';
 
@@ -10,7 +11,7 @@ const HomePage = () => {
   return (
     <div>
       <HeroSection />
-      <FeaturedProperties />
+      <FeaturedProjects  />
       <WhyChooseUs />
 
     </div>

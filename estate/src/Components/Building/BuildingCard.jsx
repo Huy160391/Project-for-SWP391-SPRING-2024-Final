@@ -1,12 +1,12 @@
-// RealEstateCard.js
+// BuildingCard.js
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const RealEstateCard = ({ buildingId, name, describe, images, status }) => {
+const BuildingCard = ({ buildingId, name, describe, images, status }) => {
   const navigate = useNavigate();
 
   const navigateToPropertyDetails = () => {
-    navigate(`/realestate/${buildingId}`);
+    navigate(`/Building/${buildingId}`);
   };
 
   return (
@@ -24,4 +24,4 @@ const RealEstateCard = ({ buildingId, name, describe, images, status }) => {
   );
 };
 
-export default RealEstateCard;
+export default BuildingCard;

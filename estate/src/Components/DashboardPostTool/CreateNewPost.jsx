@@ -75,6 +75,22 @@ const CreateNewPost = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+
+        try {
+            await axios.post('https://localhost:7137/api/Posts/PostInfoWithImage', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+                
+            });
+            console.log(formData);
+            alert("success create post")
+            navigate('/managerpost')
+            // Handle success (e.g., clear form, show success message, redirect)
+        } catch (error) {
+            console.error('Error creating the post:', error);
+            // Handle error (e.g., show error message)
+        }
         let newErrors = {};
 
         if (!isValidDate(postData.SalesOpeningDate)) {
@@ -118,21 +134,7 @@ const CreateNewPost = () => {
         const formData = postData;
         
 
-        try {
-            await axios.post('https://localhost:7137/api/Posts/PostInfoWithImage', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-                
-            });
-            console.log(formData);
-            alert("success create post")
-            navigate('/managerpost')
-            // Handle success (e.g., clear form, show success message, redirect)
-        } catch (error) {
-            console.error('Error creating the post:', error);
-            // Handle error (e.g., show error message)
-        }
+        
     };
 
 
