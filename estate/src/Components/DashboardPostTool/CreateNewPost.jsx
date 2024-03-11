@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 
-import './DashboardPostTool.css'; // Adjust path according to your project structure
-import Sidebar from './Sidebar';
 import { useNavigate } from 'react-router-dom';
+
+import Sidebar from './Sidebar';
 
 
 
@@ -185,7 +185,7 @@ const CreateNewPost = () => {
                         {errors.BuildingId && <div className="error">{errors.BuildingId}</div>}
                     </div>
 
-                    {/* Agency ID */}
+                    {/* Agency ID
                     <div className="form-group">
                         <label>Agency ID</label>
                         <select name="AgencyId" onChange={handleInputChange} value={postData.AgencyId}>
@@ -197,7 +197,7 @@ const CreateNewPost = () => {
                             ))}
                         </select>
                         {errors.AgencyId && <div className="error">{errors.AgencyId}</div>}
-                    </div>
+                    </div> */}
 
                     {/* File Image */}
                     <div className="form-group">

@@ -36,11 +36,11 @@ const InvestorDashboard = () => {
     {/* User icon would go here */}
   </Link>
   <Link to="/managerbuildings" className="details-card">
-            <span>Project</span>
+            <span>Manager Building</span>
             {/* Project icon would go here */}
             </Link>
-            <Link to="/managertransaction" className="details-card">
-            <span>Transaction</span>
+            <Link to="/managerpost" className="details-card">
+            <span>Manager Post</span>
             {/* Project icon would go here */}
             </Link>
             <Link to="/managerdistribute" className="details-card">
