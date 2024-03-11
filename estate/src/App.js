@@ -10,11 +10,6 @@ import './output.css';
 //import DistributeApartment from './Components/DashboardInvestor/DistributeApartment';
 
 import ListBooking from './Components/Agency/ListBooking';
-
-
-import EditApartmentPage from './Components/DashboardApartmentTool/EditApartmentPage';
-import ManagerListApartmentOfAgency from './Components/DashboardApartmentTool/ManagerListApartmentOfAgency';
-import ReceiveFloorDistribution from './Components/DashboardApartmentTool/ReceiveFloorDistribution';
 import DistributeFloor from './Components/DashboardInvestor/DistributeFloor';
 import Managerbuildings from './Components/DashboardInvestor/ManagerBuilding';
 import ManagerDistribute from './Components/DashboardInvestor/ManagerDistribute';
@@ -32,7 +27,9 @@ import RealEstateListing from './Components/RealEstate/RealEstateListing';
 import RealEstateDetail from './Components/RealEstateDetail/RealEstateDetail';
 import Registration from './Components/Register/RegistrationForm';
 
-
+import ReceiveFloorDistribution from './Components/DashboardAgency/ReceiveFloorDistribution';
+import ManagerListApartmentOfAgency from './Components/DashboardAgency/ManagerListApartmentOfAgency';
+import EditApartmentPage from './Components/DashboardAgency/EditApartmentPage';
 
 
 // import Login from './Components/Login/Login';

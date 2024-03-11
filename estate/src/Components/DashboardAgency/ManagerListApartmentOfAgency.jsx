@@ -149,7 +149,7 @@ const ManagerListApartmentOfAgency = () => {
                                 </ul>
                                
                             </div>
-                             <Link to={`/edit-apartment/${apartment.apartmentId}`} className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-3 rounded focus:outline-none focus:shadow-outline">Edit</Link>
+                             <Link to={`/editproperty/${apartment.apartmentId}`} className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-3 rounded focus:outline-none focus:shadow-outline">Edit</Link>
 
                         </div>
                     ))}
