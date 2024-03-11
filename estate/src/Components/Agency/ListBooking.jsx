@@ -11,9 +11,9 @@ function ListBooking() {
         const fetchBooking = async () => {
             try {
                 const response = await axios.get(`https://localhost:7137/api/Bookings/GetAllBookingByApartmentID?apartmentId=${apartmentId}`);
-                console.log("aaa", response.data);
+
                 setBookings(response.data);
-                console.log("aaa", response.data);
+
             } catch (error) {
                 console.error('Error fetching apartment:', error);
                 setError('Error fetching apartment:', error.message);
@@ -57,7 +57,7 @@ function ListBooking() {
                                         <td className="px-4 py-2">{booking.status}</td>
                                         <td className="px-4 py-2">
                                             <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                                                Xem chi tiết
+                                                Chấp nhận
                                             </button>
                                             <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ml-2">
                                                 Xóa

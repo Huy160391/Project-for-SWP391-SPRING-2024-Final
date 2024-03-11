@@ -1,91 +1,230 @@
+import React, { useEffect, useState } from 'react';
+import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
-import React, { useState } from 'react';
-import Header from '../Header/Header';
-import './EditProperty.css';
-const EditProperty = () => {
-    const [formData, setFormData] = useState({
-        numOfBedroom: '',
-        numOfBathroom: '',
-        furniture: '',
-        price: '',
-        area: '',
-        description: '',
-        status: '',
-        image: null, // Sử dụng null thay vì chuỗi rỗng
-        floorNumber: ''
-    });
 
-    const handleChange = (event) => {
-        const { name, value, type } = event.target;
-        // Nếu là input file, lấy file từ event.target.files
-        const newValue = type === 'file' ? event.target.files[0] : value;
-        setFormData({ ...formData, [name]: newValue });
+const EditApartment = () => {
+    const { apartmentId } = useParams();
+
+    const [apartment, setApartment] = useState({
+        apartmentId: '',
+        numberOfBedrooms: 0,
+        numberOfBathrooms: 0,
+        furniture: '',
+        price: 0,
+        area: 0,
+        description: '',
+        apartmentType: null, // Updated property name to match the state
+
+        agencyId: ''
+    });
+    const [updateSuccess, setUpdateSuccess] = useState(false);
+
+    useEffect(() => {
+        const fetchApartment = async () => {
+            try {
+                const response = await axios.get(`https://localhost:7137/api/Apartments/${apartmentId}`);
+                setApartment(response.data);
+            } catch (error) {
+                console.error('Error fetching apartment:', error);
+            }
+        };
+
+        fetchApartment();
+    }, [apartmentId]);
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setApartment(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
     };
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        setApartment(prevState => ({
+            ...prevState,
+            apartmentType: file
+        }));
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const formData = new FormData();
+        formData.append('apartmentId', apartment.apartmentId);
+        formData.append('description', apartment.description);
+        formData.append('numberOfBedrooms', apartment.numberOfBedrooms);
+        formData.append('numberOfBathrooms', apartment.numberOfBathrooms);
+        formData.append('price', apartment.price);
+        formData.append('furniture', apartment.furniture);
+        formData.append('area', apartment.area);
+        formData.append('apartmentType', apartment.apartmentType);
+
         try {
-            // Sử dụng FormData để gửi dữ liệu bao gồm cả file hình ảnh
-            const postData = new FormData();
-            for (const key in formData) {
-                postData.append(key, formData[key]);
+
+            if (apartment.ApartmentType === undefined) {
+                delete apartment.ApartmentType; // Remove ApartmentType from the object
             }
-            const response = await axios.post('https://localhost:7137/api/EditProperty', postData);
-            console.log('Property edited successfully:', response.data);
-            // Redirect or display success message as needed
+
+            await axios.put(`https://localhost:7137/api/Apartments/UpdateApartment`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+            setUpdateSuccess(true);
         } catch (error) {
-            console.error('Error editing property:', error);
-            // Handle error, display error message, etc.
+            console.error('Error updating apartment:', error);
+
         }
     };
 
     return (
-        <>
-            <Header />
-            <div className="edit-property-container">
-                <h1>Edit Property</h1>
-                <form onSubmit={handleSubmit} className="edit-property-form">
-                    <div className="form-group">
-                        <label>Number of Bedrooms:</label>
-                        <input type="text" name="numOfBedroom" value={formData.numOfBedroom} onChange={handleChange} />
-                    </div>
-                    <div className="form-group">
-                        <label>Number of Bathrooms:</label>
-                        <input type="text" name="numOfBathroom" value={formData.numOfBathroom} onChange={handleChange} />
-                    </div>
-                    <div className="form-group">
-                        <label>Furniture:</label>
-                        <input type="text" name="furniture" value={formData.furniture} onChange={handleChange} />
-                    </div>
-                    <div className="form-group">
-                        <label>Price:</label>
-                        <input type="text" name="price" value={formData.price} onChange={handleChange} />
-                    </div>
-                    <div className="form-group">
-                        <label>Area:</label>
-                        <input type="text" name="area" value={formData.area} onChange={handleChange} />
-                    </div>
-                    <div className="form-group">
-                        <label>Description:</label>
-                        <input type="text" name="description" value={formData.description} onChange={handleChange} />
-                    </div>
-                    <div className="form-group">
-                        <label>Status:</label>
-                        <input type="text" name="status" value={formData.status} onChange={handleChange} />
-                    </div>
-                    <div className="form-group">
-                        <label>Image:</label>
-                        <input type="file" accept="image/*" name="image" onChange={handleChange} />
-                    </div>
-                    <div className="form-group">
-                        <label>Floor Number:</label>
-                        <input type="text" name="floorNumber" value={formData.floorNumber} onChange={handleChange} />
-                    </div>
-                    <button type="submit">Save</button>
-                </form>
-            </div>
-        </>
+        <div className="container mx-auto py-8">
+            <form onSubmit={handleSubmit} className="max-w-lg mx-auto bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+                <h1 className="text-2xl font-bold mb-4">Edit Apartment</h1>
+                <div className="mb-4">
+                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="apartmentId">
+                        Apartment ID
+                    </label>
+                    <input
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="apartmentId"
+                        type="text"
+                        value={apartment.apartmentId}
+                        disabled
+                    />
+                </div>
+
+                <div className="mb-4">
+                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="description">
+                        Description
+                    </label>
+                    <input
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="description"
+                        type="text"
+                        name="description"
+                        value={apartment.description}
+                        onChange={handleChange}
+                    />
+                </div>
+                <div className="mb-4">
+                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="status">
+                        Status
+                    </label>
+                    <input
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="status"
+                        type="text"
+                        value={apartment.status}
+                        disabled
+                    />
+                </div>
+                <div className="mb-4">
+                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="status">
+                        Number of Bed Rooms
+                    </label>
+                    <input
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="numberOfBedrooms"
+                        type="number"
+                        min="1"
+                        name="numberOfBedrooms"
+                        value={apartment.numberOfBedrooms}
+                        onChange={handleChange}
+                    />
+                </div>
+                <div className="mb-4">
+                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="status">
+                        Number of Bath Rooms
+                    </label>
+                    <input
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="numberOfBathrooms"
+                        type="number"
+                        min="1"
+                        name="numberOfBathrooms"
+                        value={apartment.numberOfBathrooms}
+                        onChange={handleChange}
+                    />
+                </div>
+                <div className="mb-4">
+                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="status">
+                        Price
+                    </label>
+                    <input
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="price"
+                        type="number"
+                        name="price"
+                        min="0"
+                        value={apartment.price}
+                        onChange={handleChange}
+                    />
+                </div>
+                <div className="mb-4">
+                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="status">
+                        Furnitue
+                    </label>
+                    <input
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="furniture"
+                        type="text"
+                        name="furniture"
+                        value={apartment.furniture}
+                        onChange={handleChange}
+                    />
+                </div>
+                <div className="mb-4">
+                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="status">
+                        Area
+                    </label>
+                    <input
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="area"
+                        type="number"
+                        name="area"
+                        min="0"
+                        value={apartment.area}
+                        onChange={handleChange}
+                    />
+                </div>
+                <div className="mb-4">
+                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="apartmentType">
+                        Apartment Type
+                    </label>
+                    <input
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="apartmentType"
+                        type="file"
+                        name="apartmentType"
+                        onChange={handleFileChange}
+                    />
+                </div>
+
+                {/* Add other fields */}
+                {updateSuccess && <p className="text-green-500">Apartment updated successfully!</p>}
+
+                <div className="flex items-center justify-between">
+                    <button
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                        type="submit"
+                    >
+                        Save
+                    </button>
+                    <Link
+                        to={`/propertydetail/${apartmentId}`}
+                        className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                    >
+                        Cancel
+                    </Link>
+                    <Link to="/property" className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                        Back to Property
+                    </Link>
+                </div>
+            </form>
+        </div>
     );
 };
 
-export default EditProperty;
+export default EditApartment;

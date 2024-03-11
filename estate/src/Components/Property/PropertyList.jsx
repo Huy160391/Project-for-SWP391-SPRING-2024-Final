@@ -1,11 +1,12 @@
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { Link, useParams } from 'react-router-dom';
 import { faBath, faBed, faFilter, faMoneyBill } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import './PropertyList.css';
 
 const PropertyList = () => {
+  const { buildingId } = useParams();
   const [originalApartments, setOriginalApartments] = useState([]);
   const [apartments, setApartments] = useState([]);
   const [selectedBedroom, setSelectedBedroom] = useState('');
@@ -14,18 +15,20 @@ const PropertyList = () => {
   const [selectedPriceMax, setSelectedPriceMax] = useState('');
 
   useEffect(() => {
-    fetchApartments();
-  }, []);
 
-  const fetchApartments = async () => {
-    try {
-      const response = await axios.get('https://localhost:7137/api/Apartments');
-      setOriginalApartments(response.data);
-      setApartments(response.data);
-    } catch (error) {
-      console.error('Error fetching apartments:', error);
-    }
-  };
+
+
+    const fetchApartments = async () => {
+      try {
+        const response = await axios.get(`https://localhost:7137/api/Apartments/GetApartmentsByBuildingIDForBooking?buildingId=${buildingId}`);
+        setOriginalApartments(response.data);
+        setApartments(response.data);
+      } catch (error) {
+        console.error('Error fetching apartments:', error);
+      }
+    };
+    fetchApartments();
+  }, [buildingId]);
 
   const handleFilterChange = () => {
     if (selectedPriceMin && parseInt(selectedPriceMin) < 0) {
@@ -99,10 +102,9 @@ const PropertyList = () => {
           {apartments.map(apartment => (
             <div key={apartment.apartmentId} className="apartment-card">
               <div className="apartment-image">
-                <img src="path/to/image.jpg" alt="Apartment" />
+                <img src={`https://localhost:7137/api/Apartments/GetApartmentImage/${apartment.apartmentId}`} alt="Apartment" /> {/* Sử dụng đường dẫn hình ảnh từ API */}
               </div>
               <div className="apartment-details">
-                <h2>{apartment.description}</h2>
                 <p>Apartment ID: {apartment.apartmentId}</p>
                 <p>Number of Bedrooms: {apartment.numberOfBedrooms}</p>
                 <p>Number of Bathrooms: {apartment.numberOfBathrooms}</p>

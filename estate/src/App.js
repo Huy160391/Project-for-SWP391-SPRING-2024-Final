@@ -1,7 +1,6 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import AgencyListing from './Components/Agency/AgencyListing';
-import ListApartmentbyAgency from './Components/Agency/ListApartmentbyAgency';
 import AgencyDetail from './Components/AgencyDetail/AgencyDetail';
 import AddNewAgency from './Components/DashboardInvestor/AddNewAgency';
 import CreateNewProject from './Components/DashboardInvestor/CreateNewBuilding';
@@ -25,6 +24,13 @@ import PropertyList from './Components/Property/PropertyList';
 import RealEstateListing from './Components/RealEstate/RealEstateListing';
 import RealEstateDetail from './Components/RealEstateDetail/RealEstateDetail';
 import Registration from './Components/Register/RegistrationForm';
+
+import ListBooking from './Components/Agency/ListBooking';
+import ManagerPosts from './Components/DashboardPostTool/ManagerPosts';
+import EditPostPage from './Components/DashboardPostTool/EditPostPage';
+import ViewPostPage from './Components/DashboardPostTool/ViewPostPage';
+import CreateNewPost from './Components/DashboardPostTool/CreateNewPost';
+
 
 
 
@@ -50,14 +56,20 @@ function App() {
         <Route path="/investordashboard" element={<InvestorDashboard />} />
         <Route path="/realestatelisting" element={<RealEstateListing />} />
         <Route path="/realestate/:buildingId" element={<RealEstateDetail />} />
-        <Route path="/property" element={<PropertyList />} />
+        <Route path="/property/:buildingId" element={<PropertyList />} />
         <Route path="/agency" element={<AgencyListing />} />
         <Route path="/agencydetail" element={<AgencyDetail />} />
         <Route path="/propertydetail/:apartmentId" element={<PropertyDetail />} />
         <Route path="/editproperty/:apartmentId" element={<EditProperty />} />
-        <Route path="/propertylistbyAgency" element={<ListApartmentbyAgency />} />
         <Route path="/listbooking/:apartmentId" element={<ListBooking />} />
-
+        
+        
+        
+        {/* Post tool box */}
+        <Route path="/edit-post/:postId" element={<EditPostPage />} />
+        <Route path="/view-post/:postId" element={<ViewPostPage />} />
+        <Route path="/createnewpost" element={<CreateNewPost />} />
+        <Route path="/managerpost" element={<ManagerPosts />} />
 
         {/* <Route path="/login" element={<Login />} /> */}
         {/* The Route for RealEstateListing should also have a path defined */}
