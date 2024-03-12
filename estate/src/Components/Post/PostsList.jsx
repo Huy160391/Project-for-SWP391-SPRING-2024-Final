@@ -12,7 +12,16 @@ const PostsListing = () => {
     const fetchPosts = async () => {
       try {
         const response = await axios.get(`https://localhost:7137/api/Posts/ListPostByProjectID/${projectId}`);
-        setPosts(response.data);
+        const postsWithBuildingNames = await Promise.all(response.data.map(async (post) => {
+          try {
+            const buildingResponse = await axios.get(`https://localhost:7137/api/Buildings/${post.buildingId}`);
+            return { ...post, buildingName: buildingResponse.data.name };
+          } catch (error) {
+            console.error(`Error fetching building details for BuildingId: ${post.buildingId}`, error);
+            return { ...post, buildingName: 'Unknown Building' }; // Handle error or absence of building name gracefully
+          }
+        }));
+        setPosts(postsWithBuildingNames);
         setIsLoading(false);
       } catch (error) {
         console.error("Error fetching posts for project ID:", projectId, error);

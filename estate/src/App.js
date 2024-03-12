@@ -33,6 +33,7 @@ import Footer from './Components/Footer/Footer';
 import Example from './Components/Header/Header';
 
 import PostsListing from './Components/Post/PostsList';
+import PostDetail from './Components/PostDetail/PostDetail';
 import FeaturedProjects from './Components/Project/FeaturedProjects ';
 import Registration from './Components/Register/RegistrationForm';
 
@@ -66,8 +67,7 @@ function App() {
         <Route path="/projectlisting" element={<FeaturedProjects />} />
         <Route path="/buildinglisting" element={<BuildingListing />} />
         <Route path="/postslisting/:projectId" element={<PostsListing />} />
-        {/* <Route path="/projects/:projectId/:posts" render={({ match }) => <PostsList projectId={match.params.projectId} />} /> */}
-        {/* Post tool box */}
+        <Route path="/postdetail/:postId" element={<PostDetail />} />
         <Route path="/edit-post/:postId" element={<EditPostPage />} />
         <Route path="/view-post/:postId" element={<ViewPostPage />} />
         <Route path="/createnewpost" element={<CreateNewPost />} />
