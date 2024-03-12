@@ -153,7 +153,9 @@ const CreateNewPost = () => {
 
 
 
+
         
+
 
         try {
             await axios.post('https://localhost:7137/api/Posts/PostInfoWithImage', formData, {
