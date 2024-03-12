@@ -18,6 +18,8 @@ const EditPostPage = () => {
     const [image, setImage] = useState(null); // Change this to manage single image as per your backend
     const { postId } = useParams();
     const navigate = useNavigate();
+    const [editError, setEditError] = useState('');
+
 
     useEffect(() => {
         // Fetch buildings and agencies
@@ -38,6 +40,12 @@ const EditPostPage = () => {
             try {
                 const response = await axios.get(`https://localhost:7137/api/Posts/${postId}`);
                 // console.log(response)
+                const salesClosingDate = new Date(response.data.salesClosingDate);
+                const now = new Date();
+                if (salesClosingDate <= now) {
+                    setEditError('This post cannot be edited as the Sales Closing Date has passed.');
+                    return; // Prevent further execution
+                }
 
                 const OpeningDate = response.data.salesOpeningDate.split('T')[0]
                 const ClosingDate = response.data.salesClosingDate.split('T')[0]
@@ -53,6 +61,7 @@ const EditPostPage = () => {
 
                     }
                 );
+
             } catch (error) {
                 console.error('Failed to fetch post data:', error);
             }
@@ -71,7 +80,7 @@ const EditPostPage = () => {
 
     const handleImageChange = (e) => {
         if (e.target.files.length) {
-                setImage(e.target.files[0]); // Assuming you want to handle one file
+            setImage(e.target.files[0]); // Assuming you want to handle one file
         }
     };
     const [errors, setErrors] = useState({});
@@ -171,16 +180,19 @@ const EditPostPage = () => {
             <Sidebar />
             <div className="flex-grow max-w-4xl mx-auto p-8 bg-white shadow-lg rounded-lg">
                 <h1 className="text-3xl font-bold text-gray-900 mb-10">Edit Post</h1>
+                
                 <form onSubmit={handleSubmit} className="space-y-6">
                     <div className="form-group">
                         <label className="text-gray-700 font-semibold block mb-2">Sales Opening Date</label>
                         <input type="date" name="SalesOpeningDate" className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" value={post.SalesOpeningDate || ''} onChange={handleChange} />
                         {errors.SalesOpeningDate && <div className="text-red-500 text-xs mt-2">{errors.SalesOpeningDate}</div>}
+
                     </div>
 
                     <div className="form-group">
                         <label className="text-gray-700 font-semibold block mb-2">Sales Closing Date</label>
                         <input type="date" name="SalesClosingDate" className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" value={post.SalesClosingDate || ''} onChange={handleChange} />
+                        {editError && <div className="text-red-500 text-xl mb-4">{editError}</div>}
                         {errors.SalesClosingDate && <p className="text-red-500 text-xs mt-2">{errors.SalesClosingDate}</p>}
                     </div>
 
