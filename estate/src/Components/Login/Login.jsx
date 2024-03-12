@@ -33,7 +33,8 @@ const Login = () => {
       // const data = localStorage.getItem("UserData");
       // const data2 = JSON.parse(data);
       // {data2.data.username}
-
+      //cách để xóa local data
+      // localStorage.removeItem('UserData');
       // Assuming the response.data contains a property 'role' indicating the user's role
       if (response.data && response.data.roleId) {
         switch (response.data.roleId) {

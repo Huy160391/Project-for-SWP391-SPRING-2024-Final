@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { Link, useParams } from 'react-router-dom';
 import { faBath, faBed, faFilter, faMoneyBill } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import './PropertyList.css';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import ApartmentCard from './ApartmentCard';
 
 const PropertyList = () => {
   const { buildingId } = useParams();
@@ -62,58 +62,76 @@ const PropertyList = () => {
 
   return (
     <>
-      <div className="filter-container">
-        <div className="filter-bar">
-          <div className="filter-item">
-            <FontAwesomeIcon icon={faBed} />
-            <label htmlFor="bedroom"></label>
-            <select id="bedroom" name="bedroom" value={selectedBedroom} onChange={(e) => setSelectedBedroom(e.target.value)}>
+      <div className="flex justify-center my-6">
+        <div className="space-x-4 flex">
+          {/* Bedroom filter */}
+          <div className="flex items-center space-x-2">
+            <FontAwesomeIcon icon={faBed} className="text-gray-700" />
+            <select
+              id="bedroom"
+              name="bedroom"
+              value={selectedBedroom}
+              onChange={(e) => setSelectedBedroom(e.target.value)}
+              className="border p-2 rounded"
+            >
               <option value="">Tất cả</option>
               {[...Array(5).keys()].map(num => (
                 <option key={num + 1} value={num + 1}>{num + 1} phòng ngủ</option>
               ))}
             </select>
           </div>
-          <div className="filter-item">
-            <FontAwesomeIcon icon={faBath} />
-            <label htmlFor="bathroom"></label>
-            <select id="bathroom" name="bathroom" value={selectedBathroom} onChange={(e) => setSelectedBathroom(e.target.value)}>
+          {/* Bathroom filter */}
+          <div className="flex items-center space-x-2">
+            <FontAwesomeIcon icon={faBath} className="text-gray-700" />
+            <select
+              id="bathroom"
+              name="bathroom"
+              value={selectedBathroom}
+              onChange={(e) => setSelectedBathroom(e.target.value)}
+              className="border p-2 rounded"
+            >
               <option value="">Tất cả</option>
               {[...Array(5).keys()].map(num => (
                 <option key={num + 1} value={num + 1}>{num + 1} phòng tắm</option>
               ))}
             </select>
           </div>
-          <div className="filter-item">
-            <FontAwesomeIcon icon={faMoneyBill} />
-            <label htmlFor="priceMin"></label>
-            <input type="number" id="priceMin" name="priceMin" value={selectedPriceMin} onChange={(e) => setSelectedPriceMin(e.target.value)} placeholder="Giá từ" />
-            <label htmlFor="priceMax"></label>
-            <input type="number" id="priceMax" name="priceMax" value={selectedPriceMax} onChange={(e) => setSelectedPriceMax(e.target.value)} placeholder="Giá đến" />
+          {/* Price filter */}
+          <div className="flex items-center space-x-2">
+            <FontAwesomeIcon icon={faMoneyBill} className="text-gray-700" />
+            <input
+              type="number"
+              id="priceMin"
+              name="priceMin"
+              value={selectedPriceMin}
+              onChange={(e) => setSelectedPriceMin(e.target.value)}
+              placeholder="Giá từ"
+              className="border p-2 rounded"
+            />
+            <input
+              type="number"
+              id="priceMax"
+              name="priceMax"
+              value={selectedPriceMax}
+              onChange={(e) => setSelectedPriceMax(e.target.value)}
+              placeholder="Giá đến"
+              className="border p-2 rounded"
+            />
           </div>
-          <div className="filter-item">
-            <button onClick={handleFilterChange}><FontAwesomeIcon icon={faFilter} /> Lọc</button>
-          </div>
+          {/* Filter button */}
+          <button onClick={handleFilterChange} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            <FontAwesomeIcon icon={faFilter} /> Lọc
+          </button>
         </div>
       </div>
 
-      <div className="property-list">
-        <div className="apartment-container">
-          {apartments.map(apartment => (
-            <div key={apartment.apartmentId} className="apartment-card">
-              <div className="apartment-image">
-                <img src={`https://localhost:7137/api/Apartments/GetApartmentImage/${apartment.apartmentId}`} alt="Apartment" /> {/* Sử dụng đường dẫn hình ảnh từ API */}
-              </div>
-              <div className="apartment-details">
-                <p>Apartment ID: {apartment.apartmentId}</p>
-                <p>Number of Bedrooms: {apartment.numberOfBedrooms}</p>
-                <p>Number of Bathrooms: {apartment.numberOfBathrooms}</p>
-                <p>Price: ${apartment.price}</p>
-                <Link to={`/propertydetail/${apartment.apartmentId}`} className="view-more-button">Xem thêm</Link>
-              </div>
-            </div>
-          ))}
-        </div>
+      {/* Apartment cards */}
+      <div className="flex flex-wrap justify-center">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        {apartments.map(apartment => (
+          <ApartmentCard key={apartment.apartmentId} apartment={apartment} />
+        ))}
+      </div>
       </div>
     </>
   );
