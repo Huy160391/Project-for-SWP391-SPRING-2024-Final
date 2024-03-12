@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import ProjectCard from '../HomePage/ProjectCard'; // Make sure the name matches the actual component file
+import ProjectCard from './ProjectCard'; // Make sure the name matches the actual component file
 
 const FeaturedProjects = () => {
   const [projects, setProjects] = useState([]);

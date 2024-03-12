@@ -2,7 +2,7 @@ import React from 'react';
 
 const HeroSection = () => {
   return (
-    <div className="relative bg-cover bg-center h-screen" style={{ backgroundImage: `url('/path-to-your-hero-background.jpg')` }}>
+    <div className="relative bg-cover bg-center h-screen" style={{ backgroundImage: `url('https://vinhome.com.vn/wp-content/uploads/2023/02/the-beverly-1.jpg')` }}>
       {/* Overlay */}
       <div className="absolute inset-0 bg-black opacity-50"></div>
 
