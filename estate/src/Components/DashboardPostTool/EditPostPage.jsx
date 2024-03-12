@@ -80,7 +80,7 @@ const EditPostPage = () => {
 
     const handleImageChange = (e) => {
         if (e.target.files.length) {
-            setImage(e.target.files[0]); // Assuming you want to handle one file
+                setImage(e.target.files[0]); // Assuming you want to handle one file
         }
     };
     const [errors, setErrors] = useState({});
@@ -180,7 +180,7 @@ const EditPostPage = () => {
             <Sidebar />
             <div className="flex-grow max-w-4xl mx-auto p-8 bg-white shadow-lg rounded-lg">
                 <h1 className="text-3xl font-bold text-gray-900 mb-10">Edit Post</h1>
-                
+
                 <form onSubmit={handleSubmit} className="space-y-6">
                     <div className="form-group">
                         <label className="text-gray-700 font-semibold block mb-2">Sales Opening Date</label>
@@ -192,7 +192,9 @@ const EditPostPage = () => {
                     <div className="form-group">
                         <label className="text-gray-700 font-semibold block mb-2">Sales Closing Date</label>
                         <input type="date" name="SalesClosingDate" className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" value={post.SalesClosingDate || ''} onChange={handleChange} />
+
                         {editError && <div className="text-red-500 text-xl mb-4">{editError}</div>}
+
                         {errors.SalesClosingDate && <p className="text-red-500 text-xs mt-2">{errors.SalesClosingDate}</p>}
                     </div>
 

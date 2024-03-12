@@ -1,25 +1,18 @@
 import React from 'react';
 
-const AgencyCard = ({ firstName, lastName, address, phone, email, image }) => {
-  const fullName = `${firstName} ${lastName}`;
+const AgencyCard = ({ agent }) => {
+  // Concatenate the first name and last name to form the full name
+  const fullName = `${agent.firstName} ${agent.lastName}`;
 
   return (
-    <div className="max-w-sm w-full lg:max-w-full flex flex-col bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out cursor-pointer focus:outline-none focus:ring-2 focus:ring-opacity-50 focus:ring-blue-500">
-    <div className="h-48 lg:h-auto w-full flex-none bg-cover text-center overflow-hidden rounded-t-lg" style={{ backgroundImage: `url(${image})` }}>
-    </div>
-    <div className="border-r border-b border-l border-gray-400 bg-white p-4 flex flex-col justify-between leading-normal">
-      <div className="mb-8">
-        <h2 className="text-xl font-semibold text-gray-800">{fullName}</h2>
-        <p className="text-sm text-gray-600 mt-2">{address}</p>
-        <p className="text-sm text-gray-600">{phone}</p>
-        <p className="text-sm text-gray-600">{email}</p>
-      </div>
-      <div className="flex items-center justify-between">
-        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full transition-colors duration-200">Liên hệ</button>
+    <div className="bg-white rounded-lg shadow-md overflow-hidden">
+      <img className="w-full h-48 object-cover" src={agent.images} alt={fullName} />
+      <div className="p-4">
+        <h5 className="text-lg font-semibold mb-2">{fullName}</h5> {/* Use fullName here */}
+        <p className="text-gray-800 mb-1">{agent.address}</p>
+        <p className="text-gray-600 mb-1">{agent.phone}</p>
       </div>
     </div>
-  </div>
-  
   );
 };
 

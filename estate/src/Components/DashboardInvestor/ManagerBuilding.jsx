@@ -26,6 +26,27 @@ const ManagerBuildings = () => {
 
     fetchManagersData();
   }, []);
+  const deleteBuilding = async (buildingId) => {
+    // Optional: confirm before delete
+    if (!window.confirm('Are you sure you want to delete this building?')) {
+      return;
+    }
+
+    try {
+      await axios.delete(`https://localhost:7137/api/Buildings/${buildingId}`);
+      // If delete was successful, filter out the deleted building
+      const newFilteredData = filteredData.filter((manager) => manager.buildingId !== buildingId);
+      setFilteredData(newFilteredData);
+      // Provide feedback to the user
+      alert('Building successfully deleted.');
+    } catch (error) {
+      // Handle errors, such as network issues or server errors
+      console.error("Error deleting building:", error);
+      // Provide error feedback to the user
+      alert('Failed to delete the building. Please try again later.');
+    }
+  };
+
 
   useEffect(() => {
     // Cập nhật dữ liệu lọc dựa trên giá trị tìm kiếm
@@ -57,7 +78,7 @@ const ManagerBuildings = () => {
           {/* Other sort options */}
         </select>
         <Link to="/createnewproject" className="ml-4 inline-flex items-center justify-center py-2 px-4 text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-500 focus:ring-offset-blue-200 text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2">
-          New Project
+          New Building
         </Link>
       </div>
       <div className="mt-6 bg-white shadow-md rounded-lg overflow-hidden">
@@ -84,7 +105,7 @@ const ManagerBuildings = () => {
                 </td>
                 <td className="py-4 px-4 flex items-center space-x-3">
                   <button className="text-sm bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-1 px-3 rounded focus:outline-none">Edit</button>
-                  <button className="text-sm bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-3 rounded focus:outline-none">Delete</button>
+                  <button onClick={() => deleteBuilding(manager.buildingId)} className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded focus:outline-none focus:shadow-outline">Delete</button>
                 </td>
               </tr>
             ))}
