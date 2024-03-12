@@ -1,54 +1,49 @@
-// AgencyListing.js
-import axios from "axios";
-import React, { useEffect, useState } from "react";
-import AgencyCard from "./AgencyCard";
-import "./AgencyListing.css"; // Ensure you have this CSS file
-import SearchBar from "./SearchBar";
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import AgencyCard from './AgencyCard';
 
 const AgencyListing = () => {
-  const [agencies, setAgencies] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [agents, setAgents] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchAgencies = async () => {
-      try {
-        const response = await axios.get("https://localhost:7137/api/Agencies");
-        setAgencies(response.data);
-      } catch (error) {
-        console.error("Error fetching data: ", error);
-      }
-    };
-
-    fetchAgencies();
-  }, []);
-
-  const handleSearchChange = (e) => {
-    setSearchTerm(e.target.value);
+useEffect(() => {
+  const fetchAgents = async () => {
+    try {
+      const response = await axios.get('https://localhost:7137/api/Agencies');
+      // Assuming each agent has an image URL in the `Images` field
+      const agentsWithImages = await Promise.all(response.data.map(async (agent) => {
+        if (agent.Images && !agent.Images.startsWith('http')) {
+          // If the image URL is not absolute, prepend the server base URL
+          const imageUrl = `${process.env.REACT_APP_API_BASE_URL}/${agent.Images}`;
+          try {
+            const imageResponse = await axios.get(imageUrl, { responseType: 'blob' });
+            agent.Images = URL.createObjectURL(imageResponse.data);
+          } catch {
+            agent.Images = 'path-to-default-image/no-image.png';
+          }
+        }
+        return agent;
+      }));
+      setAgents(agentsWithImages);
+      setIsLoading(false);
+    } catch (error) {
+      console.error('Error fetching agents:', error);
+      setIsLoading(false);
+    }
   };
 
-  const handleSearch = () => {
-    const searchQuery = searchTerm.toLowerCase().trim();
-
-    const filteredResults = agencies.filter((agency) => {
-      // Combine the firstname and lastname into a single string
-      const fullName = `${agency.firstname} ${agency.lastname}`.toLowerCase();
-      return fullName.includes(searchQuery);
-    });
-
-    setAgencies(filteredResults); // Update the filteredAgencies state with the filtered results
-  };
+  fetchAgents();
+}, []);
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
-    <div className="user-listing-page">
-      <SearchBar onSearchChange={handleSearchChange} onSearch={handleSearch} />
-      <div className="results-count mb-3">
-        Có {agencies.length} kết quả phù hợp
-      </div>
-      <div className="row">
-        {agencies.map((user) => (
-          <div className="col-md-4 mb-4" key={user.id}>
-            <AgencyCard {...user} />
-          </div>
+    <div className="container mx-auto px-6 py-8">
+      <h2 className="text-3xl font-semibold text-center mb-8">Agency Listings</h2>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+        {agents.map(agent => (
+          <AgencyCard key={agent.id} agent={agent} />
         ))}
       </div>
     </div>

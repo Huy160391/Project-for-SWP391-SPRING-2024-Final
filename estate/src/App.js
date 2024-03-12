@@ -1,7 +1,6 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import AgencyListing from './Components/Agency/AgencyListing';
-import AgencyDetail from './Components/AgencyDetail/AgencyDetail';
 import AddNewAgency from './Components/DashboardInvestor/AddNewAgency';
 import CreateNewProject from './Components/DashboardInvestor/CreateNewBuilding';
 import InvestorDashboard from './Components/DashboardInvestor/DashboardInvestor';
@@ -24,16 +23,18 @@ import EditProperty from './Components/Property/EditProperty';
 import PropertyDetail from './Components/Property/PropertyDetail';
 import PropertyList from './Components/Property/PropertyList';
 
-import Registration from './Components/Register/RegistrationForm';
-
 import { AboutUs } from './Components/AboutUs/AboutUs';
+import AgentsPage from './Components/AgencyDetail/AgentsPage';
 import BuildingListing from './Components/Building/BuildingListing';
 import EditApartmentPage from './Components/DashboardAgency/EditApartmentPage';
 import ManagerListApartmentOfAgency from './Components/DashboardAgency/ManagerListApartmentOfAgency';
 import ReceiveFloorDistribution from './Components/DashboardAgency/ReceiveFloorDistribution';
 import Footer from './Components/Footer/Footer';
 import Example from './Components/Header/Header';
+
+import PostsListing from './Components/Post/PostsList';
 import FeaturedProjects from './Components/Project/FeaturedProjects ';
+import Registration from './Components/Register/RegistrationForm';
 
 
 // import Login from './Components/Login/Login';
@@ -58,13 +59,14 @@ function App() {
 
         <Route path="/property/:buildingId" element={<PropertyList />} />
         <Route path="/agency" element={<AgencyListing />} />
-        <Route path="/agencydetail" element={<AgencyDetail />} />
+        <Route path="/agencydetail" element={<AgentsPage />} />
         <Route path="/propertydetail/:apartmentId" element={<PropertyDetail />} />
         <Route path="/editproperty/:apartmentId" element={<EditProperty />} />
         <Route path="/listbooking/:apartmentId" element={<ListBooking />} />
         <Route path="/projectlisting" element={<FeaturedProjects />} />
         <Route path="/buildinglisting" element={<BuildingListing />} />
-        
+        <Route path="/postslisting/:projectId" element={<PostsListing />} />
+        {/* <Route path="/projects/:projectId/:posts" render={({ match }) => <PostsList projectId={match.params.projectId} />} /> */}
         {/* Post tool box */}
         <Route path="/edit-post/:postId" element={<EditPostPage />} />
         <Route path="/view-post/:postId" element={<ViewPostPage />} />
