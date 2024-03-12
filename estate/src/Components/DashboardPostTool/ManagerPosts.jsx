@@ -32,14 +32,9 @@ const ManagerPosts = () => {
                 const detailedPosts = await enrichPostDetails(validPosts);
                 const response1 = await axios.get('https://localhost:7137/api/Buildings');
                 setBuildings(response1.data);
-
     
                 const sortedPosts = detailedPosts.sort((a, b) => new Date(b.postDate) - new Date(a.postDate));
     
-
-
-                const sortedPosts = detailedPosts.sort((a, b) => new Date(b.postDate) - new Date(a.postDate));
-
                 setOriginalPosts(sortedPosts);
                 setPosts(sortedPosts);
                 setLoading(false);
@@ -76,7 +71,6 @@ const ManagerPosts = () => {
             // Kiểm tra xem ngày đăng bài viết có nằm trong khoảng thời gian đã chọn hay không
             return (!start || postDate >= start) && (!end || postDate <= end);
         });
-
         const filteredPosts = originalPosts.filter(post =>
             selectedBuilding === '' || post.buildingName.toLowerCase() === selectedBuilding.toLowerCase()
         );
@@ -138,7 +132,7 @@ const ManagerPosts = () => {
                         ))}
                     </select>
                     <div className="flex space-x-4 mt-4 items-center">
-                        <span className="text-gray-700">Search By Post Date:</span>
+                    <span className="text-gray-700">Search By Post Date:</span>
                         <input
                             className="py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                             type="date"
@@ -162,11 +156,7 @@ const ManagerPosts = () => {
                 <div className="overflow-x-auto mt-6">
                     <table className="min-w-full divide-y divide-gray-200">
                         <thead className="bg-gray-50">
-
                             <tr>
-
-                        <tr>
-
                                 <th className="px-2 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">No.</th>
                                 <th className="px-3 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Post ID</th>
                                 <th className="px-6 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Description</th>

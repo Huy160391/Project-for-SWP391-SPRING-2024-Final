@@ -20,8 +20,7 @@ import ViewPostPage from './Components/DashboardPostTool/ViewPostPage';
 import Homepage from './Components/HomePage/HomePage';
 import Login from './Components/Login/Login';
 import EditProperty from './Components/Property/EditProperty';
-import PropertyDetail from './Components/Property/PropertyDetail';
-import PropertyList from './Components/Property/PropertyList';
+
 
 import { AboutUs } from './Components/AboutUs/AboutUs';
 import AgentsPage from './Components/AgencyDetail/AgentsPage';
@@ -35,6 +34,8 @@ import Example from './Components/Header/Header';
 import PostsListing from './Components/Post/PostsList';
 import PostDetail from './Components/PostDetail/PostDetail';
 import FeaturedProjects from './Components/Project/FeaturedProjects ';
+import PropertyDetail from './Components/Property/ApartmentDetail';
+import PropertyList from './Components/Property/ApartmentList';
 import Registration from './Components/Register/RegistrationForm';
 
 
@@ -42,8 +43,9 @@ import Registration from './Components/Register/RegistrationForm';
 
 function App() {
   return (
-    <div className="App" style={{width:'100vw', height:'100vh'}}>
+    <div className="flex flex-col min-h-screen">
       <Example />
+      
       <Routes>
 
         <Route path="/" element={<Homepage />} />

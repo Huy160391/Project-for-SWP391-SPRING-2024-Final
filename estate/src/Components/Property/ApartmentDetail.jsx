@@ -81,29 +81,34 @@ const PropertyDetail = () => {
   }
 
   return (
-    <div className="container mx-auto py-8">
-      <div className="bg-white shadow-md rounded-lg overflow-hidden">
-        <div className="p-6">
-          <h2 className="text-2xl font-semibold mb-4">{apartment.apartmentId} - {apartment.buildingId}</h2>
-          <p className="text-gray-600 mb-2">{apartment.description}</p>
-          <p className="text-gray-600 mb-4">{apartment.status}</p>
-          <div className="flex justify-between items-center mb-4">
-            <div>
-              <p className="text-sm text-gray-600">Area: {apartment.area} m2</p>
-              <p className="text-sm text-gray-600">{apartment.numberOfBedrooms} phòng ngủ - {apartment.numberOfBathrooms} phòng tắm</p>
-              <p className="text-sm text-gray-600">Price: ${apartment.price}</p>
-            </div>
-            {!isBookingDisabled && (
-              <button onClick={handleBooking} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                Book Now
-              </button>
-            )}
-            {bookingStatus && <p className={`text-sm ${bookingStatus === 'success' ? 'text-green-600' : 'text-red-600'}`}>{bookingMessage}</p>}
-          </div>
-        </div>
-        <img src={`https://localhost:7137/api/Apartments/GetApartmentImage/${apartment.apartmentId}`} alt="Apartment" className="object-cover w-full h-64" />
+<div className="container mx-auto py-8">
+  <div className="bg-white shadow-lg rounded-lg overflow-hidden">
+    <div className="p-6 lg:p-8">
+      <h2 className="text-3xl font-semibold text-gray-800 mb-4">{apartment.apartmentId} - {apartment.buildingId}</h2>
+      <p className="text-gray-700 mb-4">{apartment.description}</p>
+      <div className="mb-4">
+        <p className="text-lg text-gray-600">Status: <span className="font-medium text-gray-800">{apartment.status}</span></p>
       </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        <div>
+          <p className="text-lg text-gray-600">Area: <span className="font-medium text-gray-800">{apartment.area} m²</span></p>
+          <p className="text-lg text-gray-600">Bedrooms: <span className="font-medium text-gray-800">{apartment.numberOfBedrooms}</span></p>
+          <p className="text-lg text-gray-600">Bathrooms: <span className="font-medium text-gray-800">{apartment.numberOfBathrooms}</span></p>
+          <p className="text-lg text-gray-600">Price: <span className="font-medium text-green-600">${apartment.price}</span></p>
+        </div>
+        { !isBookingDisabled && (
+          <div className="flex justify-center md:justify-start">
+            <button onClick={handleBooking} className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition ease-in-out duration-150">
+              Book Now
+            </button>
+          </div>
+        )}
+      </div>
+      {bookingStatus && <p className={`text-center md:text-left text-sm ${bookingStatus === 'success' ? 'text-green-600' : 'text-red-600'}`}>{bookingMessage}</p>}
     </div>
+    <img src={`https://localhost:7137/api/Apartments/GetApartmentImage/${apartment.apartmentId}`} alt="Apartment" className="object-cover w-full h-64" />
+  </div>
+</div>
   );
 };
 
