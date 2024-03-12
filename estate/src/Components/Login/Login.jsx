@@ -17,6 +17,9 @@ const Login = () => {
     formData.append('Username', username);
     formData.append('Password', password);
 
+
+
+
     try {
       const response = await axios.post('https://localhost:7137/api/Users/login', formData, {
         headers: {
@@ -35,10 +38,10 @@ const Login = () => {
       if (response.data && response.data.roleId) {
         switch (response.data.roleId) {
           case 'Investor':
-            navigate('/investordashboard');
+            navigate('/');
             break;
           case 'Customer':
-            navigate('/editproperty/A002');
+            navigate('/');
             break;
           case 'Agency':
             navigate('/agencydashboard');

@@ -22,20 +22,20 @@ const ManagerPosts = () => {
                 setLoading(true);
                 const response = await axios.get(`https://localhost:7137/api/Posts`);
                 const now = new Date();
-    
+
                 // Filter posts whose Sales Closing Date is greater than the current time
                 const validPosts = response.data.filter(post => {
                     const closingDate = new Date(post.salesClosingDate);
                     return closingDate > now;
                 });
-    
+
                 const detailedPosts = await enrichPostDetails(validPosts);
                 const response1 = await axios.get('https://localhost:7137/api/Buildings');
                 setBuildings(response1.data);
 
-    
+
                 const sortedPosts = detailedPosts.sort((a, b) => new Date(b.postDate) - new Date(a.postDate));
-    
+
 
 
                 const sortedPosts = detailedPosts.sort((a, b) => new Date(b.postDate) - new Date(a.postDate));
@@ -48,10 +48,10 @@ const ManagerPosts = () => {
                 setLoading(false);
             }
         };
-    
+
         fetchPosts();
     }, []);
-    
+
 
     const enrichPostDetails = async (posts) => {
         return Promise.all(posts.map(async (post) => {
@@ -163,9 +163,8 @@ const ManagerPosts = () => {
                     <table className="min-w-full divide-y divide-gray-200">
                         <thead className="bg-gray-50">
 
-                            <tr>
 
-                        <tr>
+                            <tr>
 
                                 <th className="px-2 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">No.</th>
                                 <th className="px-3 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Post ID</th>
