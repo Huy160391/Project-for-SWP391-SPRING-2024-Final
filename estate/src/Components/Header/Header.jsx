@@ -1,5 +1,5 @@
 import { Disclosure, Menu, Transition } from '@headlessui/react';
-import { Fragment, useState, useEffect } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 
 const navigation = [
   { name: 'Home', href: '/', current: false },
@@ -111,16 +111,7 @@ export default function Example() {
                             </a>
                           )}
                         </Menu.Item>
-                        <Menu.Item>
-                          {({ active }) => (
-                            <a
-                              href="#"
-                              className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
-                            >
-                              Settings
-                            </a>
-                          )}
-                        </Menu.Item>
+
                         <Menu.Item>
                           {({ active }) => (
                             <a

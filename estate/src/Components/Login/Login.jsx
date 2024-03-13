@@ -1,17 +1,22 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './Login.css';
 
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState('');
   const navigate = useNavigate();
+  const navigateAndReload = (path) => {
+    navigate(path);
+    window.location.reload();
+  };
+  
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    localStorage.removeItem('UserData');
     // Create a FormData object to hold the username and password
     const formData = new FormData();
     formData.append('Username', username);
@@ -39,13 +44,13 @@ const Login = () => {
       if (response.data && response.data.roleId) {
         switch (response.data.roleId) {
           case 'Investor':
-            navigate('/');
+            navigateAndReload('/');
             break;
           case 'Customer':
-            navigate('/');
+            navigateAndReload('/');
             break;
           case 'Agency':
-            navigate('/agencydashboard');
+            navigateAndReload('/');
             break;
           default:
             setLoginError('Unknown user role.');
@@ -66,38 +71,45 @@ const Login = () => {
   };
 
   return (
-    <div className="login-container">
-      <div className="login-form">
-        <h1>Đăng Nhập</h1>
-        <div className="divider">or Login with Username</div>
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label>Username</label>
-            <input
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              placeholder="Enter your username"
-            />
-          </div>
-          <div className="form-group">
-            <label>Password</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter your password"
-            />
-          </div>
-          <button type="submit" className="login-button">ĐĂNG NHẬP</button>
-          {loginError && <div className="login-error">{loginError}</div>}
-        </form>
-        <div className="login-footer">
-          <a href="/forgot-password">Quên mật khẩu?</a>
-          <span>Chưa có tài khoản? <a href="/registration">Đăng ký</a></span>
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+    <div className="w-full max-w-md px-8 py-6 bg-white rounded-lg shadow-md">
+      <h1 className="mb-4 text-2xl font-bold text-center text-gray-900">Đăng Nhập</h1>
+      <div className="mb-4 text-sm text-center text-gray-600">or Login with Username</div>
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="form-group">
+          <label htmlFor="username" className="block text-sm font-medium text-gray-700">Username</label>
+          <input
+            type="text"
+            id="username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            placeholder="Enter your username"
+            className="w-full px-3 py-2 placeholder-gray-400 border rounded-md focus:ring-blue-500 focus:border-blue-500"
+          />
         </div>
+        <div className="form-group">
+          <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
+          <input
+            type="password"
+            id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Enter your password"
+            className="w-full px-3 py-2 placeholder-gray-400 border rounded-md focus:ring-blue-500 focus:border-blue-500"
+          />
+        </div>
+        <button type="submit" className="w-full px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+          ĐĂNG NHẬP
+        </button>
+        {loginError && <div className="text-sm text-red-600">{loginError}</div>}
+      </form>
+      <div className="mt-6 text-sm text-center text-gray-600">
+        <a href="/forgot-password" className="text-blue-600 hover:text-blue-700">Quên mật khẩu?</a>
+        <span className="mx-2">|</span>
+        <span>Chưa có tài khoản? <a href="/registration" className="text-blue-600 hover:text-blue-700">Đăng ký</a></span>
       </div>
     </div>
+  </div>
   );
 };
 
