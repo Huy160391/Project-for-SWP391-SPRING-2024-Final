@@ -37,6 +37,9 @@ import FeaturedProjects from './Components/Project/FeaturedProjects ';
 import PropertyDetail from './Components/Property/ApartmentDetail';
 import PropertyList from './Components/Property/ApartmentList';
 import Registration from './Components/Register/RegistrationForm';
+import ViewListBooking from './Components/DashboardAgency/ViewListBooking';
+import DashboardToolOfAgency from './Components/DashboardAgency/DashboardToolOfAgency';
+import AgencyProfile from './Components/DashboardAgency/AgencyProfile';
 
 
 // import Login from './Components/Login/Login';
@@ -70,6 +73,8 @@ function App() {
         <Route path="/buildinglisting" element={<BuildingListing />} />
         <Route path="/postslisting/:projectId" element={<PostsListing />} />
         <Route path="/postdetail/:postId" element={<PostDetail />} />
+
+        {/* Post tool box */}
         <Route path="/edit-post/:postId" element={<EditPostPage />} />
         <Route path="/view-post/:postId" element={<ViewPostPage />} />
         <Route path="/createnewpost" element={<CreateNewPost />} />
@@ -77,6 +82,9 @@ function App() {
         <Route path="/ReceiveFloorDistribution/:agencyId" element={<ReceiveFloorDistribution/>} />
         <Route path="/ManagerListApartmentOfAgency/:agencyId/:buildingId" element={<ManagerListApartmentOfAgency />} />
         <Route path="/edit-apartment/:apartmentId" element={<EditApartmentPage />} />
+        <Route path="/viewlistbooking/:apartmentId" element={<ViewListBooking />} />
+        <Route path="/dashboard/:agencyId" element={<DashboardToolOfAgency />} />
+        <Route path="/agencyprofile/:agencyId" element={<AgencyProfile />} />
 
         {/* <Route path="/login" element={<Login />} /> */}
         {/* The Route for RealEstateListing should also have a path defined */}
