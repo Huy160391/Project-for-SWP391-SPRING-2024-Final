@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Link, useParams } from 'react-router-dom';
 // import Sidebar from "./Sidebar";
@@ -18,6 +18,7 @@ const ManagerListApartmentOfAgency = () => {
         priceTo: '',
         floorNumber: ''
     });
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -55,7 +56,7 @@ const ManagerListApartmentOfAgency = () => {
             setApartments(filtered);
         }
     };
-    
+
 
     const handleCancel = () => {
         setSearchParams({
@@ -86,6 +87,14 @@ const ManagerListApartmentOfAgency = () => {
             {/* <Sidebar /> */}
             <div className="flex-grow p-10">
                 <h1 className="text-4xl font-bold text-gray-900 mb-10">{buildingName} Apartments</h1>
+                <button
+                    type="button"
+                    onClick={() => navigate(-1)}
+                    className="mb-3  bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 
+                    rounded shadow-lg transition duration-300 ease-in-out transform 
+                    hover:-translate-y-1 hover:scale-105 w-32">
+                    Back
+                </button>
 
                 {/* Search Form */}
                 <form onSubmit={handleSearch} className="mb-10">
@@ -126,8 +135,9 @@ const ManagerListApartmentOfAgency = () => {
                         Search
                     </button>
                     <button type="button" onClick={handleCancel} className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
-                        Cancel
+                        Cancel Search
                     </button>
+
                 </form>
                 <div className="space-y-10">
                     {apartments.map((apartment, index) => (
@@ -147,9 +157,14 @@ const ManagerListApartmentOfAgency = () => {
                                     <li>Status: {apartment.status}</li>
                                     <li>Floor Number: {apartment.floorNumber}</li>
                                 </ul>
-                               
+
                             </div>
-                             <Link to={`/editproperty/${apartment.apartmentId}`} className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-3 rounded focus:outline-none focus:shadow-outline">Edit</Link>
+                            <Link to={`/viewlistbooking/${apartment.apartmentId}`}
+                                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded focus:outline-none focus:shadow-outline">
+                                View List Booking</Link>
+                            <Link to={`/edit-apartment/${apartment.apartmentId}`}
+                                className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-3 rounded focus:outline-none focus:shadow-outline">
+                                Edit</Link>
 
                         </div>
                     ))}

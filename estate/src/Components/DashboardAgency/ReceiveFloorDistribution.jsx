@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
@@ -7,6 +8,7 @@ import { Link, useParams } from 'react-router-dom';
 const ReceiveFloorDistribution = () => {
     const { agencyId ='' } = useParams();
     const [buildingAndProjects, setBuildingAndProjects] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchBuildingIds = async () => {
@@ -48,6 +50,14 @@ const ReceiveFloorDistribution = () => {
         <h1 className="text-3xl font-bold text-gray-800 mb-8"> {/* Increase size and margin for heading */}
             Building and Project Distribution
         </h1>
+        <button
+                    type="button"
+                    onClick={() => navigate(-1)}
+                    className="mb-3  bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 
+                    rounded shadow-lg transition duration-300 ease-in-out transform 
+                    hover:-translate-y-1 hover:scale-105 w-32">
+                    Back
+                </button>
         <div className="bg-white shadow-xl rounded-lg overflow-hidden"> {/* Add more shadow and roundness */}
             <ul className="divide-y divide-gray-300"> {/* Lighten the divider */}
                 {buildingAndProjects.map((item, index) => (

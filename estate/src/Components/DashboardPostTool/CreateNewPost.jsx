@@ -9,6 +9,10 @@ import Sidebar from './Sidebar';
 
 const CreateNewPost = () => {
     const navigate = useNavigate()
+    const navigateAndReload = (path) => {
+        navigate(path);
+        window.location.reload();
+    };
     const [postData, setPostData] = useState({
         SalesOpeningDate: '',
         SalesClosingDate: '',
@@ -99,11 +103,11 @@ const CreateNewPost = () => {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
-                
+
             });
             console.log(formData);
             alert("success create post")
-            navigate('/managerpost')
+            navigateAndReload('/managerpost')
             // Handle success (e.g., clear form, show success message, redirect)
         } catch (error) {
             console.error('Error creating the post:', error);
@@ -154,8 +158,6 @@ const CreateNewPost = () => {
 
 
 
-        
-
 
         try {
             await axios.post('https://localhost:7137/api/Posts/PostInfoWithImage', formData, {
@@ -165,7 +167,7 @@ const CreateNewPost = () => {
             });
             console.log(formData);
             alert("success create post")
-            navigate('/managerpost')
+            navigateAndReload('/managerpost')
             // Handle success (e.g., clear form, show success message, redirect)
         } catch (error) {
             console.error('Error creating the post:', error);
@@ -177,71 +179,77 @@ const CreateNewPost = () => {
 
 
     return (
-        <div className="flex min-h-screen bg-gray-50">
-            <Sidebar />
-            <div className="flex-grow p-8">
-                <h1 className="text-3xl font-bold text-gray-800 mb-6">Create New Post</h1>
-                <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        <div className="flex items-center justify-center min-h-screen bg-gray-50">
+            <div className="w-full max-w-lg p-10 bg-white shadow-md rounded-lg">
+                <h1 className="text-4xl font-bold text-gray-800 mb-6">Create New Post</h1>
+                <form onSubmit={handleSubmit} className="space-y-6">
                     {/* Sales Opening Date */}
-                    <div className="mb-4">
-                        <label className="block text-gray-700 text-sm font-bold mb-2">Sales Opening Date</label>
-                        <input type="date" name="SalesOpeningDate" onChange={handleInputChange} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
-                        {errors.SalesOpeningDate && <div className="text-red-500 text-xs italic">{errors.SalesOpeningDate}</div>}
+                    <div>
+                        <label className="block text-gray-700 text-sm font-bold mb-1">Sales Opening Date</label>
+                        <input type="date" name="SalesOpeningDate" onChange={handleInputChange} className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+                        {errors.SalesOpeningDate && <div className="mt-1 text-red-500 text-xs italic">{errors.SalesOpeningDate}</div>}
                     </div>
 
                     {/* Sales Closing Date */}
-                    <div className="mb-4">
-                        <label className="block text-gray-700 text-sm font-bold mb-2">Sales Closing Date</label>
-                        <input type="date" name="SalesClosingDate" onChange={handleInputChange} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
-                        {errors.SalesClosingDate && <div className="text-red-500 text-xs italic">{errors.SalesClosingDate}</div>}
+                    <div>
+                        <label className="block text-gray-700 text-sm font-bold mb-1">Sales Closing Date</label>
+                        <input type="date" name="SalesClosingDate" onChange={handleInputChange} className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+                        {errors.SalesClosingDate && <div className="mt-1 text-red-500 text-xs italic">{errors.SalesClosingDate}</div>}
                     </div>
 
                     {/* Description */}
-                    <div className="mb-4">
-                        <label className="block text-gray-700 text-sm font-bold mb-2">Description</label>
-                        <textarea name="Description" onChange={handleInputChange} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
-                        {errors.Description && <div className="text-red-500 text-xs italic">{errors.Description}</div>}
+                    <div>
+                        <label className="block text-gray-700 text-sm font-bold mb-1">Description</label>
+                        <textarea name="Description" onChange={handleInputChange} className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" rows="4"></textarea>
+                        {errors.Description && <div className="mt-1 text-red-500 text-xs italic">{errors.Description}</div>}
                     </div>
 
                     {/* Priority Method */}
-                    <div className="mb-4">
-                        <label className="block text-gray-700 text-sm font-bold mb-2">Priority Method</label>
-                        <input type="text" name="PriorityMethod" onChange={handleInputChange} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
-                        {errors.PriorityMethod && <div className="text-red-500 text-xs italic">{errors.PriorityMethod}</div>}
+                    <div>
+                        <label className="block text-gray-700 text-sm font-bold mb-1">Priority Method</label>
+                        <input type="text" name="PriorityMethod" onChange={handleInputChange} className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+                        {errors.PriorityMethod && <div className="mt-1 text-red-500 text-xs italic">{errors.PriorityMethod}</div>}
                     </div>
 
                     {/* Building ID */}
-                    <div className="mb-4">
-                        <label className="block text-gray-700 text-sm font-bold mb-2">Building ID</label>
-                        <select name="BuildingId" onChange={handleInputChange} value={postData.BuildingId} className="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:shadow-outline">
+                    <div>
+                        <label className="block text-gray-700 text-sm font-bold mb-1">Building ID</label>
+                        <select name="BuildingId" onChange={handleInputChange} value={postData.BuildingId} className="block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
                             <option value="">Select Building</option>
                             {buildings.map(building => (
                                 <option key={building.buildingId} value={building.buildingId}>{building.name}</option>
                             ))}
                         </select>
-                        {errors.BuildingId && <div className="text-red-500 text-xs italic">{errors.BuildingId}</div>}
+                        {errors.BuildingId && <div className="mt-1 text-red-500 text-xs italic">{errors.BuildingId}</div>}
                     </div>
 
                     {/* File Image */}
-                    <div className="mb-6">
-                        <label className="block text-gray-700 text-sm font-bold mb-2">Upload Image</label>
-                        <input type="file" name="FileImage" onChange={handleFileChange} className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none" />
-                        {/* Display image if available */}
-                        {image && <img src={URL.createObjectURL(image)} alt="Uploaded Image" className="mt-4 w-auto h-48 rounded-lg" />}
-                        {errors.FileImage && <div className="text-red-500 text-xs italic mt-2">{errors.FileImage}</div>}
+                    <div>
+                        <label className="block text-gray-700 text-sm font-bold mb-1">Upload Image</label>
+                        <input type="file" name="FileImage" onChange={handleFileChange} className="w-full px-3 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded-lg cursor-pointer focus:outline-none" />
+                        {image && <img src={URL.createObjectURL(image)} alt="Uploaded" className="mt-4 w-auto h-48 rounded-lg" />}
+                        {errors.FileImage && <div className="mt-1 text-red-500 text-xs italic">{errors.FileImage}</div>}
                     </div>
-
-
 
                     {/* Form Actions */}
                     <div className="flex items-center justify-between">
-                        <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                        <button type="submit" className=" mt-4 px-12 py-3 bg-blue-600 text-white text-lg rounded-lg shadow-md
+                                                            hover:bg-blue-700 transition duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
                             Save
                         </button>
+                        <button
+                            type="button"
+                            onClick={() => navigate(-1)}
+                            className="ml-4 mt-4 px-12 py-3 bg-blue-600 text-white text-lg rounded-lg shadow-md
+                                                            hover:bg-blue-700 transition duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                            Back
+                        </button>
                     </div>
+
                 </form>
             </div>
         </div>
+
 
     );
 };

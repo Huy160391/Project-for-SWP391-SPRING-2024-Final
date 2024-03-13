@@ -1,71 +1,176 @@
-import React, { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+
 
 const EditApartmentPage = () => {
-    const { apartmentId } = useParams();
-    const navigate = useNavigate();
     const [apartment, setApartment] = useState({
+        numberOfBedrooms: 0,
+        numberOfBathrooms: 0,
+        furnitureType: '',
+        price: 0,
+        area: 0,
         description: '',
-        apartmentType: null,
+        agencyId: '',
+        FileImage: null
     });
     const [image, setImage] = useState(null);
-    const [errors, setErrors] = useState({});
+    const { apartmentId } = useParams();
+    const navigate = useNavigate();
+    const [editError, setEditError] = useState('');
+    const navigateAndReload = (path) => {
+        navigate(path);
+        window.location.reload();
+      };
+
+    useEffect(() => {
+        const fetchApartmentData = async () => {
+            try {
+                const response = await axios.get(`https://localhost:7137/api/Apartments/${apartmentId}`);
+                setApartment({
+                    ...response.data,
+                    FileImage: null // Assuming you want to reset the file image initially
+                });
+                const imageResponse = await axios.get(`https://localhost:7137/api/Apartments/GetApartmentImage/${apartmentId}`, { responseType: 'blob' });
+                setImage(URL.createObjectURL(imageResponse.data));
+            } catch (error) {
+                console.error('Failed to fetch apartment data:', error);
+            }
+        };
+        fetchApartmentData();
+    }, [apartmentId]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setApartment({ ...apartment, [name]: value });
+        setApartment(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
     };
 
     const handleImageChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            setImage(file);
-            setApartment({ ...apartment, apartmentType: file });
+        if (e.target.files.length) {
+            setImage(e.target.files[0]);
         }
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+
+        // Validation logic here
+
         const formData = new FormData();
-        formData.append('description', apartment.description);
-        if (apartment.apartmentType) {
-            formData.append('apartmentType', apartment.apartmentType);
+        Object.entries(apartment).forEach(([key, value]) => {
+            formData.append(key, value);
+        });
+
+        if (image instanceof Blob) { // Ensure there's an image to upload
+            formData.append('FileImage', image);
         }
 
         try {
-            await axios.post(`https://localhost:7137/api/Apartments/UploadInformationWithImage/${apartmentId}`, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
+            await axios.post(`https://localhost:7137/api/Apartments/UploadInformationWithImage/${apartment.apartmentId}`, formData, {
+                headers: { 'Content-Type': 'multipart/form-data' },
             });
             alert('Apartment updated successfully');
-            navigate(-1); // Go back to the previous page
+            navigateAndReload('/apartmentlist'); // Adjust the route as necessary
         } catch (error) {
-            console.error('Error updating apartment:', error.response.data);
-            alert('Failed to update apartment.');
+            console.error('Error updating apartment:', error);
         }
     };
 
     return (
-        <div className="max-w-4xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
-            <h1 className="text-3xl font-bold leading-tight text-gray-900">Edit Apartment</h1>
-            <form onSubmit={handleSubmit} className="mt-8 space-y-6">
-                <div className="space-y-1">
-                    <label htmlFor="description" className="block text-sm font-medium text-gray-700">Description</label>
-                    <textarea id="description" name="description" rows="3" required className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" value={apartment.description} onChange={handleChange}></textarea>
-                </div>
-                <div className="form-group">
-                    <label className="text-gray-700 font-semibold block mb-2">Upload New Property Image</label>
-                    <input type="file" className="w-full p-2 border rounded" onChange={handleImageChange} />
-                    {image && <img src={URL.createObjectURL(image)} alt="New property" className="mt-4 max-w-xs max-h-60" />}
-                </div>
-                <div>
-                    <button type="submit" className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                        Save Changes
-                    </button>
-                </div>
-            </form>
+        <div className="flex min-h-screen bg-gray-100">
+            
+            <div className="flex-grow max-w-4xl mx-auto p-8 bg-white shadow-lg rounded-lg">
+                <h1 className="text-3xl font-bold text-gray-900 mb-10">Edit Apartment</h1>
+
+                <form onSubmit={handleSubmit} className="space-y-6">
+                    {/* Form fields similar to the EditPostPage.jsx structure, adapt as necessary for your apartment data */}
+                    {/* Example for one field, you can replicate for others */}
+                     <div className="form-group">
+                        <label className="text-gray-700 font-semibold block mb-2">Upload New Apartment Image {apartment.apartmentId}</label>
+                        <input type="file" className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none" onChange={handleImageChange} />
+                        {image && <img src={typeof image === 'string' ? image : URL.createObjectURL(image)} alt="Apartment" className="mt-4 w-auto h-48 rounded-lg" />}
+                    </div>
+                    <div className="form-group">
+                        <label className="text-gray-700 font-semibold block mb-2">Description</label>
+                        <textarea name="description" className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" value={apartment.description || ''} onChange={handleChange}></textarea>
+                    </div>
+
+                    {/* Number of Bedrooms */}
+                    <div className="form-group">
+                        <label className="text-gray-700 font-semibold block mb-2">Number of Bedrooms</label>
+                        <input
+                            type="number"
+                            name="numberOfBedrooms"
+                            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            value={apartment.numberOfBedrooms || 0}
+                            onChange={handleChange}
+                            min="0"
+                        />
+                    </div>
+
+                    {/* Number of Bathrooms */}
+                    <div className="form-group">
+                        <label className="text-gray-700 font-semibold block mb-2">Number of Bathrooms</label>
+                        <input
+                            type="number"
+                            name="numberOfBathrooms"
+                            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            value={apartment.numberOfBathrooms || 0}
+                            onChange={handleChange}
+                            min="0"
+                        />
+                    </div>
+
+                    {/* Furniture Type */}
+                    <div className="form-group">
+                        <label className="text-gray-700 font-semibold block mb-2">Furniture Type</label>
+                        <input
+                            type="text"
+                            name="furnitureType"
+                            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            value={apartment.furnitureType || ''}
+                            onChange={handleChange}
+                        />
+                    </div>
+
+                    {/* Price */}
+                    <div className="form-group">
+                        <label className="text-gray-700 font-semibold block mb-2">Price</label>
+                        <input
+                            type="number"
+                            name="price"
+                            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            value={apartment.price || 0}
+                            onChange={handleChange}
+                            min="0"
+                        />
+                    </div>
+
+                    {/* Area */}
+                    <div className="form-group">
+                        <label className="text-gray-700 font-semibold block mb-2">Area (sqft)</label>
+                        <input
+                            type="number"
+                            name="area"
+                            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            value={apartment.area || 0}
+                            onChange={handleChange}
+                            min="0"
+                        />
+                    </div>
+                    <div className="flex justify-between">
+                        <button type="button" onClick={() => navigate(-1)} className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out">
+                            Cancel
+                        </button>
+                        <button type="submit" className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out">
+                            Save
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     );
 };

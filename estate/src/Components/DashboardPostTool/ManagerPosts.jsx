@@ -63,19 +63,23 @@ const ManagerPosts = () => {
 
 
     const handleSearch = () => {
+        // Lọc theo ngày
         const filteredByDate = originalPosts.filter((post) => {
             const postDate = new Date(post.postDate); // Lấy ngày đăng của bài viết
             const start = startDate ? new Date(startDate) : null; // Ngày bắt đầu từ bộ lọc
             const end = endDate ? new Date(endDate) : null; // Ngày kết thúc từ bộ lọc
-
+    
             // Kiểm tra xem ngày đăng bài viết có nằm trong khoảng thời gian đã chọn hay không
             return (!start || postDate >= start) && (!end || postDate <= end);
         });
-const filteredPosts = originalPosts.filter(post =>
+    
+        // Lọc theo tên tòa nhà từ kết quả lọc theo ngày
+        const filteredByBuilding = filteredByDate.filter(post =>
             selectedBuilding === '' || post.buildingName.toLowerCase() === selectedBuilding.toLowerCase()
         );
-
-        setPosts(filteredPosts);
+    
+        // Cập nhật danh sách bài viết sau khi đã lọc
+        setPosts(filteredByBuilding);
         setCurrentPage(1); // Đặt lại về trang đầu tiên sau khi lọc
     };
 
@@ -132,7 +136,7 @@ const filteredPosts = originalPosts.filter(post =>
                         ))}
                     </select>
                     <div className="flex space-x-4 mt-4 items-center">
-<span className="text-gray-700">Search By Post Date:</span>
+                        <span className="text-gray-700">Search By Post Date:</span>
                         <input
                             className="py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                             type="date"
@@ -186,7 +190,7 @@ const filteredPosts = originalPosts.filter(post =>
                                     <td className="px-5 py-3 whitespace-nowrap text-sm text-gray-500 flex space-x-2">
                                         <Link to={`/view-post/${post.postId}`} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded focus:outline-none focus:shadow-outline">View</Link>
                                         <Link to={`/edit-post/${post.postId}`} className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-3 rounded focus:outline-none focus:shadow-outline">Edit</Link>
-<button onClick={() => handleDelete(post.postId)} className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded focus:outline-none focus:shadow-outline">Delete</button>
+                                        <button onClick={() => handleDelete(post.postId)} className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded focus:outline-none focus:shadow-outline">Delete</button>
                                     </td>
                                 </tr>
                             ))}
