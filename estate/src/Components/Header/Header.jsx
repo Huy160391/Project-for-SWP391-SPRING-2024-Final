@@ -1,6 +1,6 @@
 import { Disclosure, Menu, Transition } from '@headlessui/react';
-import { Fragment, useEffect, useState } from 'react';
 import axios from 'axios'; // Ensure axios is imported
+import { Fragment, useEffect, useState } from 'react';
 
 const navigation = [
   { name: 'Home', href: '/', current: false },
@@ -30,7 +30,9 @@ export default function Example() {
 
   const fetchAgencyId = async (userId) => {
     try {
+      console.log("s",userId)
       const response = await axios.get(`https://localhost:7137/api/Agencies/GetAgencyByUserID/${userId}`);
+      console.log("s",response.data.agencyId)
       setAgencyId(response.data.agencyId);
     } catch (error) {
       console.error("Failed to fetch agency ID:", error);
@@ -47,6 +49,7 @@ export default function Example() {
   const roleId = userData?.data?.roleId;
 
   return (
+    
     <Disclosure as="nav" className="bg-amber-400 shadow-lg">
       {({ open }) => (
         <>

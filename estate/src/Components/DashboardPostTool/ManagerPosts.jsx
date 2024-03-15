@@ -136,7 +136,7 @@ const ManagerPosts = () => {
                         ))}
                     </select>
                     <div className="flex space-x-4 mt-4 items-center">
-                        <span className="text-gray-700">Search By Post Date:</span>
+                        <span className="text-gray-700">Search By Post Date:</span>npm
                         <input
                             className="py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                             type="date"

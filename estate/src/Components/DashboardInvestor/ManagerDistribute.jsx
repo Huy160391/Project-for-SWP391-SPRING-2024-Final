@@ -1,7 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import Sidebar from "./Sidebar";
 
 const ManagerDistribute = () => {
   const [managersData, setManagersData] = useState([]);
@@ -24,21 +23,29 @@ const ManagerDistribute = () => {
 
     fetchData();
   }, []);
+  const handleBack = () => {
+    window.history.back();
+  };
 
   return (
     <div className="flex min-h-screen">
-      <Sidebar />
       <div className="flex-1 p-6 bg-gray-50">
         <h1 className="text-2xl font-bold text-gray-800 mb-4">Managers</h1>
         <div className="flex justify-between mb-6">
+          <button
+            onClick={handleBack}
+            className="px-4 py-2 mr-4 text-sm text-gray-600 border border-gray-300 rounded hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            Back
+          </button>
           <input
             type="text"
             placeholder="Search here..."
-            className="flex-grow mr-4 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="flex-grow p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <Link
             to="/distributefloor"
-            className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            className="ml-4 px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
           >
             Distribute for Agency
           </Link>
@@ -57,9 +64,6 @@ const ManagerDistribute = () => {
                 <th className="px-5 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                   Total Apartment
                 </th>
-                <th className="px-5 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                  Actions
-                </th>
               </tr>
             </thead>
             <tbody className="text-gray-600">
@@ -68,14 +72,6 @@ const ManagerDistribute = () => {
                   <td className="px-5 py-5">{manager.agencyName}</td>
                   <td className="px-5 py-5">{manager.agencyId}</td>
                   <td className="px-5 py-5">{manager.numberOfApartments}</td>
-                  <td className="px-5 py-5 flex space-x-2">
-                    <button className="px-3 py-1 text-sm bg-yellow-500 hover:bg-yellow-600 text-white font-bold rounded focus:outline-none">
-                      Edit
-                    </button>
-                    <button className="px-3 py-1 text-sm bg-red-500 hover:bg-red-600 text-white font-bold rounded focus:outline-none">
-                      Delete
-                    </button>
-                  </td>
                 </tr>
               ))}
             </tbody>
