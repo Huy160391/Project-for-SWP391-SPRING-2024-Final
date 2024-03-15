@@ -2,34 +2,34 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-const AgencyProfile = () => {
-    const { agencyId } = useParams();
+const CustomerProfile = () => {
+    const { customerId } = useParams();
     const navigate = useNavigate();
-    const [agency, setAgency] = useState(null);
+    const [customer, setCustomer] = useState(null);
     const [editMode, setEditMode] = useState(false);
-    const [updatedAgency, setUpdatedAgency] = useState({});
+    const [updatedCustomer, setUpdatedCustomer] = useState({});
     const [avatar, setAvatar] = useState(null);
 
-    // Correctly placed fetchAgencyInfo function
-    const fetchAgencyInfo = async () => {
+    // Correctly placed fetchCustomerInfo function
+    const fetchCustomerInfo = async () => {
         try {
-            const infoResponse = await axios.get(`https://localhost:7137/api/Agencies/${agencyId}`);
-            const imageResponse = await axios.get(`https://localhost:7137/api/Agencies/GetImage/${agencyId}`);
-            setAgency({ ...infoResponse.data, avatar: imageResponse.config.url });
-            setUpdatedAgency({ ...infoResponse.data });
+            const infoResponse = await axios.get(`https://localhost:7137/api/Customers/${customerId}`);
+            const imageResponse = await axios.get(`https://localhost:7137/api/Customers/GetImage/${customerId}`);
+            setCustomer({ ...infoResponse.data, avatar: imageResponse.config.url });
+            setUpdatedCustomer({ ...infoResponse.data });
         } catch (error) {
-            console.error("Failed to fetch agency info", error);
+            console.error("Failed to fetch customer info", error);
         }
     };
 
     useEffect(() => {
-        fetchAgencyInfo();
-    }, [agencyId]); // Dependency array ensures fetchAgencyInfo is called when agencyId changes
+        fetchCustomerInfo();
+    }, [customerId]); // Dependency array ensures fetchCustomerInfo is called when customerId changes
 
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setUpdatedAgency(prev => ({ ...prev, [name]: value }));
+        setUpdatedCustomer(prev => ({ ...prev, [name]: value }));
     };
 
     const handleAvatarChange = (e) => {
@@ -41,32 +41,32 @@ const AgencyProfile = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const formData = new FormData();
-        formData.append('firstName', updatedAgency.firstName);
-        formData.append('lastName', updatedAgency.lastName);
-        formData.append('address', updatedAgency.address);
-        formData.append('gender', updatedAgency.gender); // Assuming you handle gender in your form
-        formData.append('phone', updatedAgency.phone);
+        formData.append('firstName', updatedCustomer.firstName);
+        formData.append('lastName', updatedCustomer.lastName);
+        formData.append('address', updatedCustomer.address);
+        formData.append('gender', updatedCustomer.gender); // Assuming you handle gender in your form
+        formData.append('phone', updatedCustomer.phone);
         if (avatar) {
             formData.append('FileImage', avatar); // Ensure 'FileImage' matches the backend model
         }
 
         try {
-            await axios.post(`https://localhost:7137/api/Agencies/UploadAgencyAndImage/${agencyId}`, formData, {
+            await axios.post(`https://localhost:7137/api/Customers/UploadInformationAndImage/${customerId}`, formData, {
                 headers: { 'Content-Type': 'multipart/form-data' },
             });
-            alert('Agency updated successfully');
+            alert('Customer updated successfully');
             setEditMode(false);
-            fetchAgencyInfo();
-            window.location.reload(); // Refresh agency data
+            fetchCustomerInfo();
+            window.location.reload(); // Refresh Customer data
         } catch (error) {
-            console.error("Failed to update agency info", error);
-            alert('Failed to update agency info');
+            console.error("Failed to update customer info", error);
+            alert('Failed to update customer info');
         }
     };
 
 
 
-    if (!agency) return <div>Loading...</div>;
+    if (!customer) return <div>Loading...</div>;
 
     return (
         <div className="min-h-screen flex flex-col">
@@ -79,9 +79,9 @@ const AgencyProfile = () => {
                                 <div className="bg-gray-800 w-full h-full px-3 pt-10">
                                     <div className="flex justify-center ">
                                         <div className="w-64 h-64 rounded-full overflow-hidden border-4 border-yellow-300 ">
-                                            <img src={agency.avatar} alt="Agency Avatar" className="object-cover w-full h-full" />
+                                            <img src={customer.avatar} alt="Customer Avatar" className="object-cover w-full h-full" />
                                         </div>
-                                        <h2 className="mt-8 pl-40 text-5xl font-semibold text-white text-center py-16 ">{`${agency.firstName} ${agency.lastName}`}</h2>
+                                        <h2 className="mt-8 pl-40 text-5xl font-semibold text-white text-center py-16 ">{`${customer.firstName} ${customer.lastName}`}</h2>
                                     </div>
 
                                 </div>
@@ -90,19 +90,19 @@ const AgencyProfile = () => {
                                         <div className="space-y-8">
                                             <div className="p-4 border bg-gray-100 border-gray-200 rounded-lg ">
                                                 <p className="text-2xl text-gray-700">
-                                                    <span className="font-semibold">Address:</span> {agency.address}
+                                                    <span className="font-semibold">Address:</span> {customer.address}
                                                 </p>
                                             </div>
 
                                             <div className="p-4 border bg-gray-100 border-gray-200 rounded-lg ">
                                                 <p className="text-2xl  text-gray-700">
-                                                    <span className="font-semibold">Gender:</span> {agency.gender}
+                                                    <span className="font-semibold">Gender:</span> {customer.gender}
                                                 </p>
                                             </div>
 
                                             <div className="p-4 border bg-gray-100 border-gray-200 rounded-lg ">
                                                 <p className="text-2xl text-gray-700">
-                                                    <span className="font-semibold">Phone:</span> {agency.phone}
+                                                    <span className="font-semibold">Phone:</span> {customer.phone}
                                                 </p>
                                             </div>
                                         </div>
@@ -138,29 +138,29 @@ const AgencyProfile = () => {
                                             <label className="block gray-100 text-sm font-medium text-gray-200 mb-2">Avatar</label>
                                             <input type="file" onChange={handleAvatarChange} className="block bg-gray-100 w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:border file:border-gray-100 file:bg-gray-300 file:rounded-md file:text-sm file:font-semibold file:bg-white file:text-gray-700 hover:file:bg-gray-50" />
                                             {/* Show the existing avatar if no new avatar is selected, otherwise show the new avatar preview */}
-                                            <img src={avatar ? URL.createObjectURL(avatar) : agency.avatar} alt="Agency Avatar" className="mt-4 w-auto h-48 rounded-lg" />
+                                            <img src={avatar ? URL.createObjectURL(avatar) : customer.avatar} alt="Customer Avatar" className="mt-4 w-auto h-48 rounded-lg" />
                                         </div>
 
 
                                         <div>
                                             <label className="block text-sm font-medium text-gray-200">First Name</label>
-                                            <input type="text" name="firstName" value={updatedAgency.firstName || ''} onChange={handleChange} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500" />
+                                            <input type="text" name="firstName" value={updatedCustomer.firstName || ''} onChange={handleChange} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500" />
                                         </div>
                                         <div>
                                             <label className="block text-sm font-medium text-gray-200">Last Name</label>
-                                            <input type="text" name="lastName" value={updatedAgency.lastName || ''} onChange={handleChange} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500" />
+                                            <input type="text" name="lastName" value={updatedCustomer.lastName || ''} onChange={handleChange} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500" />
                                         </div>
                                         <div>
                                             <label className="block text-sm font-medium text-gray-200">Address</label>
-                                            <input type="text" name="address" value={updatedAgency.address || ''} onChange={handleChange} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500" />
+                                            <input type="text" name="address" value={updatedCustomer.address || ''} onChange={handleChange} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500" />
                                         </div>
                                         <div>
                                             <label className="block text-sm font-medium text-gray-200">Gender</label>
-                                            <input type="text" name="gender" value={updatedAgency.gender || ''} onChange={handleChange} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500" />
+                                            <input type="text" name="gender" value={updatedCustomer.gender || ''} onChange={handleChange} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500" />
                                         </div>
                                         <div>
                                             <label className="block text-sm font-medium text-gray-200">Phone</label>
-                                            <input type="text" name="phone" value={updatedAgency.phone || ''} onChange={handleChange} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500" />
+                                            <input type="text" name="phone" value={updatedCustomer.phone || ''} onChange={handleChange} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500" />
                                         </div>
 
                                         <div className="flex  py-4 items-center justify-between space-x-4">
@@ -181,4 +181,4 @@ const AgencyProfile = () => {
     );
 };
 
-export default AgencyProfile;
+export default CustomerProfile;

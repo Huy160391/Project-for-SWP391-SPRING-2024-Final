@@ -80,7 +80,7 @@ const EditPostPage = () => {
 
     const handleImageChange = (e) => {
         if (e.target.files.length) {
-            setImage(e.target.files[0]); // Assuming you want to handle one file
+                setImage(e.target.files[0]); // Assuming you want to handle one file
         }
     };
     const [errors, setErrors] = useState({});

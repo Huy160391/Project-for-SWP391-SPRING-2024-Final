@@ -41,6 +41,16 @@ import FeaturedProjects from './Components/Project/FeaturedProjects ';
 import PropertyDetail from './Components/Property/ApartmentDetail';
 import PropertyList from './Components/Property/ApartmentList';
 import Registration from './Components/Register/RegistrationForm';
+import ViewListBooking from './Components/DashboardAgency/ViewListBooking';
+import DashboardToolOfAgency from './Components/DashboardAgency/DashboardToolOfAgency';
+import AgencyProfile from './Components/DashboardAgency/AgencyProfile';
+import OrderHistoryOfAgency from './Components/DashboardAgency/OrderHistoryOfAgency';
+import DashboardCustomer from './Components/DashboardCustomer/DashboardCustomer';
+import OderHistoryOfCustomer from './Components/DashboardCustomer/OderHistoryOfCustomer';
+import CustomerProfile from './Components/DashboardCustomer/CustomerProfile';
+import ViewBookingOfCustomer from './Components/DashboardCustomer/ViewBookingOfCustomer';
+import ViewOrderBillOfAgency from './Components/DashboardAgency/ViewOderBillOfAgency';
+import ViewOderBillOfCustomer from './Components/DashboardCustomer/ViewOderBillOfCustomer';
 
 
 // import Login from './Components/Login/Login';
@@ -87,6 +97,13 @@ function App() {
         <Route path="/viewlistbooking/:apartmentId" element={<ViewListBooking />} />
         <Route path="/dashboard/:agencyId" element={<DashboardToolOfAgency />} />
         <Route path="/agencyprofile/:agencyId" element={<AgencyProfile />} />
+        <Route path="/order-history-agency/:agencyId" element={<OrderHistoryOfAgency />} />
+        <Route path="/dashboard-customer/:customerId" element={<DashboardCustomer />} />
+        <Route path="/order-history-customer/:customerId" element={<OderHistoryOfCustomer />} />
+        <Route path="/customer-profile/:customerId" element={<CustomerProfile />} />
+        <Route path="/view-booking-of-customer/:customerId" element={<ViewBookingOfCustomer />} />
+        <Route path="/view-order-bill-of-agency/:orderId" element={<ViewOrderBillOfAgency />} />
+        <Route path="/view-order-bill-of-customer/:orderId" element={<ViewOderBillOfCustomer />} />
 
         {/* <Route path="/login" element={<Login />} /> */}
         {/* The Route for RealEstateListing should also have a path defined */}

@@ -49,7 +49,7 @@ const Registration = () => {
         },
       });
       console.log(response.data);
-      navigate('/investordashboard');
+      navigate('/login');
       alert('Registration successful!');
     } catch (error) {
       console.error('Registration failed:', error.response?.data?.message || error.message);
