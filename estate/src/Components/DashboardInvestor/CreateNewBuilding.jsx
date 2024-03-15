@@ -1,18 +1,17 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import Sidebar from './Sidebar';
 
-const CreateNewProject = () => {
+const CreateNewBuilding = () => {
   const [projectDetails, setProjectDetails] = useState({
     projectId: '',
-    // description: '',
     name: '',
     numberOfFloor: '',
     numberOfApartment: '',
     fileImage: null,
   });
   const [projects, setProjects] = useState([]);
-  const [isSubmitting, setIsSubmitting] = useState(false); // To handle form submission state
+  const [buildings, setBuildings] = useState([]); // Thêm state để lưu trữ danh sách các tòa nhà
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -23,14 +22,61 @@ const CreateNewProject = () => {
         console.error('Error fetching projects:', error);
       }
     };
+
+    const fetchBuildings = async () => {
+      try {
+        const response = await axios.get('https://localhost:7137/api/Buildings');
+        setBuildings(response.data);
+      } catch (error) {
+        console.error('Error fetching buildings:', error);
+      }
+    };
+
     fetchProjects();
+    fetchBuildings();
   }, []);
+  useEffect(() => {
+    if (projectDetails.projectId) {
+      const selectedProject = projects.find(project => project.projectId === projectDetails.projectId);
+      if (selectedProject) {
+        const projectPrefix = selectedProject.name; // Giả sử tên project là 'S1', 'S2', ...
+        // Cập nhật tên building dựa trên tên project, bạn có thể điều chỉnh logic tạo tên ở đây
+        setProjectDetails(prevDetails => ({
+          ...prevDetails,
+          name: `${projectPrefix}` // Thay đổi này sẽ đặt tên mặc định cho building dựa trên project
+        }));
+      }
+    }
+  }, [projectDetails.projectId, projects]);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setProjectDetails(prevDetails => ({ ...prevDetails, [name]: value }));
+    if (name === 'name') {
+      const selectedProject = projects.find(project => project.projectId === projectDetails.projectId);
+      if (selectedProject) {
+        const selectedProjectPrefix = selectedProject.name; // 'S1', 'S2', ...
+        // Kiểm tra giá trị nhập vào có phải là tiền tố của dự án đang được chọn
+        if (value.startsWith(selectedProjectPrefix)) {
+          // Lấy phần số sau tiền tố
+          const buildingNumber = value.slice(selectedProjectPrefix.length);
+          // Kiểm tra xem phần số có hợp lệ (chỉ chấp nhận 2 chữ số)
+          if (buildingNumber.length <= 2 && /^[0-9]*$/.test(buildingNumber)) {
+            setProjectDetails(prevDetails => ({ ...prevDetails, [name]: value }));
+          } else if (buildingNumber.length > 2) {
+            // Nếu người dùng nhập quá 2 chữ số, hiển thị thông báo và không cập nhật giá trị
+            alert("You can only add two more digits after the project prefix.");
+          }
+        } else if (value === selectedProjectPrefix || value === '') {
+          // Cho phép xóa hoàn toàn hoặc chỉ có tiền tố
+          setProjectDetails(prevDetails => ({ ...prevDetails, [name]: value }));
+        } else {
+          alert(`Building name must start with the project prefix "${selectedProjectPrefix}".`);
+        }
+      }
+    } else {
+      setProjectDetails(prevDetails => ({ ...prevDetails, [name]: value }));
+    }
   };
-
   const handleFileChange = (event) => {
     setProjectDetails(prevDetails => ({
       ...prevDetails,
@@ -40,14 +86,32 @@ const CreateNewProject = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    // Kiểm tra xem tên tòa nhà đã tồn tại hay chưa
+    const isBuildingNameExists = buildings.some(building => building.name === projectDetails.name);
+
+    if (isBuildingNameExists) {
+      alert("A building with this name already exists. Please choose a different name.");
+      return;
+    }
+
+    const floors = parseInt(projectDetails.numberOfFloor, 10);
+    let apartments = parseInt(projectDetails.numberOfApartment, 10);
+    const minimumApartments = floors * 10; // Điều kiện mới: Mỗi tầng cần có ít nhất 10 phòng
+
+    // Kiểm tra các điều kiện: số phòng phải lớn hơn hoặc bằng số tầng nhân 10 và số phòng phải chia hết cho số tầng
+    if (!floors || !apartments || apartments < minimumApartments || apartments % floors !== 0) {
+      alert(`Number of apartments must be at least ${minimumApartments} (10 per floor) and divisible by the number of floors.`);
+      return;
+    }
+
     setIsSubmitting(true);
-  
-    // Thiết lập giá trị mặc định cho description nếu trường này để trống
+
     const finalDetails = {
       ...projectDetails,
       description: projectDetails.description || 'No description provided.',
     };
-  
+
     const formData = new FormData();
     Object.keys(finalDetails).forEach(key => {
       if (key === 'fileImage') {
@@ -67,19 +131,20 @@ const CreateNewProject = () => {
       window.location.href = '/managerbuildings'; // Redirect to /managerbuildings page
     } catch (error) {
       console.error('Error creating the building:', error);
-      alert('Error creating the building');
     } finally {
       setIsSubmitting(false);
     }
   };
-  
+  const handleBack = () => {
+    window.history.back();
+  };
+
 
   return (
-    <div className="investor-dashboard flex">
-    <Sidebar />
-    <div className="create-project-container flex-grow p-8">
-      <h1 className="text-2xl font-bold mb-8">Create New Project</h1>
-      <form className="project-form space-y-6" onSubmit={handleSubmit}>
+    <div className="container mx-auto mt-10">
+    <div className="bg-white p-8 rounded-lg shadow-lg">
+      <h1 className="text-2xl font-bold mb-8 text-center">Create New Building</h1>
+      <form className="space-y-4" onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="projectId" className="block mb-2 text-sm font-medium text-gray-900">Project Name</label>
           <select id="projectId" name="projectId" onChange={handleInputChange} value={projectDetails.projectId} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
@@ -125,11 +190,13 @@ const CreateNewProject = () => {
           <button type="button" className="cancel-button bg-gray-200 text-gray-800 hover:bg-gray-300 px-4 py-2 rounded-md" disabled={isSubmitting}>Cancel</button>
           <button type="submit" className="save-button bg-blue-500 text-white hover:bg-blue-600 px-4 py-2 rounded-md" disabled={isSubmitting}>Save</button>
         </div>
+      
       </form>
+      <button onClick={handleBack} className="mb-4 bg-gray-200 text-gray-800 hover:bg-gray-300 px-4 py-2 rounded-md">Back</button>
     </div>
   </div>
 
   );
 };
 
-export default CreateNewProject;
+export default CreateNewBuilding;

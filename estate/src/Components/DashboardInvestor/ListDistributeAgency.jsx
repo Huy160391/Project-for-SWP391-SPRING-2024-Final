@@ -2,7 +2,6 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './DashboardInvestor.css';
-import Sidebar from './Sidebar';
 
 const ListDistributeAgency = () => {
   const [managersData, setManagersData] = useState([]);
@@ -36,7 +35,6 @@ const ListDistributeAgency = () => {
 
   return (
     <div className="investor-dashboard">
-      <Sidebar />
       <div className="managers-container">
         <h1>Managers</h1>
         <div className="managers-search">

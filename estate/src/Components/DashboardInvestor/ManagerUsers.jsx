@@ -1,8 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import "./DashboardInvestor.css";
-import Sidebar from "./Sidebar";
+
 
 const ManagerUsers = () => {
   const [managersData, setManagersData] = useState([]);
@@ -68,6 +67,7 @@ const ManagerUsers = () => {
       }
     }
   };
+  
 
   const filteredData = searchQuery
     ? managersData.filter(
@@ -76,26 +76,32 @@ const ManagerUsers = () => {
           manager.roleId.toLowerCase().includes(searchQuery.toLowerCase())
       )
     : managersData;
-
+    const handleBack = () => {
+      window.history.back();
+    };
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error loading managers: {error}</p>;
 
   return (
     <div className="flex min-h-screen">
-    <Sidebar /> {/* Assuming Sidebar is styled appropriately */}
     <div className="flex-1 p-8">
-      <h1 className="text-2xl font-semibold mb-6">Managers</h1>
       <div className="flex items-center mb-6">
+        <button
+          onClick={handleBack}
+          className="px-4 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 mr-4"
+        >
+          Back
+        </button>
         <input
           type="text"
           placeholder="Search by username or role..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full p-2 mr-4 text-gray-700 bg-white border border-gray-300 rounded shadow focus:outline-none focus:border-blue-500"
+          className="w-full p-2 text-gray-700 bg-white border border-gray-300 rounded shadow focus:outline-none focus:border-blue-500"
         />
         <Link
           to="/addnewagency"
-          className="flex items-center justify-center px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+          className="ml-4 px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
         >
           + New User
         </Link>

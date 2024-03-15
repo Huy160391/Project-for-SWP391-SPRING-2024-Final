@@ -31,15 +31,16 @@ import ReceiveFloorDistribution from './Components/DashboardAgency/ReceiveFloorD
 import Footer from './Components/Footer/Footer';
 import Example from './Components/Header/Header';
 
+import AgencyProfile from './Components/DashboardAgency/AgencyProfile';
+import DashboardToolOfAgency from './Components/DashboardAgency/DashboardToolOfAgency';
+import ViewListBooking from './Components/DashboardAgency/ViewListBooking';
+import EditBuilding from './Components/DashboardInvestor/EditBuilding';
 import PostsListing from './Components/Post/PostsList';
 import PostDetail from './Components/PostDetail/PostDetail';
 import FeaturedProjects from './Components/Project/FeaturedProjects ';
 import PropertyDetail from './Components/Property/ApartmentDetail';
 import PropertyList from './Components/Property/ApartmentList';
 import Registration from './Components/Register/RegistrationForm';
-import ViewListBooking from './Components/DashboardAgency/ViewListBooking';
-import DashboardToolOfAgency from './Components/DashboardAgency/DashboardToolOfAgency';
-import AgencyProfile from './Components/DashboardAgency/AgencyProfile';
 
 
 // import Login from './Components/Login/Login';
@@ -61,6 +62,7 @@ function App() {
         <Route path="/managerdistribute" element={<ManagerDistribute />} />
         <Route path="/managerusers" element={<ManagerUsers />} />
         <Route path="/managerbuildings" element={<Managerbuildings />} />
+        <Route path="/editbuilding/:buildingId" element={<EditBuilding />} />
         <Route path="/investordashboard" element={<InvestorDashboard />} />
 
         <Route path="/property/:buildingId" element={<PropertyList />} />
