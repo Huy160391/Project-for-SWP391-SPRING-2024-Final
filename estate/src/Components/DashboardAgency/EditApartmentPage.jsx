@@ -1,23 +1,19 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-
+import axios from 'axios';
 
 const EditApartmentPage = () => {
     const [apartment, setApartment] = useState({
+        description: '',
         numberOfBedrooms: 0,
         numberOfBathrooms: 0,
         furnitureType: '',
         price: 0,
         area: 0,
-        description: '',
-        agencyId: '',
-        FileImage: null
     });
     const [image, setImage] = useState(null);
     const { apartmentId } = useParams();
     const navigate = useNavigate();
-    const [editError, setEditError] = useState('');
     const navigateAndReload = (path) => {
         navigate(path);
         window.location.reload();
@@ -27,12 +23,7 @@ const EditApartmentPage = () => {
         const fetchApartmentData = async () => {
             try {
                 const response = await axios.get(`https://localhost:7137/api/Apartments/${apartmentId}`);
-                setApartment({
-                    ...response.data,
-                    FileImage: null // Assuming you want to reset the file image initially
-                });
-                const imageResponse = await axios.get(`https://localhost:7137/api/Apartments/GetApartmentImage/${apartmentId}`, { responseType: 'blob' });
-                setImage(URL.createObjectURL(imageResponse.data));
+                setApartment({ ...response.data, ApartmentType: null }); // Reset the file image initially
             } catch (error) {
                 console.error('Failed to fetch apartment data:', error);
             }
@@ -42,56 +33,51 @@ const EditApartmentPage = () => {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setApartment(prevState => ({
-            ...prevState,
-            [name]: value
-        }));
+        setApartment(prevState => ({ ...prevState, [name]: value }));
     };
 
     const handleImageChange = (e) => {
         if (e.target.files.length) {
-            setImage(e.target.files[0]);
+            setImage(e.target.files[0]); // Assuming you want to handle one file
         }
     };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-
-        // Validation logic here
-
         const formData = new FormData();
-        Object.entries(apartment).forEach(([key, value]) => {
-            formData.append(key, value);
-        });
+        formData.append('description', apartment.description);
+        formData.append('numberOfBedrooms', apartment.numberOfBedrooms);
+        formData.append('numberOfBathrooms', apartment.numberOfBathrooms);
+        formData.append('furnitureType', apartment.furnitureType);
+        formData.append('price', apartment.price);
+        formData.append('area', apartment.area);
 
-        if (image instanceof Blob) { // Ensure there's an image to upload
-            formData.append('FileImage', image);
+        if (image) { // Ensure there's an image to uploadnpm 
+            formData.append('ApartmentType', image);
         }
-
+        
         try {
-            await axios.post(`https://localhost:7137/api/Apartments/UploadInformationWithImage/${apartment.apartmentId}`, formData, {
+            await axios.post(`https://localhost:7137/api/Apartments/UploadInformationWithImage/${apartmentId}`, formData, {
                 headers: { 'Content-Type': 'multipart/form-data' },
             });
             alert('Apartment updated successfully');
-            navigateAndReload('/apartmentlist'); // Adjust the route as necessary
+            navigateAndReload(`/ManagerListApartmentOfAgency/${apartment.agencyId}/${apartment.buildingId}`);
+ // Adjust the route as necessary
         } catch (error) {
             console.error('Error updating apartment:', error);
         }
     };
-
+ console.log("concak", apartmentId)
     return (
         <div className="flex min-h-screen bg-gray-100">
-            
             <div className="flex-grow max-w-4xl mx-auto p-8 bg-white shadow-lg rounded-lg">
                 <h1 className="text-3xl font-bold text-gray-900 mb-10">Edit Apartment</h1>
-
                 <form onSubmit={handleSubmit} className="space-y-6">
-                    {/* Form fields similar to the EditPostPage.jsx structure, adapt as necessary for your apartment data */}
-                    {/* Example for one field, you can replicate for others */}
-                     <div className="form-group">
-                        <label className="text-gray-700 font-semibold block mb-2">Upload New Apartment Image {apartment.apartmentId}</label>
+                    {/* Insert form fields here */}
+                    <div className="form-group">
+                        <label className="text-gray-700 font-semibold block mb-2">Upload New Apartment Image</label>
                         <input type="file" className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none" onChange={handleImageChange} />
-                        {image && <img src={typeof image === 'string' ? image : URL.createObjectURL(image)} alt="Apartment" className="mt-4 w-auto h-48 rounded-lg" />}
+                        {image && <img src={URL.createObjectURL(image)} alt="Apartment Preview" className="mt-4 w-auto h-48 rounded-lg" />}
                     </div>
                     <div className="form-group">
                         <label className="text-gray-700 font-semibold block mb-2">Description</label>

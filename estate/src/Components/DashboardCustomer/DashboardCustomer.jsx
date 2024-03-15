@@ -1,19 +1,19 @@
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 
-const DashboardToolOfAgency = () => {
-    const { agencyId } = useParams();
+const DashboardCustomer = () => {
+    const { customerId } = useParams();
     const dashboardItems = [
-        { name: 'Receive Floor Distribution', path: `/ReceiveFloorDistribution/${agencyId}` },
-        { name: 'Your Profile', path: `/agencyprofile/${agencyId}` },
-        { name: 'Oder History', path: `/order-history-agency/${agencyId}` },
-        // Add more functionalities as needed
+        { name: 'View Your Booking', path: `/view-booking-of-customer/${customerId}` },
+        { name: 'Your Profile', path: `/customer-profile/${customerId}` },
+        { name: 'Order History', path: `/order-history-customer/${customerId}` },
+        // Add more customer-specific functionalities as needed
     ];
 
     return (
         <div className="flex min-h-screen bg-gray-50">
             <div className="max-w-4xl mx-auto py-8 h-max bg-gray-50 rounded-lg shadow-lg w-full">
-                <h2 className="text-3xl font-semibold text-center text-gray-800 mb-10">Agency Dashboard</h2>
+                <h2 className="text-3xl font-semibold text-center text-gray-800 mb-10">Customer Dashboard</h2>
                 <div className="grid grid-cols-2 gap-6 p-4">
                     {dashboardItems.map((item, index) => (
                         <Link to={item.path} key={index}
@@ -30,4 +30,4 @@ const DashboardToolOfAgency = () => {
     );
 };
 
-export default DashboardToolOfAgency;
+export default DashboardCustomer;
