@@ -11,7 +11,7 @@ const ApartmentCard = ({ apartment }) => {
         onError={(e) => (e.target.src = "https://via.placeholder.com/400x300")}
       />
       <div className="p-4 bg-white flex-grow">
-        <h3 className="font-bold text-xl mb-2">{apartment.name || `Apartment ${apartment.apartmentId}`}</h3> {/* Adjust based on actual property names. */}
+        <h3 className="font-bold text-xl mb-2">{apartment.name || `Apartment: ${typeof apartment.apartmentId === 'string' && apartment.apartmentId.includes(":") ? apartment.apartmentId.split(":").pop() : apartment.apartmentId}`}</h3> {/* Adjust based on actual property names. */}
         <div className="text-gray-700 text-base mb-4">
           <p>Bedrooms: {apartment.numberOfBedrooms}</p>
           <p>Bathrooms: {apartment.numberOfBathrooms}</p>
