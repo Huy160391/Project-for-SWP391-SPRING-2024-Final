@@ -38,21 +38,20 @@ const AddNewAgency = () => {
     let newErrors = {};
 
     // Validation patterns
-    const namePattern = /^[a-zA-Z\s\u00C0-\u00FF]+$/; // Allows accented characters for names
+    const vietnamesePattern = /^[A-Z][a-z\u00C0-\u00FF]*(\s[a-z\u00C0-\u00FF]+)*$/; // Allows accented characters for names
     const phonePattern = /^\d{11}$/;
     const passwordPattern = /.{8,}/; // At least 8 characters, no other restrictions in this pattern
 
     // First name and Last name validation
-    if (!user.firstName.match(namePattern)) {
+    if (!user.firstName.match(vietnamesePattern)) {
       formIsValid = false;
       newErrors.firstName =
-        "First Name is invalid. Only letters and spaces are allowed.";
+        "First Name is invalid. It should start with a capital letter and can include lowercase letters, spaces, and accented characters.";
     }
-
-    if (!user.lastName.match(namePattern)) {
+    if (!user.lastName.match(vietnamesePattern)) {
       formIsValid = false;
       newErrors.lastName =
-        "Last Name is invalid. Only letters and spaces are allowed.";
+        "Last Name is invalid. It should start with a capital letter and can include lowercase letters, spaces, and accented characters.";
     }
     if (!user.username.trim()) {
       formIsValid = false;

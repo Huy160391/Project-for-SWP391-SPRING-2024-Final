@@ -25,7 +25,6 @@ import EditProperty from './Components/Property/EditProperty';
 import { AboutUs } from './Components/AboutUs/AboutUs';
 import AgentsPage from './Components/AgencyDetail/AgentsPage';
 import BuildingListing from './Components/Building/BuildingListing';
-import EditApartmentPage from './Components/DashboardAgency/EditApartmentPage';
 import ManagerListApartmentOfAgency from './Components/DashboardAgency/ManagerListApartmentOfAgency';
 import ReceiveFloorDistribution from './Components/DashboardAgency/ReceiveFloorDistribution';
 import Footer from './Components/Footer/Footer';
@@ -33,7 +32,15 @@ import Example from './Components/Header/Header';
 
 import AgencyProfile from './Components/DashboardAgency/AgencyProfile';
 import DashboardToolOfAgency from './Components/DashboardAgency/DashboardToolOfAgency';
+import EditApartmentPage from './Components/DashboardAgency/EditApartmentPage';
+import OrderHistoryOfAgency from './Components/DashboardAgency/OrderHistoryOfAgency';
 import ViewListBooking from './Components/DashboardAgency/ViewListBooking';
+import ViewOrderBillOfAgency from './Components/DashboardAgency/ViewOderBillOfAgency';
+import CustomerProfile from './Components/DashboardCustomer/CustomerProfile';
+import DashboardCustomer from './Components/DashboardCustomer/DashboardCustomer';
+import OderHistoryOfCustomer from './Components/DashboardCustomer/OderHistoryOfCustomer';
+import ViewBookingOfCustomer from './Components/DashboardCustomer/ViewBookingOfCustomer';
+import ViewOderBillOfCustomer from './Components/DashboardCustomer/ViewOderBillOfCustomer';
 import EditBuilding from './Components/DashboardInvestor/EditBuilding';
 import PostsListing from './Components/Post/PostsList';
 import PostDetail from './Components/PostDetail/PostDetail';
@@ -41,6 +48,8 @@ import FeaturedProjects from './Components/Project/FeaturedProjects ';
 import PropertyDetail from './Components/Property/ApartmentDetail';
 import PropertyList from './Components/Property/ApartmentList';
 import Registration from './Components/Register/RegistrationForm';
+
+
 //import ViewListBooking from './Components/DashboardAgency/ViewListBooking';
 //import DashboardToolOfAgency from './Components/DashboardAgency/DashboardToolOfAgency';
 //import AgencyProfile from './Components/DashboardAgency/AgencyProfile';
@@ -51,6 +60,7 @@ import CustomerProfile from './Components/DashboardCustomer/CustomerProfile';
 import ViewBookingOfCustomer from './Components/DashboardCustomer/ViewBookingOfCustomer';
 import ViewOrderBillOfAgency from './Components/DashboardAgency/ViewOderBillOfAgency';
 import ViewOderBillOfCustomer from './Components/DashboardCustomer/ViewOderBillOfCustomer';
+
 
 
 // import Login from './Components/Login/Login';
@@ -93,7 +103,7 @@ function App() {
         <Route path="/managerpost" element={<ManagerPosts />} />
         <Route path="/ReceiveFloorDistribution/:agencyId" element={<ReceiveFloorDistribution />} />
         <Route path="/ManagerListApartmentOfAgency/:agencyId/:buildingId" element={<ManagerListApartmentOfAgency />} />
-        <Route path="/edit-apartment/:apartmentId" element={<EditApartmentPage />} />
+        <Route path="/edit-apartment/:apartmentId" element={<EditApartmentPage/>} />
         <Route path="/viewlistbooking/:apartmentId" element={<ViewListBooking />} />
         <Route path="/dashboard/:agencyId" element={<DashboardToolOfAgency />} />
         <Route path="/agencyprofile/:agencyId" element={<AgencyProfile />} />

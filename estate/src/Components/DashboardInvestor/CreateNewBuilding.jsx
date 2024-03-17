@@ -100,10 +100,11 @@ const CreateNewBuilding = () => {
     const minimumApartments = floors * 10; // Điều kiện mới: Mỗi tầng cần có ít nhất 10 phòng
 
     // Kiểm tra các điều kiện: số phòng phải lớn hơn hoặc bằng số tầng nhân 10 và số phòng phải chia hết cho số tầng
-    if (!floors || !apartments || apartments < minimumApartments || apartments % floors !== 0) {
-      alert(`Number of apartments must be at least ${minimumApartments} (10 per floor) and divisible by the number of floors.`);
+    if (!floors || !apartments || apartments < minimumApartments || apartments % floors !== 0 || floors < 5) {
+      alert(`Number of floors must be at least 5, and number of apartments must be at least ${minimumApartments} (10 per floor) and divisible by the number of floors.`);
       return;
     }
+  
 
     setIsSubmitting(true);
 

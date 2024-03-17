@@ -105,9 +105,9 @@ const ManagerBuildings = () => {
                   Number apartments
                 </th>
 
-                <th className="text-left py-3 px-4 font-semibold text-sm text-gray-600 uppercase tracking-wider">
+                {/* <th className="text-left py-3 px-4 font-semibold text-sm text-gray-600 uppercase tracking-wider">
                   Actions
-                </th>
+                </th> */}
               </tr>
             </thead>
             <tbody className="text-gray-600">
@@ -120,14 +120,14 @@ const ManagerBuildings = () => {
                   {/* <td className="py-4 px-4">
                   <Link to={`/realestate/${manager.buildingId}`} className="text-blue-500 hover:text-blue-600">View</Link>
                 </td> */}
-                  <td className="py-4 px-4 flex items-center space-x-3">
+                  {/* <td className="py-4 px-4 flex items-center space-x-3">
                     <Link
                       to={`/editbuilding/${manager.buildingId}`}
                       className="text-sm bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-1 px-3 rounded focus:outline-none"
                     >
                       Edit
                     </Link>
-                  </td>
+                  </td> */}
                 </tr>
               ))}
             </tbody>

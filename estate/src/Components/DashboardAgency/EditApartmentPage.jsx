@@ -1,13 +1,13 @@
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
 
 const EditApartmentPage = () => {
     const [apartment, setApartment] = useState({
         description: '',
         numberOfBedrooms: 0,
         numberOfBathrooms: 0,
-        furnitureType: '',
+        furniture: '',
         price: 0,
         area: 0,
     });
@@ -48,7 +48,7 @@ const EditApartmentPage = () => {
         formData.append('description', apartment.description);
         formData.append('numberOfBedrooms', apartment.numberOfBedrooms);
         formData.append('numberOfBathrooms', apartment.numberOfBathrooms);
-        formData.append('furnitureType', apartment.furnitureType);
+        formData.append('furniture', apartment.furniture);
         formData.append('price', apartment.price);
         formData.append('area', apartment.area);
 
@@ -115,9 +115,9 @@ const EditApartmentPage = () => {
                         <label className="text-gray-700 font-semibold block mb-2">Furniture Type</label>
                         <input
                             type="text"
-                            name="furnitureType"
+                            name="furniture"
                             className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            value={apartment.furnitureType || ''}
+                            value={apartment.furniture || ''}
                             onChange={handleChange}
                         />
                     </div>
