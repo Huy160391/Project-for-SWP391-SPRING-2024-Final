@@ -50,13 +50,26 @@ import PropertyList from './Components/Property/ApartmentList';
 import Registration from './Components/Register/RegistrationForm';
 
 
+//import ViewListBooking from './Components/DashboardAgency/ViewListBooking';
+//import DashboardToolOfAgency from './Components/DashboardAgency/DashboardToolOfAgency';
+//import AgencyProfile from './Components/DashboardAgency/AgencyProfile';
+import OrderHistoryOfAgency from './Components/DashboardAgency/OrderHistoryOfAgency';
+import DashboardCustomer from './Components/DashboardCustomer/DashboardCustomer';
+import OderHistoryOfCustomer from './Components/DashboardCustomer/OderHistoryOfCustomer';
+import CustomerProfile from './Components/DashboardCustomer/CustomerProfile';
+import ViewBookingOfCustomer from './Components/DashboardCustomer/ViewBookingOfCustomer';
+import ViewOrderBillOfAgency from './Components/DashboardAgency/ViewOderBillOfAgency';
+import ViewOderBillOfCustomer from './Components/DashboardCustomer/ViewOderBillOfCustomer';
+
+
+
 // import Login from './Components/Login/Login';
 
 function App() {
   return (
     <div className="flex flex-col min-h-screen">
       <Example />
-      
+
       <Routes>
 
         <Route path="/" element={<Homepage />} />
@@ -88,7 +101,7 @@ function App() {
         <Route path="/view-post/:postId" element={<ViewPostPage />} />
         <Route path="/createnewpost" element={<CreateNewPost />} />
         <Route path="/managerpost" element={<ManagerPosts />} />
-        <Route path="/ReceiveFloorDistribution/:agencyId" element={<ReceiveFloorDistribution/>} />
+        <Route path="/ReceiveFloorDistribution/:agencyId" element={<ReceiveFloorDistribution />} />
         <Route path="/ManagerListApartmentOfAgency/:agencyId/:buildingId" element={<ManagerListApartmentOfAgency />} />
         <Route path="/edit-apartment/:apartmentId" element={<EditApartmentPage/>} />
         <Route path="/viewlistbooking/:apartmentId" element={<ViewListBooking />} />
@@ -106,7 +119,7 @@ function App() {
         {/* The Route for RealEstateListing should also have a path defined */}
         {/* Define other routes here */}
       </Routes>
-      <Footer/>
+      <Footer />
     </div>
   );
 }
