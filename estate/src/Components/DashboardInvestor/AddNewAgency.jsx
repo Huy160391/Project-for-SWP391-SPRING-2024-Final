@@ -1,7 +1,6 @@
-
-
+import emailjs from 'emailjs-com';
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const AddNewAgency = () => {
   const initialState = JSON.parse(localStorage.getItem("user")) || {
@@ -13,6 +12,7 @@ const AddNewAgency = () => {
     password: "",
     confirmPassword: "",
   };
+
 
   const [user, setUser] = useState(initialState);
   const [file, setFile] = useState(null);
@@ -32,6 +32,13 @@ const AddNewAgency = () => {
       setErrors({ ...errors, file: "" }); // Reset file input error if needed
     }
   };
+
+
+  useEffect(() => {
+    // Khởi tạo EmailJS SDK khi component được render
+    emailjs.init("e8nVRT8-ytw0WVA70");
+  }, []);
+
 
   const validateForm = () => {
     let formIsValid = true;
@@ -66,11 +73,6 @@ const AddNewAgency = () => {
       newErrors.address = "Address is required.";
     }
 
-    // Phone number validation
-    if (!user.phoneNumber.match(phonePattern)) {
-      formIsValid = false;
-      newErrors.phoneNumber = "Phone Number must have 11 digits.";
-    }
 
     // Password validation
     if (
@@ -90,6 +92,22 @@ const AddNewAgency = () => {
 
     setErrors(newErrors);
     return formIsValid;
+  };
+
+  const sendEmail = () => {
+    emailjs.send('Aptx4869', 'template_r7i6yha', {
+      email: user.phoneNumber, // Sử dụng số điện thoại làm email
+      username: user.username,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      password: user.password
+    })
+      .then((response) => {
+        console.log('Email sent successfully:', response);
+      })
+      .catch((error) => {
+        console.error('Email sending failed:', error);
+      });
   };
 
   const handleSubmit = async (e) => {
@@ -112,14 +130,15 @@ const AddNewAgency = () => {
 
     try {
       const response = await axios.post('https://localhost:7137/api/Agencies/PostAgencyWithImage', formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
       if (response.status) {
         setSuccess("Agency added successfully!");
+        // Send email here
+        sendEmail();
         // Optionally reset form here
       } else {
         setError("Failed to add agency.");
@@ -143,7 +162,7 @@ const AddNewAgency = () => {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="flex justify-center mb-4">
             <div className="relative w-24 h-24 bg-gray-200 rounded-full overflow-hidden">
-              <img src={user.avatarUrl || "default_avatar.png"} alt="Avatar" className="absolute w-full h-full object-cover"/>
+              <img src={user.avatarUrl || "default_avatar.png"} alt="Avatar" className="absolute w-full h-full object-cover" />
               <input
                 type="file"
                 name="fileImage"
@@ -164,7 +183,7 @@ const AddNewAgency = () => {
               />
               {errors.firstName && <p className="text-red-500 text-xs mt-1">{errors.firstName}</p>}
             </div>
-  
+
             <div>
               <input
                 type="text"
@@ -188,7 +207,7 @@ const AddNewAgency = () => {
               />
               {errors.username && <p className="text-red-500 text-xs mt-1">{errors.username}</p>}
             </div>
-   
+
             <div className="col-span-1 md:col-span-2">
               <input
                 type="text"
@@ -200,7 +219,7 @@ const AddNewAgency = () => {
               />
               {errors.address && <p className="text-red-500 text-xs mt-1">{errors.address}</p>}
             </div>
-  
+
             <div>
               <input
                 type="text"
@@ -212,7 +231,7 @@ const AddNewAgency = () => {
               />
               {errors.phoneNumber && <p className="text-red-500 text-xs mt-1">{errors.phoneNumber}</p>}
             </div>
-  
+
             <div>
               <input
                 type="password"
@@ -224,7 +243,7 @@ const AddNewAgency = () => {
               />
               {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password}</p>}
             </div>
-  
+
             <div>
               <input
                 type="password"
@@ -265,5 +284,5 @@ const AddNewAgency = () => {
       </div>
     </div>
   );
-  }
+}
 export default AddNewAgency;
