@@ -59,7 +59,7 @@ const InvestorDashboard = () => {
           <Link to="/managerdistribute" className="details-card bg-white shadow-lg rounded-lg p-4 flex items-center justify-center hover:bg-blue-500 hover:text-white transition duration-150 ease-in-out">
             <span>Distribute Project</span>
           </Link>
-  
+
         </section>
         <button
           onClick={handleBackClick}
