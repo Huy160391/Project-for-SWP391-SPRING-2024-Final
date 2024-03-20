@@ -1,4 +1,3 @@
-
 import emailjs from 'emailjs-com';
 import axios from "axios";
 import React, { useEffect, useState } from "react";
@@ -14,10 +13,8 @@ const PropertyDetail = () => {
   const [depositAmount, setDepositAmount] = useState(null);
   const [depositAmountOptions, setDepositAmountOptions] = useState(false);
   const [userData, setUserData] = useState(null);
-
   const [transactionCode, setTransactionCode] = useState("");
-  const [userImage, setUserImage] = useState(null); // Thêm state để lưu trữ ảnh từ người dùng
-
+  const [userImage, setUserImage] = useState(null);
 
   useEffect(() => {
     const fetchApartment = async () => {
@@ -33,10 +30,8 @@ const PropertyDetail = () => {
   }, [apartmentId]);
 
   useEffect(() => {
-
     emailjs.init("e8nVRT8-ytw0WVA70");
   }, []);
-
 
   const sendEmail = () => {
     emailjs.send('Aptx4869', 'template_c0nsj3h', {
@@ -54,26 +49,23 @@ const PropertyDetail = () => {
   };
 
   const handleTransactionCodeChange = (event) => {
-    setTransactionCode(event.target.value); // Cập nhật state khi người dùng nhập mã giao dịch
+    setTransactionCode(event.target.value);
   };
-=======
-    if (apartment.buildingId) {
-      const fetchBuilding = async () => {
-        try {
-          const response = await axios.get(`https://localhost:7137/api/Buildings/${apartment.buildingId}`);
-          setBuilding(response.data);
-        } catch (error) {
-          console.error("Error fetching building data:", error);
-        }
-      };
 
-      fetchBuilding();
-    }
-  }, [apartment.buildingId]);
+  if (apartment.buildingId) {
+    const fetchBuilding = async () => {
+      try {
+        const response = await axios.get(`https://localhost:7137/api/Buildings/${apartment.buildingId}`);
+        setBuilding(response.data);
+      } catch (error) {
+        console.error("Error fetching building data:", error);
+      }
+    };
 
+    fetchBuilding();
+  }
 
   const handleBooking = async () => {
-    // Check if user is logged in
     const userDataString = localStorage.getItem("UserData");
     if (!userDataString) {
       navigate("/login");
@@ -81,35 +73,29 @@ const PropertyDetail = () => {
     }
     const userData = JSON.parse(userDataString);
 
-    // Check user role
     if (userData.data.roleId !== "Customer") {
       navigate("/login");
       return;
     }
 
-    // Show deposit amount options
     setDepositAmountOptions(true);
     setUserData(userData);
   };
-
 
   const handleDepositSelect = (amount) => {
     setDepositAmount(amount);
   };
 
-  // Xử lý khi người dùng chọn hình ảnh
   const handleImageUpload = (event) => {
-    setImageFile(event.target.files[0]);
+    setUserImage(event.target.files[0]);
   };
 
   const handleConfirmBooking = async () => {
     try {
-
-      if (imageFile) {
+      if (userImage) {
         const formData = new FormData();
-        formData.append("image", imageFile);
+        formData.append("image", userImage);
 
-        // Gửi request POST để tải lên hình ảnh
         await axios.post(
           `https://localhost:7137/api/Apartments/UploadImage/${apartmentId}`,
           formData,
@@ -120,7 +106,7 @@ const PropertyDetail = () => {
           }
         );
       }
-      // Call booking API with selected deposit amount
+
       const customerResponse = await axios.get(
         `https://localhost:7137/api/Customers/GetCustomerByUserID/${userData.data.userId}`
       );
@@ -215,35 +201,27 @@ const PropertyDetail = () => {
               <div className="flex items-center">
                 <button
                   onClick={() => handleDepositSelect(0.2)}
-                  className={`mr-2 py-1 px-3 rounded ${depositAmount === 0.2 ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-600'
-                    }`}
-                >
-                  20%
-                </button>
-                <button
-                  onClick={() => handleDepositSelect(0.5)}
                   className={`mr-2 py-1 px-3 rounded ${depositAmount === 0.5 ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-600'
                     }`}
                 >
                   50%
                 </button>
               </div>
-
               <div className="mt-4">
                 <label htmlFor="transactionCode" className="text-lg text-gray-600">Transaction Code:</label>
                 <input type="text" id="transactionCode" value={transactionCode} onChange={handleTransactionCodeChange} className="mt-2 p-2 border border-gray-300 rounded" />
-
-              {imageFile && (
-                <div className="mt-4">
-                  <img src={URL.createObjectURL(imageFile)} alt="Uploaded" className="mt-2" style={{ maxWidth: "200px" }} />
-                </div>
-              )}
-              <div className="mt-4">
-                <p className="text-lg text-gray-600">Upload Payment Image:</p>
-                <input type="file" onChange={handleImageUpload} />
-
               </div>
-
+              <div className="mt-4">
+                {userImage && (
+                  <div className="mt-4">
+                    <img src={URL.createObjectURL(userImage)} alt="Uploaded" className="mt-2" style={{ maxWidth: "200px" }} />
+                  </div>
+                )}
+                <div className="mt-4">
+                  <p className="text-lg text-gray-600">Upload Payment Image:</p>
+                  <input type="file" onChange={handleImageUpload} />
+                </div>
+              </div>
               <button
                 onClick={handleConfirmBooking}
                 className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
