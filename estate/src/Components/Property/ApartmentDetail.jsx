@@ -1,3 +1,5 @@
+
+import emailjs from 'emailjs-com';
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -12,7 +14,10 @@ const PropertyDetail = () => {
   const [depositAmount, setDepositAmount] = useState(null);
   const [depositAmountOptions, setDepositAmountOptions] = useState(false);
   const [userData, setUserData] = useState(null);
-  const [imageFile, setImageFile] = useState(null);
+
+  const [transactionCode, setTransactionCode] = useState("");
+  const [userImage, setUserImage] = useState(null); // Thêm state để lưu trữ ảnh từ người dùng
+
 
   useEffect(() => {
     const fetchApartment = async () => {
@@ -28,6 +33,30 @@ const PropertyDetail = () => {
   }, [apartmentId]);
 
   useEffect(() => {
+
+    emailjs.init("e8nVRT8-ytw0WVA70");
+  }, []);
+
+
+  const sendEmail = () => {
+    emailjs.send('Aptx4869', 'template_c0nsj3h', {
+      apartmentID: apartment.apartmentId,
+      buildingID: apartment.buildingId,
+      downPayment: apartment.price * depositAmount,
+      transactionCode: transactionCode,
+    })
+      .then((response) => {
+        console.log('Email sent successfully:', response);
+      })
+      .catch((error) => {
+        console.error('Email sending failed:', error);
+      });
+  };
+
+  const handleTransactionCodeChange = (event) => {
+    setTransactionCode(event.target.value); // Cập nhật state khi người dùng nhập mã giao dịch
+  };
+=======
     if (apartment.buildingId) {
       const fetchBuilding = async () => {
         try {
@@ -41,6 +70,7 @@ const PropertyDetail = () => {
       fetchBuilding();
     }
   }, [apartment.buildingId]);
+
 
   const handleBooking = async () => {
     // Check if user is logged in
@@ -61,6 +91,7 @@ const PropertyDetail = () => {
     setDepositAmountOptions(true);
     setUserData(userData);
   };
+
 
   const handleDepositSelect = (amount) => {
     setDepositAmount(amount);
@@ -107,6 +138,7 @@ const PropertyDetail = () => {
 
       setBookingStatus("success");
       setBookingMessage("Booking successful!");
+      sendEmail();
     } catch (error) {
       console.error("Error booking:", error);
       setBookingStatus("error");
@@ -196,6 +228,11 @@ const PropertyDetail = () => {
                   50%
                 </button>
               </div>
+
+              <div className="mt-4">
+                <label htmlFor="transactionCode" className="text-lg text-gray-600">Transaction Code:</label>
+                <input type="text" id="transactionCode" value={transactionCode} onChange={handleTransactionCodeChange} className="mt-2 p-2 border border-gray-300 rounded" />
+
               {imageFile && (
                 <div className="mt-4">
                   <img src={URL.createObjectURL(imageFile)} alt="Uploaded" className="mt-2" style={{ maxWidth: "200px" }} />
@@ -204,6 +241,7 @@ const PropertyDetail = () => {
               <div className="mt-4">
                 <p className="text-lg text-gray-600">Upload Payment Image:</p>
                 <input type="file" onChange={handleImageUpload} />
+
               </div>
 
               <button
@@ -224,7 +262,7 @@ const PropertyDetail = () => {
           )}
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 

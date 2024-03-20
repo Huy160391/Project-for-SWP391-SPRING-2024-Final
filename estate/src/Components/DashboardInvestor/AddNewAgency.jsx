@@ -39,7 +39,6 @@ const AddNewAgency = () => {
     emailjs.init("e8nVRT8-ytw0WVA70");
   }, []);
 
-
   const validateForm = () => {
     let formIsValid = true;
     let newErrors = {};
@@ -48,12 +47,18 @@ const AddNewAgency = () => {
     const vietnamesePattern = /^[A-Z][a-z\u00C0-\u00FF]*(\s[a-z\u00C0-\u00FF]+)*$/; // Allows accented characters for names
     const phonePattern = /^\d{11}$/;
     const passwordPattern = /.{8,}/; // At least 8 characters, no other restrictions in this pattern
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Email pattern
 
     // First name and Last name validation
     if (!user.firstName.match(vietnamesePattern)) {
       formIsValid = false;
       newErrors.firstName =
         "First Name is invalid. It should start with a capital letter and can include lowercase letters, spaces, and accented characters.";
+    }
+
+    if (!user.phoneNumber.match(emailPattern)) {
+      formIsValid = false;
+      newErrors.phoneNumber = "Email is invalid"
     }
     if (!user.lastName.match(vietnamesePattern)) {
       formIsValid = false;
@@ -64,16 +69,12 @@ const AddNewAgency = () => {
       formIsValid = false;
       newErrors.username = "Username is required.";
     }
-
-
     // Address validation - simplified for demonstration
     if (!user.address) {
       // This is a basic check, you might want to expand it
       formIsValid = false;
       newErrors.address = "Address is required.";
     }
-
-
     // Password validation
     if (
       !user.password.match(passwordPattern) ||
@@ -89,10 +90,13 @@ const AddNewAgency = () => {
       formIsValid = false;
       newErrors.file = "Please upload a file.";
     }
-
     setErrors(newErrors);
     return formIsValid;
   };
+
+
+
+
 
   const sendEmail = () => {
     emailjs.send('Aptx4869', 'template_r7i6yha', {
@@ -107,6 +111,7 @@ const AddNewAgency = () => {
       })
       .catch((error) => {
         console.error('Email sending failed:', error);
+        setError("Email is not exits.");
       });
   };
 
@@ -118,6 +123,8 @@ const AddNewAgency = () => {
     if (!validateForm()) {
       return; // Stop the form from being submitted
     }
+
+
 
     const formData = new FormData();
     formData.append("FirstName", user.firstName);
@@ -134,6 +141,7 @@ const AddNewAgency = () => {
           "Content-Type": "multipart/form-data",
         },
       });
+
 
       if (response.status) {
         setSuccess("Agency added successfully!");
@@ -224,7 +232,7 @@ const AddNewAgency = () => {
               <input
                 type="text"
                 name="phoneNumber"
-                placeholder="Phone Number"
+                placeholder="Email"
                 value={user.phoneNumber}
                 onChange={handleChange}
                 className={`p-2 w-full border rounded shadow-sm ${errors.phoneNumber ? 'border-red-500' : 'border-gray-300'}`}
