@@ -49,6 +49,8 @@ import FeaturedProjects from './Components/Project/FeaturedProjects ';
 import PropertyDetail from './Components/Property/ApartmentDetail';
 import PropertyList from './Components/Property/ApartmentList';
 import Registration from './Components/Register/RegistrationForm';
+import ManageApartmentOfInvestor from './Components/DashboardInvestor/ManageApartmentOfInvestor';
+import ReviewUpdatedApartment from './Components/DashboardInvestor/ReviewUpdatedApartment';
 
 
 //import ViewListBooking from './Components/DashboardAgency/ViewListBooking';
@@ -113,6 +115,10 @@ function App() {
         <Route path="/view-booking-of-customer/:customerId" element={<ViewBookingOfCustomer />} />
         <Route path="/view-order-bill-of-agency/:orderId" element={<ViewOrderBillOfAgency />} />
         <Route path="/view-order-bill-of-customer/:orderId" element={<ViewOderBillOfCustomer />} />
+        <Route path="/manageapartment" element={<ManageApartmentOfInvestor />} />
+        <Route path="/reviewupdatedapartment" element={<ReviewUpdatedApartment />} />
+
+
 
         {/* <Route path="/login" element={<Login />} /> */}
         {/* The Route for RealEstateListing should also have a path defined */}
