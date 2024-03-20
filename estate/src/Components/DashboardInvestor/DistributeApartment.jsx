@@ -1,4 +1,5 @@
 import axios from "axios";
+import emailjs from 'emailjs-com';
 import React, { useEffect, useState } from "react";
 
 const DistributeApartment = () => {
@@ -14,6 +15,8 @@ const DistributeApartment = () => {
   const [apartments, setApartments] = useState([]); // State to hold apartments
   const [selectedApartmentId, setSelectedApartmentId] = useState(""); // State to hold the selected apartment ID
   const [priceError, setPriceError] = useState("");
+  const [selectedAgencyEmail, setSelectedAgencyEmail] = useState();
+
   useEffect(() => {
     const fetchProjects = async () => {
       try {
@@ -25,6 +28,41 @@ const DistributeApartment = () => {
     };
     fetchProjects();
   }, []);
+
+
+  useEffect(() => {
+    // Khởi tạo EmailJS SDK khi component được render
+    emailjs.init("EMFqDgk_XqGNuAryz");
+  }, []);
+
+  const sendEmail = () => {
+    emailjs.send('Aptx4869', 'template_1vtwxih', {
+      email: selectedAgencyEmail,
+      apartment: selectedApartmentId,
+      numberFloor: selectFloorId,
+      buidingName: buildingId,
+      projectName: selectedProjectId
+    })
+      .then((response) => {
+        console.log('Email sent successfully:', response);
+      })
+      .catch((error) => {
+        console.error('Email sending failed:', error);
+      });
+  };
+
+  useEffect(() => {
+    const fetchAgencyEmail = async () => {
+      try {
+        const { data } = await axios.get(`https://localhost:7137/api/Agencies/${selectedAgency}`);
+        setSelectedAgencyEmail(data.phone);
+      } catch (error) {
+        console.error("Error fetching agency email:", error);
+      }
+    };
+    fetchAgencyEmail();
+  }, [selectedAgency]);
+
 
   useEffect(() => {
     const fetchBuildingsForProject = async (projectId) => {
@@ -128,8 +166,10 @@ const DistributeApartment = () => {
       )}&apartmentId=${encodeURIComponent(
         apartmentId
       )}&price=${encodeURIComponent(price)}`;
+
       const response = await axios.post(url);
       // Xử lý khi gửi thành công
+      sendEmail();
       console.log("Distribution success:", response.data);
       alert("Distribution successful!");
 
@@ -244,12 +284,11 @@ const DistributeApartment = () => {
                   key={apartment.apartmentId}
                   value={apartment.apartmentId}
                 >
-                  {`Apartment: ${
-                    typeof apartment.apartmentId === "string" &&
+                  {`Apartment: ${typeof apartment.apartmentId === "string" &&
                     apartment.apartmentId.includes(":")
-                      ? apartment.apartmentId.split(":").pop()
-                      : apartment.apartmentId
-                  }`}
+                    ? apartment.apartmentId.split(":").pop()
+                    : apartment.apartmentId
+                    }`}
                 </option>
               ))}
             </select>
@@ -261,9 +300,8 @@ const DistributeApartment = () => {
             <input
               id="price"
               type="number"
-              className={`w-full mt-1 p-2 border ${
-                priceError ? "border-red-500" : "border-gray-300"
-              } rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
+              className={`w-full mt-1 p-2 border ${priceError ? "border-red-500" : "border-gray-300"
+                } rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
               value={price}
               onChange={handlePriceChange}
               placeholder="Enter price"
