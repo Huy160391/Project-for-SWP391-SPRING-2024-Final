@@ -51,13 +51,16 @@ const InvestorDashboard = () => {
             <span>User</span>
           </Link>
           <Link to="/managerbuildings" className="details-card bg-white shadow-lg rounded-lg p-4 flex items-center justify-center hover:bg-blue-500 hover:text-white transition duration-150 ease-in-out">
-            <span>Manager Building</span>
+            <span>Manage Building</span>
           </Link>
           <Link to="/managerpost" className="details-card bg-white shadow-lg rounded-lg p-4 flex items-center justify-center hover:bg-blue-500 hover:text-white transition duration-150 ease-in-out">
-            <span>Manager Post</span>
+            <span>Manage Post</span>
           </Link>
           <Link to="/managerdistribute" className="details-card bg-white shadow-lg rounded-lg p-4 flex items-center justify-center hover:bg-blue-500 hover:text-white transition duration-150 ease-in-out">
             <span>Distribute Project</span>
+          </Link>
+          <Link to="/manageapartment" className="details-card bg-white shadow-lg rounded-lg p-4 flex items-center justify-center hover:bg-blue-500 hover:text-white transition duration-150 ease-in-out">
+            <span>Manage Apartment</span>
           </Link>
         </section>
         <button
