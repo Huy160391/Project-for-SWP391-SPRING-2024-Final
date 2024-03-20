@@ -73,9 +73,10 @@ const ManagerUsers = () => {
     ? managersData.filter(
         (manager) =>
           manager.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          manager.roleId.toLowerCase().includes(searchQuery.toLowerCase())
+          manager.roleId.toLowerCase().includes(searchQuery.toLowerCase())&&
+          manager.roleId !== "Investor"
       )
-    : managersData;
+      : managersData.filter(manager => manager.roleId !== "Investor");
     const handleBack = () => {
       window.history.back();
     };
