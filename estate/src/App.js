@@ -41,6 +41,7 @@ import DashboardCustomer from './Components/DashboardCustomer/DashboardCustomer'
 import OderHistoryOfCustomer from './Components/DashboardCustomer/OderHistoryOfCustomer';
 import ViewBookingOfCustomer from './Components/DashboardCustomer/ViewBookingOfCustomer';
 import ViewOderBillOfCustomer from './Components/DashboardCustomer/ViewOderBillOfCustomer';
+import DistributeApartment from './Components/DashboardInvestor/DistributeApartment';
 import EditBuilding from './Components/DashboardInvestor/EditBuilding';
 import PostsListing from './Components/Post/PostsList';
 import PostDetail from './Components/PostDetail/PostDetail';
@@ -48,6 +49,8 @@ import FeaturedProjects from './Components/Project/FeaturedProjects ';
 import PropertyDetail from './Components/Property/ApartmentDetail';
 import PropertyList from './Components/Property/ApartmentList';
 import Registration from './Components/Register/RegistrationForm';
+import ManageApartmentOfInvestor from './Components/DashboardInvestor/ManageApartmentOfInvestor';
+import ReviewUpdatedApartment from './Components/DashboardInvestor/ReviewUpdatedApartment';
 
 
 //import ViewListBooking from './Components/DashboardAgency/ViewListBooking';
@@ -75,6 +78,7 @@ function App() {
         <Route path="/registration" element={<Registration />} />
         <Route path="/addnewagency" element={<AddNewAgency />} />
         <Route path="/distributefloor" element={<DistributeFloor />} />
+        <Route path="/distributeapartment" element={<DistributeApartment />} />
         <Route path="/createnewproject" element={<CreateNewProject />} />
         <Route path="/managerdistribute" element={<ManagerDistribute />} />
         <Route path="/managerusers" element={<ManagerUsers />} />
@@ -111,6 +115,10 @@ function App() {
         <Route path="/view-booking-of-customer/:customerId" element={<ViewBookingOfCustomer />} />
         <Route path="/view-order-bill-of-agency/:orderId" element={<ViewOrderBillOfAgency />} />
         <Route path="/view-order-bill-of-customer/:orderId" element={<ViewOderBillOfCustomer />} />
+        <Route path="/manageapartment" element={<ManageApartmentOfInvestor />} />
+        <Route path="/reviewupdatedapartment" element={<ReviewUpdatedApartment />} />
+
+
 
         {/* <Route path="/login" element={<Login />} /> */}
         {/* The Route for RealEstateListing should also have a path defined */}

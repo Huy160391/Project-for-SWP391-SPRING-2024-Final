@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 
-const DistributeFloor = () => {
+const DistributeApartment = () => {
   const [projects, setProjects] = useState([]);
   const [selectedProjectId, setSelectedProjectId] = useState("");
   const [buildings, setBuildings] = useState([]); // State to hold buildings
@@ -9,8 +9,10 @@ const DistributeFloor = () => {
   const [floors, setFloors] = useState("");
   const [selectFloorId, setSelectFloorId] = useState("");
   const [recipients, setRecipients] = useState([]);
+  const [price, setPrice] = useState(""); // New state for holding the pric
   const [selectedAgency, setSelectedAgency] = useState();
-  const [price, setPrice] = useState(""); // State for holding the price
+  const [apartments, setApartments] = useState([]); // State to hold apartments
+  const [selectedApartmentId, setSelectedApartmentId] = useState(""); // State to hold the selected apartment ID
   const [priceError, setPriceError] = useState("");
   useEffect(() => {
     const fetchProjects = async () => {
@@ -23,15 +25,7 @@ const DistributeFloor = () => {
     };
     fetchProjects();
   }, []);
-  const handlePriceChange = (e) => {
-    const priceValue = e.target.value;
-    setPrice(priceValue);
-    if (priceValue < 5000 && priceValue !== "") {
-      setPriceError("Price must be at least 5000.");
-    } else {
-      setPriceError(""); // Clear the error message when the price is valid
-    }
-  };
+
   useEffect(() => {
     const fetchBuildingsForProject = async (projectId) => {
       if (!projectId) {
@@ -73,72 +67,90 @@ const DistributeFloor = () => {
   useEffect(() => {
     const fetchFloor = async () => {
       try {
-        // Giả sử chi tiết tòa nhà bao gồm tổng số tầng
-        const { data: buildingDetails } = await axios.get(
-          `https://localhost:7137/api/Buildings/${encodeURIComponent(
-            buildingId
-          )}`
+        const { data } = await axios.get(
+          "https://localhost:7137/api/Buildings"
         );
-        const totalFloors = buildingDetails.numberOfFloors; // Sử dụng trực tiếp từ API response
-
-        // Fetch apartments to check for distributed floors
-        const { data: apartmentsData } = await axios.get(
+        const floorData = data.filter((d) => d.buildingId === buildingId);
+        setFloors(floorData);
+      } catch (error) {
+        console.error("Error fetching buildings for project:", error);
+        setFloors([]);
+      }
+    };
+    fetchFloor();
+  }, [buildingId]);
+  useEffect(() => {
+    const fetchApartments = async () => {
+      if (!buildingId || !selectFloorId) {
+        setApartments([]);
+        return;
+      }
+      try {
+        const { data } = await axios.get(
           `https://localhost:7137/api/Apartments/GetApartmentsByBuildingID?buildingId=${encodeURIComponent(
             buildingId
           )}`
         );
-
-        // Determine which floors have been distributed
-        const distributedFloors = apartmentsData
-          .filter((apartment) => apartment.status === "Distributed")
-          .map((apartment) => apartment.floorNumber);
-
-        // Tạo danh sách tất cả các tầng
-        let allFloors = Array.from({ length: totalFloors }, (_, i) => i + 1);
-
-        // Loại bỏ các tầng đã phân phối để tìm tầng có sẵn
-        let availableFloors = allFloors.filter(
-          (floor) => !distributedFloors.includes(floor)
-        );
-
-        setFloors(availableFloors);
+        // Bổ sung bước lọc để chỉ lấy các căn hộ chưa được "Distributed"
+        const filteredApartments = data
+          .filter(
+            (apartment) => apartment.floorNumber.toString() === selectFloorId
+          )
+          .filter((apartment) => apartment.status !== "Distributed");
+        setApartments(filteredApartments);
       } catch (error) {
-        console.error("Error fetching floors or apartments:", error);
-        setFloors([]);
+        console.error("Error fetching apartments:", error);
+        setApartments([]);
       }
     };
-    if (buildingId) {
-      fetchFloor();
-    }
-  }, [buildingId]);
+
+    fetchApartments();
+  }, [buildingId, selectFloorId]);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    // Định nghĩa dữ liệu để gửi
     const distributionData = {
       buildingId: buildingId,
-      floor: selectFloorId,
       agencyId: selectedAgency,
+      apartmentId: selectedApartmentId,
       price: price, // Include the price in your distribution data
     };
 
     try {
-      const { buildingId, agencyId, floor, price } = distributionData;
-      const url = `https://localhost:7137/api/Buildings/DistributeFloor?buildingId=${encodeURIComponent(
+      // Gọi API để submit dữ liệu
+      const { buildingId, agencyId, apartmentId, price } = distributionData;
+      const url = `https://localhost:7137/api/Buildings/DistributeApartment?buildingId=${encodeURIComponent(
         buildingId
-      )}&agencyId=${encodeURIComponent(agencyId)}&floor=${encodeURIComponent(
-        floor
+      )}&agencyId=${encodeURIComponent(
+        agencyId
+      )}&apartmentId=${encodeURIComponent(
+        apartmentId
       )}&price=${encodeURIComponent(price)}`;
       const response = await axios.post(url);
+      // Xử lý khi gửi thành công
       console.log("Distribution success:", response.data);
-
-      // Hiển thị thông báo thành công
       alert("Distribution successful!");
 
-      window.location.href = "/managerdistribute";
+      // Có thể reset form hoặc làm gì đó sau khi submit thành công
     } catch (error) {
+      // Xử lý khi có lỗi
       console.error("Error distributing project:", error);
       alert("Error in distribution.");
     }
+  };
+  const handlePriceChange = (e) => {
+    const priceValue = e.target.value;
+    setPrice(priceValue);
+    if (priceValue < 5000 && priceValue !== "") {
+      setPriceError("Price must be at least 5000.");
+    } else {
+      setPriceError(""); // Clear the error message when the price is valid
+    }
+  };
+  const handleBack = () => {
+    window.history.back();
   };
 
   return (
@@ -204,11 +216,42 @@ const DistributeFloor = () => {
             >
               <option value="0">Select Floor</option>
               {floors &&
-                floors.map((floor) => (
-                  <option key={floor} value={floor}>
-                    Floor {floor}
-                  </option>
-                ))}
+                floors.map((floor, index) =>
+                  Array.from({ length: floor.numberOfFloors }, (_, i) => (
+                    <option
+                      key={`${floor.buildingId}-${index}-${i}`}
+                      value={i + 1}
+                    >
+                      Floor {i + 1}
+                    </option>
+                  ))
+                )}
+            </select>
+          </div>
+          <div className="form-group">
+            <label htmlFor="apartment" className="block text-gray-700">
+              Apartment
+            </label>
+            <select
+              id="apartment"
+              className="w-full mt-1 p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              value={selectedApartmentId}
+              onChange={(e) => setSelectedApartmentId(e.target.value)}
+            >
+              <option value="">Select Apartment</option>
+              {apartments.map((apartment) => (
+                <option
+                  key={apartment.apartmentId}
+                  value={apartment.apartmentId}
+                >
+                  {`Apartment: ${
+                    typeof apartment.apartmentId === "string" &&
+                    apartment.apartmentId.includes(":")
+                      ? apartment.apartmentId.split(":").pop()
+                      : apartment.apartmentId
+                  }`}
+                </option>
+              ))}
             </select>
           </div>
           <div className="form-group">
@@ -252,7 +295,7 @@ const DistributeFloor = () => {
           <div className="flex justify-between">
             <button
               type="button"
-              // onClick={handleBack}
+              onClick={handleBack}
               className="px-6 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-150 ease-in-out"
             >
               Back
@@ -278,4 +321,4 @@ const DistributeFloor = () => {
   );
 };
 
-export default DistributeFloor;
+export default DistributeApartment;

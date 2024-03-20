@@ -1,3 +1,4 @@
+
 import emailjs from 'emailjs-com';
 import axios from "axios";
 import React, { useEffect, useState } from "react";
@@ -13,8 +14,10 @@ const PropertyDetail = () => {
   const [depositAmount, setDepositAmount] = useState(null);
   const [depositAmountOptions, setDepositAmountOptions] = useState(false);
   const [userData, setUserData] = useState(null);
+
   const [transactionCode, setTransactionCode] = useState("");
   const [userImage, setUserImage] = useState(null); // Thêm state để lưu trữ ảnh từ người dùng
+
 
   useEffect(() => {
     const fetchApartment = async () => {
@@ -30,6 +33,7 @@ const PropertyDetail = () => {
   }, [apartmentId]);
 
   useEffect(() => {
+
     emailjs.init("e8nVRT8-ytw0WVA70");
   }, []);
 
@@ -52,6 +56,21 @@ const PropertyDetail = () => {
   const handleTransactionCodeChange = (event) => {
     setTransactionCode(event.target.value); // Cập nhật state khi người dùng nhập mã giao dịch
   };
+=======
+    if (apartment.buildingId) {
+      const fetchBuilding = async () => {
+        try {
+          const response = await axios.get(`https://localhost:7137/api/Buildings/${apartment.buildingId}`);
+          setBuilding(response.data);
+        } catch (error) {
+          console.error("Error fetching building data:", error);
+        }
+      };
+
+      fetchBuilding();
+    }
+  }, [apartment.buildingId]);
+
 
   const handleBooking = async () => {
     // Check if user is logged in
@@ -74,15 +93,34 @@ const PropertyDetail = () => {
   };
 
 
-
-
   const handleDepositSelect = (amount) => {
     setDepositAmount(amount);
   };
 
+  // Xử lý khi người dùng chọn hình ảnh
+  const handleImageUpload = (event) => {
+    setImageFile(event.target.files[0]);
+  };
+
   const handleConfirmBooking = async () => {
     try {
-      // Gọi API GetCustomerByUserID để lấy customerId sử dụng userId
+
+      if (imageFile) {
+        const formData = new FormData();
+        formData.append("image", imageFile);
+
+        // Gửi request POST để tải lên hình ảnh
+        await axios.post(
+          `https://localhost:7137/api/Apartments/UploadImage/${apartmentId}`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+      }
+      // Call booking API with selected deposit amount
       const customerResponse = await axios.get(
         `https://localhost:7137/api/Customers/GetCustomerByUserID/${userData.data.userId}`
       );
@@ -90,16 +128,14 @@ const PropertyDetail = () => {
       if (!customerId) {
         console.error("Customer ID not found");
         setBookingStatus("error");
-        setBookingMessage(
-          "Customer ID not found. Please ensure you are logged in."
-        );
+        setBookingMessage("Customer ID not found. Please ensure you are logged in.");
         return;
       }
 
-      // Tiến hành đặt phòng với customerId và apartmentId
       await axios.post(
-        `https://localhost:7137/api/Bookings?customerId=${customerId}&apartmentId=${apartmentId}`
+        `https://localhost:7137/api/Bookings?customerId=${customerId}&apartmentId=${apartmentId}&depositAmount=${depositAmount}`
       );
+
       setBookingStatus("success");
       setBookingMessage("Booking successful!");
       sendEmail();
@@ -111,7 +147,7 @@ const PropertyDetail = () => {
         error.response.data ||
         error.response.data.message
       ) {
-        setBookingMessage(`Booking failed: Aready Booking`);
+        setBookingMessage("Booking failed: " + error.response.data.message);
       } else {
         setBookingMessage("Booking failed. Please try again later.");
       }
@@ -192,9 +228,20 @@ const PropertyDetail = () => {
                   50%
                 </button>
               </div>
+
               <div className="mt-4">
                 <label htmlFor="transactionCode" className="text-lg text-gray-600">Transaction Code:</label>
                 <input type="text" id="transactionCode" value={transactionCode} onChange={handleTransactionCodeChange} className="mt-2 p-2 border border-gray-300 rounded" />
+
+              {imageFile && (
+                <div className="mt-4">
+                  <img src={URL.createObjectURL(imageFile)} alt="Uploaded" className="mt-2" style={{ maxWidth: "200px" }} />
+                </div>
+              )}
+              <div className="mt-4">
+                <p className="text-lg text-gray-600">Upload Payment Image:</p>
+                <input type="file" onChange={handleImageUpload} />
+
               </div>
 
               <button

@@ -30,7 +30,7 @@ const ManagerDistribute = () => {
   return (
     <div className="flex min-h-screen">
       <div className="flex-1 p-6 bg-gray-50">
-        <h1 className="text-2xl font-bold text-gray-800 mb-4">Managers</h1>
+        <h1 className="text-2xl font-bold text-gray-800 mb-4">Managers Distribute</h1>
         <div className="flex justify-between mb-6">
           <button
             onClick={handleBack}
@@ -47,7 +47,13 @@ const ManagerDistribute = () => {
             to="/distributefloor"
             className="ml-4 px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
           >
-            Distribute for Agency
+            Phân công tầng
+          </Link>
+          <Link
+            to="/distributeapartment"
+            className="ml-4 px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+          >
+            Phân công phòng
           </Link>
         </div>
         <div className="mt-6 overflow-x-auto bg-white shadow-md rounded-lg">
