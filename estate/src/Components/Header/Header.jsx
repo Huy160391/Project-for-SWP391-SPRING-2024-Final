@@ -25,19 +25,19 @@ export default function Example() {
       const parsedData = JSON.parse(storedData);
       setUserData(parsedData);
       setIsLoggedIn(true);
-      fetchAgencyId(parsedData.data.userId); 
+      fetchAgencyId(parsedData.data.userId);
       fetchCustomerId(parsedData.data.userId);// Ensure this userId is correct
     }
   }, []);
 
   const fetchAgencyId = async (userId) => {
     try {
-      
+
       const agencyResponse = await axios.get(`https://localhost:7137/api/Agencies/GetAgencyByUserID/${userId}`);
       if (agencyResponse.data) {
         setAgencyId(agencyResponse.data.agencyId);
       }
-      
+
     } catch (error) {
       console.error("Failed to fetch user details:", error);
     }
@@ -49,13 +49,13 @@ export default function Example() {
       if (customerResponse.data) {
         setCustomerId(customerResponse.data.customerId); // Correctly setting customerId based on API response
       }
-      
-      
+
+
     } catch (error) {
       console.error("Failed to fetch user details:", error);
     }
   };
-  
+
 
   const handleSignOut = () => {
     localStorage.removeItem('UserData');
@@ -130,7 +130,7 @@ export default function Example() {
                       leaveTo="transform opacity-0 scale-95"
                     >
                       <Menu.Items className="z-50 flex-shrink-0 origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
-                        
+
                         <Menu.Item>
                           {({ active }) => (
                             <button

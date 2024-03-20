@@ -1,5 +1,6 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import emailjs from 'emailjs-com';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 const Registration = () => {
@@ -11,10 +12,10 @@ const Registration = () => {
     password: '',
     confirmPassword: '',
     address: '',
-    phone: '',
+    phone: '', // Thay đổi từ email sang phone
     image: null,
   });
-  const [avatarPreview, setAvatarPreview] = useState(null); // Dùng để lưu trữ và hiển thị hình ảnh được chọn
+  const [avatarPreview, setAvatarPreview] = useState(null);
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
@@ -22,24 +23,40 @@ const Registration = () => {
     const { name, value, files } = e.target;
     if (name === 'image') {
       setFormData({ ...formData, image: files[0] });
-      setAvatarPreview(URL.createObjectURL(files[0])); // Tạo và cập nhật URL hình ảnh để hiển thị
+      setAvatarPreview(URL.createObjectURL(files[0]));
     } else {
       setFormData({ ...formData, [name]: value });
     }
-    setErrors({ ...errors, [name]: '' }); // Reset specific field error
+    setErrors({ ...errors, [name]: '' });
   };
 
+  useEffect(() => {
+    // Khởi tạo EmailJS SDK khi component được render
+    emailjs.init("GRGyUXUQNJZWmAVmh");
+  }, []);
+
+  const sendEmail = () => {
+    emailjs.send('Aptx4869', 'template_nv5w3qn1', {
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      email: formData.phone
+    })
+      .then((response) => {
+        console.log('Email sent successfully:', response);
+      })
+      .catch((error) => {
+        console.error('Email sending failed:', error);
+      });
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrors({}); // Reset all errors
+    setErrors({});
 
-    // Xác nhận mật khẩu
     if (formData.password !== formData.confirmPassword) {
       setErrors({ ...errors, confirmPassword: "Passwords don't match." });
       return;
     }
 
-    // Validate form fields
     let formIsValid = true;
     let newErrors = {};
 
@@ -78,9 +95,13 @@ const Registration = () => {
       newErrors.address = 'Address is required.';
     }
 
-    if (!formData.phone.trim()) {
+    if (!formData.phone.trim()) { // Kiểm tra tính hợp lệ của phone (email)
       formIsValid = false;
-      newErrors.phone = 'Phone is required.';
+      newErrors.phone = 'Email is required.';
+    } else if (!/^\S+@\S+\.(com|vn|edu\.vn)$/.test(formData.phone)
+    ) {
+      formIsValid = false;
+      newErrors.phone = 'Email is invalid.';
     }
 
     if (!formData.image) {
@@ -96,7 +117,11 @@ const Registration = () => {
     const dataToSend = new FormData();
     Object.entries(formData).forEach(([key, value]) => {
       if (value !== null) {
-        dataToSend.append(key, value);
+        if (key === 'phone') { // Lưu email vào phần phone trong formData
+          dataToSend.append('phone', value);
+        } else {
+          dataToSend.append(key, value);
+        }
       }
     });
 
@@ -107,6 +132,7 @@ const Registration = () => {
         },
       });
       console.log(response.data);
+      sendEmail();
       navigate('/login');
       alert('Registration successful!');
     } catch (error) {
@@ -208,16 +234,16 @@ const Registration = () => {
             {errors.address && <p className="text-red-500 text-xs mt-1">{errors.address}</p>}
           </div>
           <div className="form-field">
-            <label className="block text-sm font-medium text-gray-700">Phone</label>
+            <label className="block text-sm font-medium text-gray-700">Email</label>
             <input
               type="text"
               name="phone"
-              placeholder="Enter phone number"
+              placeholder="Enter email"
               value={formData.phone}
               onChange={handleChange}
               className={`w-full px-3 py-2 mt-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.phone ? 'border-red-500' : 'border-gray-300'}`}
             />
-            {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone}</p>}
+            {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone}</p>} {/* Thay đổi từ 'email' thành 'phone' */}
           </div>
           <div className="form-field">
             <label className="block text-sm font-medium text-gray-700">Image</label>
@@ -227,18 +253,16 @@ const Registration = () => {
               onChange={handleChange}
               className={`w-full px-3 py-2 mt-1 text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 ${errors.image ? 'border-red-500' : ''}`}
             />
+            {avatarPreview && <img src={avatarPreview} alt="Avatar Preview" className="mt-2" style={{ maxWidth: '100px' }} />}
             {errors.image && <p className="text-red-500 text-xs mt-1">{errors.image}</p>}
           </div>
         </div>
-        {/* Nút Đăng ký */}
         <button type="submit" className="w-full px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">ĐĂNG KÝ</button>
-        {/* Liên kết chuyển đến trang đăng nhập */}
         <div className="text-sm text-center">
           Đã có tài khoản? <Link to="/" className="text-blue-600 hover:text-blue-700">Đăng nhập</Link>
         </div>
-      </form>
-    </div>
+      </form >
+    </div >
   );
 };
-
 export default Registration;
