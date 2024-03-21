@@ -1,4 +1,5 @@
 import axios from "axios";
+import emailjs from 'emailjs-com';
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 const ManageApartmentOfInvestor = () => {
@@ -6,12 +7,48 @@ const ManageApartmentOfInvestor = () => {
   const navigate = useNavigate();
   const [agencies, setAgencies] = useState([]);
 
+  const [apartmentId, setApartmentId] = useState();
+
+
   useEffect(() => {
     fetchApartments();
+    fetchAgencies();
   }, []);
 
+  useEffect(() => {
+    // Khởi tạo EmailJS SDK khi component được render
+    emailjs.init("956l2dvoKTREeJJiQ");
+  }, []);
+
+
+
+  const sendEmail = (email, status) => {
+    if (email) {
+      emailjs
+        .send("Aptx4869", "template_9h8jz5a77", {
+          apartmentId: apartmentId,
+          status: status,
+          email: email,
+        })
+        .then((response) => {
+          console.log("Email sent successfully:", response);
+        })
+        .catch((error) => {
+          console.error("Email sending failed:", error);
+        });
+    } else {
+      console.error("Recipient address is empty");
+    }
+  };
+
+
   const fetchApartments = async () => {
+
     try {
+
+      const response = await axios.get("https://localhost:7137/api/Apartments/GetWaitingApartments");
+      setApartments(response.data);
+
       const apartmentsResponse = await axios.get(
         "https://localhost:7137/api/Apartments/GetWaitingApartments"
       );
@@ -24,14 +61,17 @@ const ManageApartmentOfInvestor = () => {
         })
       );
       setApartments(apartmentsWithRoomNumbers);
+
     } catch (error) {
       console.error("Failed to fetch apartments:", error);
     }
   };
 
   const changeApartmentStatus = async (apartmentId, newStatus) => {
+
     try {
       const encodedApartmentId = encodeURIComponent(apartmentId);
+
       await axios.put(
         `https://localhost:7137/api/Apartments/ChangeApartmentStatus/${encodedApartmentId}?newStatus=${newStatus}`,
         {},
@@ -39,33 +79,55 @@ const ManageApartmentOfInvestor = () => {
           headers: { accept: "*/*" },
         }
       );
+
       fetchApartments(); // Refresh the list to reflect the status change
+
     } catch (error) {
-      console.error(
-        `Failed to change apartment status for ${apartmentId}:`,
-        error
-      );
-    }
-  };
-  const handleAccept = async (apartmentId) => {
-    const isConfirmed = window.confirm(
-      "Are you sure you want to accept this apartment update?"
-    );
-    if (isConfirmed) {
-      await changeApartmentStatus(apartmentId, "Updated");
-      window.location.reload(); // Reload the page to reflect the changes
+      console.error(`Failed to change apartment status for ${apartmentId}:`, error);
     }
   };
 
-  const handleReject = async (apartmentId) => {
+
+
+
+  const handleAccept = async (apartmentId, agencyId) => {
+    const agency = agencies.find((agency) => agency.agencyId === agencyId);
+
+    const isConfirmed = window.confirm(
+      "Are you sure you want to accept this apartment update?"
+    );
+    if (isConfirmed && agencyId) {
+      setApartmentId(apartmentId);
+
+      await changeApartmentStatus(apartmentId, "Updated");
+
+      sendEmail(agency.phone, "xác nhận");
+      //window.location.reload(); // Reload the page to reflect the changes
+      const updatedApartments = apartments.filter(apartment => apartment.apartmentId !== apartmentId);
+      setApartments(updatedApartments);
+
+    }
+  };
+
+  const handleReject = async (apartmentId, agencyId) => {
+    const agency = agencies.find((agency) => agency.agencyId === agencyId);
     const isConfirmed = window.confirm(
       "Are you sure you want to reject this apartment update?"
     );
-    if (isConfirmed) {
+
+    if (isConfirmed && agencyId) {
+      setApartmentId(apartmentId);
+
       await changeApartmentStatus(apartmentId, "Distributed");
-      window.location.reload(); // Reload the page to reflect the changes
+
+      sendEmail(agency.phone, "từ chối");
+      // window.location.reload(); // Reload the page to reflect the changes
+      const updatedApartments = apartments.filter(apartment => apartment.apartmentId !== apartmentId);
+      setApartments(updatedApartments);
     }
+
   };
+
   const fetchAgencies = async () => {
     try {
       const response = await axios.get("https://localhost:7137/api/Agencies");
@@ -80,13 +142,16 @@ const ManageApartmentOfInvestor = () => {
     fetchApartments();
     fetchAgencies();
   }, []);
+
   const getAgencyFullName = (agencyId) => {
     const agency = agencies.find((agency) => agency.agencyId === agencyId);
     return agency ? `${agency.firstName} ${agency.lastName}` : "Unknown Agency";
   };
+
   const handleBack = () => {
     navigate(-1);
   };
+
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
       <div className="flex-1 p-6">
@@ -113,6 +178,7 @@ const ManageApartmentOfInvestor = () => {
                 <th className="px-5 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                   Agency
                 </th>
+
                 <th className="px-5 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                   Apartment
                 </th>
@@ -150,13 +216,13 @@ const ManageApartmentOfInvestor = () => {
                   </td>
                   <td className="px-5 py-4">
                     <button
-                      onClick={() => handleAccept(apartment.apartmentId)}
+                      onClick={() => handleAccept(apartment.apartmentId, apartment.agencyId)}
                       className="mr-2 px-4 py-2 text-sm text-white bg-green-500 rounded hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
                     >
                       Accept
                     </button>
                     <button
-                      onClick={() => handleReject(apartment.apartmentId)}
+                      onClick={() => handleReject(apartment.apartmentId, apartment.agencyId)}
                       className="px-4 py-2 text-sm text-white bg-red-500 rounded hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
                     >
                       Reject
