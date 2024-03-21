@@ -6,24 +6,36 @@ import { useParams } from "react-router-dom";
 const ReviewUpdateApartment = () => {
   const [apartment, setApartment] = useState(null);
   const { apartmentId } = useParams();
+  const [agency, setAgency] = useState(null);
 
   useEffect(() => {
-    const fetchPostDetails = async () => {
+    const fetchApartmentDetails = async () => {
       try {
-        // Adjust this endpoint as necessary
-        const response = await axios.get(
-          `https://localhost:7137/api/Apartments/${apartmentId}`
-        );
-        setApartment(response.data);
+        // Fetch apartment details
+        const apartmentResponse = await axios.get(`https://localhost:7137/api/Apartments/${apartmentId}`);
+        const apartmentData = apartmentResponse.data;
+        setApartment(apartmentData);
+
+        // Fetch room number
+        const roomResponse = await axios.get(`https://localhost:7137/api/Apartments/GetRoomNumberByApartmentId/${apartmentId}`);
+        const roomNumber = roomResponse.data;
+        setApartment(prevState => ({ ...prevState, roomNumber: roomNumber }));
+
+        // Fetch agency details if the apartment has an agencyId
+        if (apartmentData.agencyId) {
+          const agencyResponse = await axios.get(`https://localhost:7137/api/Agencies`);
+          const agencyData = agencyResponse.data.find(agency => agency.agencyId === apartmentData.agencyId);
+          setAgency(agencyData);
+        }
       } catch (error) {
-        console.error("Error fetching post details:", error);
-        // Optionally, handle errors more gracefully here
+        console.error("Error fetching details:", error);
       }
     };
 
-    fetchPostDetails();
+    fetchApartmentDetails();
   }, [apartmentId]);
 
+  const agencyFullName = agency ? `${agency.firstName} ${agency.lastName}` : 'N/A';
   if (!apartment) {
     return <div>Loading...</div>;
   }
@@ -53,9 +65,9 @@ const ReviewUpdateApartment = () => {
           />
 
           <div className="p-8 space-y-4">
-            <p className="text-xl">
-              <span className="font-semibold">Apartment:</span>{" "}
-              {apartment.apartmentId}
+       
+          <p className="text-xl">
+              <span className="font-semibold">Room Number:</span> {apartment.roomNumber}
             </p>
             <p className="text-xl">
               <span className="font-semibold">Description:</span>{" "}
@@ -88,8 +100,7 @@ const ReviewUpdateApartment = () => {
               <span className="font-semibold">Status:</span> {apartment.status}
             </p>
             <p className="text-xl">
-              <span className="font-semibold">Agency ID:</span>{" "}
-              {apartment.agencyId}
+              <span className="font-semibold">Agency:</span> {agencyFullName}
             </p>
             {/* Include additional post details as needed */}
           </div>
