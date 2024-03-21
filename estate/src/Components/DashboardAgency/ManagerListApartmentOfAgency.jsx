@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { Link, useParams } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 // import Sidebar from "./Sidebar";
 
 const ManagerListApartmentOfAgency = () => {
@@ -19,24 +18,45 @@ const ManagerListApartmentOfAgency = () => {
         floorNumber: ''
     });
     const navigate = useNavigate();
-
     useEffect(() => {
         const fetchData = async () => {
-            const buildingResponse = await axios.get(`https://localhost:7137/api/Buildings/${buildingId}`);
-            setBuildingName(buildingResponse.data.name);
-
-            const apartmentsResponse = await axios.get(`https://localhost:7137/api/Apartments/GetApartmentsByAgencyIdAndBuildingId/${agencyId}/${buildingId}`);
-            setApartments(apartmentsResponse.data);
-            setOriginalApartments(apartmentsResponse.data)
+          // Fetch building name
+          const buildingResponse = await axios.get(
+            `https://localhost:7137/api/Buildings/${buildingId}`
+          );
+          setBuildingName(buildingResponse.data.name);
+    
+          // Fetch apartments data
+          const apartmentsResponse = await axios.get(
+            `https://localhost:7137/api/Apartments/GetApartmentsByAgencyIdAndBuildingId/${agencyId}/${buildingId}`
+          );
+          const fetchedApartments = apartmentsResponse.data;
+    
+          // Fetch room numbers for each apartment
+          const apartmentsWithDetails = await Promise.all(
+            fetchedApartments.map(async (apartment) => {
+              try {
+                const roomResponse = await axios.get(
+                  `https://localhost:7137/api/Apartments/GetRoomNumberByApartmentId/${apartment.apartmentId}`
+                );
+                return { ...apartment, roomNumber: roomResponse.data };
+              } catch (error) {
+                console.error("Error fetching room number:", error);
+                return { ...apartment, roomNumber: "N/A" }; // Use "N/A" if fetching fails
+              }
+            })
+          );
+    
+          setApartments(apartmentsWithDetails);
         };
         fetchData();
-    }, [agencyId, buildingId]);
+      }, [agencyId, buildingId]);
     const [originalApartments, setOriginalApartments] = useState([]);
 
     const handleChange = (e) => {
         setSearchParams({ ...searchParams, [e.target.name]: e.target.value });
     };
-
+    
     const handleSearch = (e) => {
         e.preventDefault();
         if (Object.values(searchParams).every(param => param === '')) {
@@ -140,12 +160,12 @@ const ManagerListApartmentOfAgency = () => {
 
                 </form>
                 <div className="space-y-10">
-                    {apartments.map((apartment, index) => (
-                        <div key={index} className="bg-white shadow-xl overflow-hidden rounded-lg p-6 flex space-x-6 items-center">
-                            <img className="h-48 w-60 flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden" src={`https://localhost:7137/api/Apartments/GetApartmentImage/${apartment.apartmentId}`} alt="Apartment Type" />
+                    {apartments.map((apartment) => (
+                        <div key={apartment.apartmentId} className="bg-white shadow-xl overflow-hidden rounded-lg p-6 flex space-x-6 items-center">
+                            <img src={`https://localhost:7137/api/Apartments/GetApartmentImage/${apartment.apartmentId}`} alt="Apartment" className="h-48 w-60 flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden" />
                             <div className="flex-1">
                                 <div className="mb-2">
-                                    <span className="text-2xl font-semibold text-gray-800">Apartment ID: {apartment.apartmentId}</span>
+                                    <span className="text-2xl font-semibold text-gray-800">{apartment.roomNumber}</span>
                                 </div>
                                 <ul className="list-disc space-y-1 ml-5 text-gray-600">
                                     <li>Number of Bedrooms: {apartment.numberOfBedrooms}</li>
