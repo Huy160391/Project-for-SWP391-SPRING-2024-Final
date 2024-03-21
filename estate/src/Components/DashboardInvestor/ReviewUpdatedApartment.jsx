@@ -1,188 +1,102 @@
+// ViewPostPage.jsx
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
-const ReviewUpdatedApartment = () => {
-    const { apartmentId } = useParams();
-    const navigate = useNavigate();
-    const [apartment, setApartment] = useState({});
-    const [building, setBuilding] = useState({});
-    const [bookingStatus, setBookingStatus] = useState(null);
-    const [bookingMessage, setBookingMessage] = useState("");
-    const [depositAmount, setDepositAmount] = useState(null);
-    const [depositAmountOptions, setDepositAmountOptions] = useState(false);
-    const [userData, setUserData] = useState(null);
-    const [imageFile, setImageFile] = useState(null);
+const ReviewUpdateApartment = () => {
+  const [apartment, setApartment] = useState(null);
+  const { apartmentId } = useParams();
 
-    useEffect(() => {
-        const fetchApartment = async () => {
-            try {
-                const apartmentResponse = await axios.get(`https://localhost:7137/api/Apartments/${apartmentId}`);
-                setApartment(apartmentResponse.data);
-            } catch (error) {
-                console.error("Error fetching apartment data:", error);
-            }
-        };
-
-        fetchApartment();
-    }, [apartmentId]);
-
-    useEffect(() => {
-        if (apartment.buildingId) {
-            const fetchBuilding = async () => {
-                try {
-                    const response = await axios.get(`https://localhost:7137/api/Buildings/${apartment.buildingId}`);
-                    setBuilding(response.data);
-                } catch (error) {
-                    console.error("Error fetching building data:", error);
-                }
-            };
-
-            fetchBuilding();
-        }
-    }, [apartment.buildingId]);
-
-    const handleBooking = async () => {
-        // Check if user is logged in
-        const userDataString = localStorage.getItem("UserData");
-        if (!userDataString) {
-            navigate("/login");
-            return;
-        }
-        const userData = JSON.parse(userDataString);
-
-        // Check user role
-        if (userData.data.roleId !== "Customer") {
-            navigate("/login");
-            return;
-        }
-
-        // Show deposit amount options
-        setDepositAmountOptions(true);
-        setUserData(userData);
+  useEffect(() => {
+    const fetchPostDetails = async () => {
+      try {
+        // Adjust this endpoint as necessary
+        const response = await axios.get(
+          `https://localhost:7137/api/Apartments/${apartmentId}`
+        );
+        setApartment(response.data);
+      } catch (error) {
+        console.error("Error fetching post details:", error);
+        // Optionally, handle errors more gracefully here
+      }
     };
 
-    const handleDepositSelect = (amount) => {
-        setDepositAmount(amount);
-    };
+    fetchPostDetails();
+  }, [apartmentId]);
 
-    // Xử lý khi người dùng chọn hình ảnh
-    const handleImageUpload = (event) => {
-        setImageFile(event.target.files[0]);
-    };
+  if (!apartment) {
+    return <div>Loading...</div>;
+  }
 
-    const handleConfirmBooking = async () => {
-        try {
-
-            if (imageFile) {
-                const formData = new FormData();
-                formData.append("image", imageFile);
-
-                // Gửi request POST để tải lên hình ảnh
-                await axios.post(
-                    `https://localhost:7137/api/Apartments/UploadImage/${apartmentId}`,
-                    formData,
-                    {
-                        headers: {
-                            "Content-Type": "multipart/form-data",
-                        },
-                    }
-                );
+  return (
+    <div className="flex min-h-screen bg-gray-100">
+      <div className="flex-1 max-w-5xl mx-auto p-8">
+        <div className="bg-white shadow-xl rounded-lg overflow-hidden">
+          <h1 className="text-4xl font-bold text-gray-900 text-center py-8">
+            View Apartment Detail
+          </h1>
+          <div className="px-8 py-4 bg-gray-50 text-center">
+            <button
+              onClick={() => window.history.back()}
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-24 rounded-full transition duration-300 ease-in-out transform hover:scale-105"
+            >
+              Back
+            </button>
+          </div>
+          <img
+            className="w-full object-cover h-48"
+            src={`https://localhost:7137/api/Apartments/GetApartmentImage/${apartment.apartmentId}`}
+            alt={`Apartment ${apartment.apartmentId}`}
+            onError={(e) =>
+              (e.target.src = "https://via.placeholder.com/400x300")
             }
-            // Call booking API with selected deposit amount
-            const customerResponse = await axios.get(
-                `https://localhost:7137/api/Customers/GetCustomerByUserID/${userData.data.userId}`
-            );
-            const customerId = customerResponse.data.customerId;
-            if (!customerId) {
-                console.error("Customer ID not found");
-                setBookingStatus("error");
-                setBookingMessage("Customer ID not found. Please ensure you are logged in.");
-                return;
-            }
+          />
 
-            await axios.post(
-                `https://localhost:7137/api/Bookings?customerId=${customerId}&apartmentId=${apartmentId}&depositAmount=${depositAmount}`
-            );
+          <div className="p-8 space-y-4">
+            <p className="text-xl">
+              <span className="font-semibold">Apartment:</span>{" "}
+              {apartment.apartmentId}
+            </p>
+            <p className="text-xl">
+              <span className="font-semibold">Description:</span>{" "}
+              {apartment.description}
+            </p>
 
-            setBookingStatus("success");
-            setBookingMessage("Booking successful!");
-        } catch (error) {
-            console.error("Error booking:", error);
-            setBookingStatus("error");
-            if (
-                error.response ||
-                error.response.data ||
-                error.response.data.message
-            ) {
-                setBookingMessage("Booking failed: " + error.response.data.message);
-            } else {
-                setBookingMessage("Booking failed. Please try again later.");
-            }
-        }
-    };
-
-    return (
-        <div className="container mx-auto py-8">
-            <div className="flex flex-wrap bg-white shadow-md rounded-lg overflow-hidden">
-                <div className="w-full md:w-1/2">
-                    <img
-                        src={`https://localhost:7137/api/Apartments/GetApartmentImage/${apartmentId}`}
-                        alt="Apartment"
-                        className="object-cover w-full h-full"
-                    />
-                </div>
-                <div className="w-full md:w-1/2 p-6">
-                    <h2 className="text-3xl font-semibold text-gray-800 mb-4">
-                        Apartment: {typeof apartment.apartmentId === 'string' && apartment.apartmentId.includes(":") ? apartment.apartmentId.split(":").pop() : apartment.apartmentId} - {building.name}
-                    </h2>
-                    <p className="text-gray-700 mb-4">{apartment.description}</p>
-                    <div className="mb-4">
-                        <p className="text-lg text-gray-600">
-                            Status:{" "}
-                            <span className="font-medium text-gray-800">
-                                {apartment.status}
-                            </span>
-                        </p>
-                    </div>
-                    <div className="mb-6">
-                        <p className="text-lg text-gray-600">
-                            Area:{" "}
-                            <span className="font-medium text-gray-800">
-                                {apartment.area} m²
-                            </span>
-                        </p>
-                        <p className="text-lg text-gray-600">
-                            Bedrooms:{" "}
-                            <span className="font-medium text-gray-800">
-                                {apartment.numberOfBedrooms}
-                            </span>
-                        </p>
-                        <p className="text-lg text-gray-600">
-                            Bathrooms:{" "}
-                            <span className="font-medium text-gray-800">
-                                {apartment.numberOfBathrooms}
-                            </span>
-                        </p>
-                        <p className="text-lg text-gray-600">
-                            Price:{" "}
-                            <span className="font-medium text-green-600">
-                                ${apartment.price}
-                            </span>
-                        </p>
-                    </div>
-                    {bookingStatus && (
-                        <p
-                            className={`mt-4 text-sm ${bookingStatus === "success" ? "text-green-500" : "text-red-500"
-                                }`}
-                        >
-                            {bookingMessage}
-                        </p>
-                    )}
-                </div>
-            </div>
+            <p className="text-xl">
+              <span className="font-semibold">Bedrooms:</span>{" "}
+              {apartment.numberOfBedrooms}
+            </p>
+            <p className="text-xl">
+              <span className="font-semibold">Bathrooms:</span>{" "}
+              {apartment.numberOfBathrooms}
+            </p>
+            <p className="text-xl">
+              <span className="font-semibold">Furniture:</span>{" "}
+              {apartment.furniture}
+            </p>
+            <p className="text-xl">
+              <span className="font-semibold">Area:</span> {apartment.area}
+            </p>
+            <p className="text-xl">
+              <span className="font-semibold">Price:</span> {apartment.price}
+            </p>
+            <p className="text-xl">
+              <span className="font-semibold">Floor:</span>{" "}
+              {apartment.floorNumber}
+            </p>
+            <p className="text-xl">
+              <span className="font-semibold">Status:</span> {apartment.status}
+            </p>
+            <p className="text-xl">
+              <span className="font-semibold">Agency ID:</span>{" "}
+              {apartment.agencyId}
+            </p>
+            {/* Include additional post details as needed */}
+          </div>
         </div>
-    );
+      </div>
+    </div>
+  );
 };
 
-export default ReviewUpdatedApartment;
+export default ReviewUpdateApartment;

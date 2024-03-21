@@ -117,7 +117,7 @@ function App() {
         <Route path="/view-order-bill-of-agency/:orderId" element={<ViewOrderBillOfAgency />} />
         <Route path="/view-order-bill-of-customer/:orderId" element={<ViewOderBillOfCustomer />} />
         <Route path="/manageapartment" element={<ManageApartmentOfInvestor />} />
-        <Route path="/reviewupdatedapartment" element={<ReviewUpdatedApartment />} />
+        <Route path="/reviewupdatedapartment/:apartmentId" element={<ReviewUpdatedApartment />} />
 
 
 
