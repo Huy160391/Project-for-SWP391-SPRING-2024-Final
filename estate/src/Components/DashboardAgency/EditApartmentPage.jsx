@@ -17,7 +17,7 @@ const EditApartmentPage = () => {
     const navigateAndReload = (path) => {
         navigate(path);
         window.location.reload();
-      };
+    };
 
     useEffect(() => {
         const fetchApartmentData = async () => {
@@ -55,19 +55,19 @@ const EditApartmentPage = () => {
         if (image) { // Ensure there's an image to uploadnpm 
             formData.append('ApartmentType', image);
         }
-        
+
         try {
             await axios.post(`https://localhost:7137/api/Apartments/UploadInformationWithImage/${apartmentId}`, formData, {
                 headers: { 'Content-Type': 'multipart/form-data' },
             });
             alert('Apartment updated successfully');
             navigateAndReload(`/ManagerListApartmentOfAgency/${apartment.agencyId}/${apartment.buildingId}`);
- // Adjust the route as necessary
+            // Adjust the route as necessary
         } catch (error) {
             console.error('Error updating apartment:', error);
         }
     };
- console.log("concak", apartmentId)
+    console.log("concak", apartmentId)
     return (
         <div className="flex min-h-screen bg-gray-100">
             <div className="flex-grow max-w-4xl mx-auto p-8 bg-white shadow-lg rounded-lg">
