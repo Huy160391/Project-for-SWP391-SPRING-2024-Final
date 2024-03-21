@@ -43,14 +43,14 @@ import ViewBookingOfCustomer from './Components/DashboardCustomer/ViewBookingOfC
 import ViewOderBillOfCustomer from './Components/DashboardCustomer/ViewOderBillOfCustomer';
 import DistributeApartment from './Components/DashboardInvestor/DistributeApartment';
 import EditBuilding from './Components/DashboardInvestor/EditBuilding';
+import ManageApartmentOfInvestor from './Components/DashboardInvestor/ManageApartmentOfInvestor';
+import ReviewUpdatedApartment from './Components/DashboardInvestor/ReviewUpdatedApartment';
 import PostsListing from './Components/Post/PostsList';
 import PostDetail from './Components/PostDetail/PostDetail';
 import FeaturedProjects from './Components/Project/FeaturedProjects ';
 import PropertyDetail from './Components/Property/ApartmentDetail';
 import PropertyList from './Components/Property/ApartmentList';
 import Registration from './Components/Register/RegistrationForm';
-import ManageApartmentOfInvestor from './Components/DashboardInvestor/ManageApartmentOfInvestor';
-import ReviewUpdatedApartment from './Components/DashboardInvestor/ReviewUpdatedApartment';
 
 
 //import ViewListBooking from './Components/DashboardAgency/ViewListBooking';
@@ -96,6 +96,7 @@ function App() {
         <Route path="/buildinglisting" element={<BuildingListing />} />
         <Route path="/postslisting/:projectId" element={<PostsListing />} />
         <Route path="/postdetail/:postId" element={<PostDetail />} />
+        <Route path="/managerapartment" element={<ManageApartmentOfInvestor />} />
 
         {/* Post tool box */}
         <Route path="/edit-post/:postId" element={<EditPostPage />} />
