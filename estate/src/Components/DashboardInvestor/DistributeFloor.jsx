@@ -1,4 +1,5 @@
 import axios from "axios";
+import emailjs from 'emailjs-com';
 import React, { useEffect, useState } from "react";
 
 const DistributeFloor = () => {
@@ -12,6 +13,12 @@ const DistributeFloor = () => {
   const [selectedAgency, setSelectedAgency] = useState();
   const [price, setPrice] = useState(""); // State for holding the price
   const [priceError, setPriceError] = useState("");
+  const [selectedAgencyEmail, setSelectedAgencyEmail] = useState();
+
+
+
+
+
   useEffect(() => {
     const fetchProjects = async () => {
       try {
@@ -23,6 +30,8 @@ const DistributeFloor = () => {
     };
     fetchProjects();
   }, []);
+
+
   const handlePriceChange = (e) => {
     const priceValue = e.target.value;
     setPrice(priceValue);
@@ -32,6 +41,45 @@ const DistributeFloor = () => {
       setPriceError(""); // Clear the error message when the price is valid
     }
   };
+
+
+  useEffect(() => {
+    // Khởi tạo EmailJS SDK khi component được render
+    emailjs.init("GRGyUXUQNJZWmAVmh");
+  }, []);
+
+  const sendEmail = () => {
+    emailjs.send('Aptx4869', 'template_ygv43ov77', {
+      email: selectedAgencyEmail,
+      numberFloor: selectFloorId,
+      buidingName: buildingId,
+      projectName: selectedProjectId
+
+    })
+      .then((response) => {
+        console.log('Email sent successfully:', response);
+      })
+      .catch((error) => {
+        console.error('Email sending failed:', error);
+      });
+  };
+
+  console.log("data", buildingId, selectedProjectId, selectedAgencyEmail)
+
+  useEffect(() => {
+    const fetchAgencyEmail = async () => {
+      try {
+        const { data } = await axios.get(`https://localhost:7137/api/Agencies/${selectedAgency}`);
+        setSelectedAgencyEmail(data.phone);
+      } catch (error) {
+        console.error("Error fetching agency email:", error);
+      }
+    };
+    fetchAgencyEmail();
+  }, [selectedAgency]);
+
+  console.log("data", selectedAgencyEmail);
+
   useEffect(() => {
     const fetchBuildingsForProject = async (projectId) => {
       if (!projectId) {
@@ -62,7 +110,7 @@ const DistributeFloor = () => {
         // const dat = data.filter(
         //   (user) => user.roleId === "Agency"
         // );
-        setRecipients(data);
+        setRecipients(data)
       } catch (error) {
         console.error("Error fetching recipients:", error);
       }
@@ -111,6 +159,7 @@ const DistributeFloor = () => {
       fetchFloor();
     }
   }, [buildingId]);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -121,6 +170,9 @@ const DistributeFloor = () => {
       price: price, // Include the price in your distribution data
     };
 
+
+
+
     try {
       const { buildingId, agencyId, floor, price } = distributionData;
       const url = `https://localhost:7137/api/Buildings/DistributeFloor?buildingId=${encodeURIComponent(
@@ -128,12 +180,11 @@ const DistributeFloor = () => {
       )}&agencyId=${encodeURIComponent(agencyId)}&floor=${encodeURIComponent(
         floor
       )}&price=${encodeURIComponent(price)}`;
+
       const response = await axios.post(url);
+      sendEmail();
       console.log("Distribution success:", response.data);
-
-      // Hiển thị thông báo thành công
       alert("Distribution successful!");
-
       window.location.href = "/managerdistribute";
     } catch (error) {
       console.error("Error distributing project:", error);
@@ -218,9 +269,8 @@ const DistributeFloor = () => {
             <input
               id="price"
               type="number"
-              className={`w-full mt-1 p-2 border ${
-                priceError ? "border-red-500" : "border-gray-300"
-              } rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
+              className={`w-full mt-1 p-2 border ${priceError ? "border-red-500" : "border-gray-300"
+                } rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
               value={price}
               onChange={handlePriceChange}
               placeholder="Enter price"
