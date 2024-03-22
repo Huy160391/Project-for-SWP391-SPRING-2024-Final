@@ -1,6 +1,6 @@
-import emailjs from 'emailjs-com';
 import axios from "axios";
-import React, { useState, useEffect } from "react";
+import emailjs from 'emailjs-com';
+import React, { useEffect, useState } from "react";
 
 const AddNewAgency = () => {
   const initialState = JSON.parse(localStorage.getItem("user")) || {
@@ -44,37 +44,36 @@ const AddNewAgency = () => {
     let newErrors = {};
 
     // Validation patterns
-    const vietnamesePattern = /^[A-Z][a-z\u00C0-\u00FF]*(\s[a-z\u00C0-\u00FF]+)*$/; // Allows accented characters for names
-    const phonePattern = /^\d{11}$/;
+    const nameAndAddressPattern = /^([A-Z\u00C0-\u1EF9][a-z\u00C0-\u1EF9'´`]*(\s[A-Z\u00C0-\u1EF9][a-z\u00C0-\u1EF9'´`]*)*)$/;
+
+    // Allows accented characters for names
     const passwordPattern = /.{8,}/; // At least 8 characters, no other restrictions in this pattern
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Email pattern
 
     // First name and Last name validation
-    if (!user.firstName.match(vietnamesePattern)) {
+    if (!user.firstName.match(nameAndAddressPattern)) {
       formIsValid = false;
-      newErrors.firstName =
-        "First Name is invalid. It should start with a capital letter and can include lowercase letters, spaces, and accented characters.";
+      newErrors.firstName = "First Name is invalid. It should start with a capital letter and can include lowercase letters, spaces, accented characters, and certain special characters.";
+    }
+    if (!user.lastName.match(nameAndAddressPattern)) {
+      formIsValid = false;
+      newErrors.lastName = "Last Name is invalid. It should start with a capital letter and can include lowercase letters, spaces, accented characters, and certain special characters.";
     }
 
     if (!user.phoneNumber.match(emailPattern)) {
       formIsValid = false;
       newErrors.phoneNumber = "Email is invalid"
     }
-    if (!user.lastName.match(vietnamesePattern)) {
-      formIsValid = false;
-      newErrors.lastName =
-        "Last Name is invalid. It should start with a capital letter and can include lowercase letters, spaces, and accented characters.";
-    }
     if (!user.username.trim()) {
       formIsValid = false;
       newErrors.username = "Username is required.";
     }
     // Address validation - simplified for demonstration
-    if (!user.address) {
-      // This is a basic check, you might want to expand it
+    if (!user.address.match(nameAndAddressPattern)) {
       formIsValid = false;
-      newErrors.address = "Address is required.";
+      newErrors.address = "Address is invalid. It should start with a capital letter and can include lowercase letters, spaces, accented characters, and certain special characters.";
     }
+
     // Password validation
     if (
       !user.password.match(passwordPattern) ||
