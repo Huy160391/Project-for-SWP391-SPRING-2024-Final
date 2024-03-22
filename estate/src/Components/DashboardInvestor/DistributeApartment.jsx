@@ -1,5 +1,5 @@
 import axios from "axios";
-import emailjs from 'emailjs-com';
+import emailjs from "emailjs-com";
 import React, { useEffect, useState } from "react";
 
 const DistributeApartment = () => {
@@ -29,32 +29,34 @@ const DistributeApartment = () => {
     fetchProjects();
   }, []);
 
-
   useEffect(() => {
     // Khởi tạo EmailJS SDK khi component được render
     emailjs.init("EMFqDgk_XqGNuAryz");
   }, []);
 
   const sendEmail = () => {
-    emailjs.send('Aptx4869', 'template_1vtwxih', {
-      email: selectedAgencyEmail,
-      apartment: selectedApartmentId,
-      numberFloor: selectFloorId,
-      buidingName: buildingId,
-      projectName: selectedProjectId
-    })
+    emailjs
+      .send("Aptx4869", "template_1vtwxih", {
+        email: selectedAgencyEmail,
+        apartment: selectedApartmentId,
+        numberFloor: selectFloorId,
+        buidingName: buildingId,
+        projectName: selectedProjectId,
+      })
       .then((response) => {
-        console.log('Email sent successfully:', response);
+        console.log("Email sent successfully:", response);
       })
       .catch((error) => {
-        console.error('Email sending failed:', error);
+        console.error("Email sending failed:", error);
       });
   };
 
   useEffect(() => {
     const fetchAgencyEmail = async () => {
       try {
-        const { data } = await axios.get(`https://localhost:7137/api/Agencies/${selectedAgency}`);
+        const { data } = await axios.get(
+          `https://localhost:7137/api/Agencies/${selectedAgency}`
+        );
         setSelectedAgencyEmail(data.phone);
       } catch (error) {
         console.error("Error fetching agency email:", error);
@@ -62,7 +64,6 @@ const DistributeApartment = () => {
     };
     fetchAgencyEmail();
   }, [selectedAgency]);
-
 
   useEffect(() => {
     const fetchBuildingsForProject = async (projectId) => {
@@ -192,6 +193,17 @@ const DistributeApartment = () => {
   const handleBack = () => {
     window.history.back();
   };
+  const handleCancel = () => {
+    setSelectedProjectId("");
+    setBuildingId("");
+    setFloors("");
+    setSelectFloorId("");
+    setSelectedAgency(undefined); // Hoặc bất kỳ giá trị mặc định ban đầu nào bạn muốn
+    setPrice("");
+    setSelectedApartmentId("");
+    setSelectedAgencyEmail(undefined);
+    setPriceError("");
+  };
 
   return (
     <div className="bg-gray-100 min-h-screen flex items-center justify-center">
@@ -284,11 +296,12 @@ const DistributeApartment = () => {
                   key={apartment.apartmentId}
                   value={apartment.apartmentId}
                 >
-                  {`Apartment: ${typeof apartment.apartmentId === "string" &&
+                  {`Apartment: ${
+                    typeof apartment.apartmentId === "string" &&
                     apartment.apartmentId.includes(":")
-                    ? apartment.apartmentId.split(":").pop()
-                    : apartment.apartmentId
-                    }`}
+                      ? apartment.apartmentId.split(":").pop()
+                      : apartment.apartmentId
+                  }`}
                 </option>
               ))}
             </select>
@@ -300,8 +313,9 @@ const DistributeApartment = () => {
             <input
               id="price"
               type="number"
-              className={`w-full mt-1 p-2 border ${priceError ? "border-red-500" : "border-gray-300"
-                } rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
+              className={`w-full mt-1 p-2 border ${
+                priceError ? "border-red-500" : "border-gray-300"
+              } rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
               value={price}
               onChange={handlePriceChange}
               placeholder="Enter price"
@@ -341,6 +355,7 @@ const DistributeApartment = () => {
             <div className="space-x-4">
               <button
                 type="button"
+                onClick={handleCancel}
                 className="px-6 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-150 ease-in-out"
               >
                 Cancel

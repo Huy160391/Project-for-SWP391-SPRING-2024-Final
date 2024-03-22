@@ -1,5 +1,5 @@
 import axios from "axios";
-import emailjs from 'emailjs-com';
+import emailjs from "emailjs-com";
 import React, { useEffect, useState } from "react";
 
 const DistributeFloor = () => {
@@ -15,10 +15,6 @@ const DistributeFloor = () => {
   const [priceError, setPriceError] = useState("");
   const [selectedAgencyEmail, setSelectedAgencyEmail] = useState();
 
-
-
-
-
   useEffect(() => {
     const fetchProjects = async () => {
       try {
@@ -31,7 +27,6 @@ const DistributeFloor = () => {
     fetchProjects();
   }, []);
 
-
   const handlePriceChange = (e) => {
     const priceValue = e.target.value;
     setPrice(priceValue);
@@ -42,34 +37,35 @@ const DistributeFloor = () => {
     }
   };
 
-
   useEffect(() => {
     // Khởi tạo EmailJS SDK khi component được render
     emailjs.init("GRGyUXUQNJZWmAVmh");
   }, []);
 
   const sendEmail = () => {
-    emailjs.send('Aptx4869', 'template_ygv43ov77', {
-      email: selectedAgencyEmail,
-      numberFloor: selectFloorId,
-      buidingName: buildingId,
-      projectName: selectedProjectId
-
-    })
+    emailjs
+      .send("Aptx4869", "template_ygv43ov77", {
+        email: selectedAgencyEmail,
+        numberFloor: selectFloorId,
+        buidingName: buildingId,
+        projectName: selectedProjectId,
+      })
       .then((response) => {
-        console.log('Email sent successfully:', response);
+        console.log("Email sent successfully:", response);
       })
       .catch((error) => {
-        console.error('Email sending failed:', error);
+        console.error("Email sending failed:", error);
       });
   };
 
-  console.log("data", buildingId, selectedProjectId, selectedAgencyEmail)
+  console.log("data", buildingId, selectedProjectId, selectedAgencyEmail);
 
   useEffect(() => {
     const fetchAgencyEmail = async () => {
       try {
-        const { data } = await axios.get(`https://localhost:7137/api/Agencies/${selectedAgency}`);
+        const { data } = await axios.get(
+          `https://localhost:7137/api/Agencies/${selectedAgency}`
+        );
         setSelectedAgencyEmail(data.phone);
       } catch (error) {
         console.error("Error fetching agency email:", error);
@@ -110,7 +106,7 @@ const DistributeFloor = () => {
         // const dat = data.filter(
         //   (user) => user.roleId === "Agency"
         // );
-        setRecipients(data)
+        setRecipients(data);
       } catch (error) {
         console.error("Error fetching recipients:", error);
       }
@@ -170,9 +166,6 @@ const DistributeFloor = () => {
       price: price, // Include the price in your distribution data
     };
 
-
-
-
     try {
       const { buildingId, agencyId, floor, price } = distributionData;
       const url = `https://localhost:7137/api/Buildings/DistributeFloor?buildingId=${encodeURIComponent(
@@ -191,7 +184,15 @@ const DistributeFloor = () => {
       alert("Error in distribution.");
     }
   };
-
+  const handleCancel = () => {
+    setSelectedProjectId("");
+    setBuildingId("");
+    setFloors("");
+    setSelectFloorId("");
+    setSelectedAgency(undefined); // Set lại giá trị ban đầu cho selectedAgency
+    setPrice("");
+    setSelectedAgencyEmail(undefined); // Reset cả email của agency đã chọn
+  };
   return (
     <div className="bg-gray-100 min-h-screen flex items-center justify-center">
       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-xl">
@@ -269,8 +270,9 @@ const DistributeFloor = () => {
             <input
               id="price"
               type="number"
-              className={`w-full mt-1 p-2 border ${priceError ? "border-red-500" : "border-gray-300"
-                } rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
+              className={`w-full mt-1 p-2 border ${
+                priceError ? "border-red-500" : "border-gray-300"
+              } rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
               value={price}
               onChange={handlePriceChange}
               placeholder="Enter price"
@@ -310,6 +312,7 @@ const DistributeFloor = () => {
             <div className="space-x-4">
               <button
                 type="button"
+                onClick={handleCancel}
                 className="px-6 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-150 ease-in-out"
               >
                 Cancel
