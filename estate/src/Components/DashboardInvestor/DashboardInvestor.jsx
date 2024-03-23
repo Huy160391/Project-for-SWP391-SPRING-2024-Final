@@ -62,7 +62,15 @@ const InvestorDashboard = () => {
           <Link to="/managerapartment" className="details-card bg-white shadow-lg rounded-lg p-4 flex items-center justify-center hover:bg-blue-500 hover:text-white transition duration-150 ease-in-out">
             <span>Manager Apartment of Agency</span>
           </Link>
-
+          <Link to="/confirmbookingManager" className="details-card bg-white shadow-lg rounded-lg p-4 flex items-center justify-center hover:bg-blue-500 hover:text-white transition duration-150 ease-in-out">
+            <span>Confirm Booking Manager</span>
+          </Link>
+          <Link to="/confimOderManager" className="details-card bg-white shadow-lg rounded-lg p-4 flex items-center justify-center hover:bg-blue-500 hover:text-white transition duration-150 ease-in-out">
+            <span>Confirm Order Manager</span>
+          </Link>
+          <Link to="/viewHistoryOrder" className="details-card bg-white shadow-lg rounded-lg p-4 flex items-center justify-center hover:bg-blue-500 hover:text-white transition duration-150 ease-in-out">
+            <span>View History Order</span>
+          </Link>
         </section>
         <button
           onClick={handleBackClick}

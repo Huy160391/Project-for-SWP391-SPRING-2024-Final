@@ -14,14 +14,25 @@ const AgencyProfile = () => {
     const fetchAgencyInfo = async () => {
         try {
             const infoResponse = await axios.get(`https://localhost:7137/api/Agencies/${agencyId}`);
-            const imageResponse = await axios.get(`https://localhost:7137/api/Agencies/GetImage/${agencyId}`);
-            setAgency({ ...infoResponse.data, avatar: imageResponse.config.url });
+            let imageSrc = 'https://via.placeholder.com/400x300'; // Khởi tạo hình ảnh mặc định
+    
+            try {
+                const imageResponse = await axios.get(`https://localhost:7137/api/Agencies/GetImage/${agencyId}`);
+                if (imageResponse && imageResponse.config && imageResponse.config.url) {
+                    imageSrc = imageResponse.config.url; // Gán hình ảnh nếu có
+                }
+            } catch (error) {
+                console.error('Failed to fetch agency image:', error);
+            }
+    
+            // Cập nhật thông tin đại lý và hình ảnh
+            setAgency({ ...infoResponse.data, avatar: imageSrc });
             setUpdatedAgency({ ...infoResponse.data });
         } catch (error) {
             console.error("Failed to fetch agency info", error);
         }
     };
-
+        
     useEffect(() => {
         fetchAgencyInfo();
     }, [agencyId]); // Dependency array ensures fetchAgencyInfo is called when agencyId changes

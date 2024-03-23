@@ -51,6 +51,9 @@ import FeaturedProjects from './Components/Project/FeaturedProjects ';
 import PropertyDetail from './Components/Property/ApartmentDetail';
 import PropertyList from './Components/Property/ApartmentList';
 import Registration from './Components/Register/RegistrationForm';
+import ConfirmBookingManager from './Components/DashboardInvestor/ConfirmBookingManager';
+import ConfimOderManager from './Components/DashboardInvestor/ConfimOderManager';
+import ViewHistoryOrder from './Components/DashboardInvestor/ViewHistoryOrder';
 
 
 //import ViewListBooking from './Components/DashboardAgency/ViewListBooking';
@@ -118,6 +121,10 @@ function App() {
         <Route path="/view-order-bill-of-customer/:orderId" element={<ViewOderBillOfCustomer />} />
         <Route path="/manageapartment" element={<ManageApartmentOfInvestor />} />
         <Route path="/reviewupdatedapartment/:apartmentId" element={<ReviewUpdatedApartment />} />
+        <Route path="/confirmbookingManager" element={<ConfirmBookingManager />} />
+        <Route path="/confimOderManager" element={<ConfimOderManager />} />
+        <Route path="/viewHistoryOrder" element={<ViewHistoryOrder />} />
+
 
 
 

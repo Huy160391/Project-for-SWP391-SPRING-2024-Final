@@ -1,6 +1,7 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { useParams } from 'react-router-dom';
 
 const ViewBookingOfCustomer = () => {
     const [bookings, setBookings] = useState([]);
@@ -176,7 +177,7 @@ const ViewBookingOfCustomer = () => {
                             onClick={() => console.log('View bill clicked for booking', booking.bookingId)}
                             className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
                         >
-                            View Bill
+                            View Information
                         </button>
                     </div>
                 </div>
