@@ -6,7 +6,7 @@ const DashboardCustomer = () => {
     const dashboardItems = [
         { name: 'View Your Booking', path: `/view-booking-of-customer/${customerId}` },
         { name: 'Your Profile', path: `/customer-profile/${customerId}` },
-        { name: 'Order History', path: `/order-history-customer/${customerId}` },
+        { name: 'Order View', path: `/order-history-customer/${customerId}` },
         // Add more customer-specific functionalities as needed
     ];
 

@@ -2,7 +2,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import Sidebar from './Sidebar';
+
 
 const EditPostPage = () => {
     const [post, setPost] = useState({
@@ -177,7 +177,7 @@ const EditPostPage = () => {
 
     return (
         <div className="flex min-h-screen bg-gray-100">
-            <Sidebar />
+           
             <div className="flex-grow max-w-4xl mx-auto p-8 bg-white shadow-lg rounded-lg">
                 <h1 className="text-3xl font-bold text-gray-900 mb-10">Edit Post</h1>
 
