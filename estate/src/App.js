@@ -41,19 +41,19 @@ import DashboardCustomer from './Components/DashboardCustomer/DashboardCustomer'
 import OderHistoryOfCustomer from './Components/DashboardCustomer/OderHistoryOfCustomer';
 import ViewBookingOfCustomer from './Components/DashboardCustomer/ViewBookingOfCustomer';
 import ViewOderBillOfCustomer from './Components/DashboardCustomer/ViewOderBillOfCustomer';
+import ConfimOderManager from './Components/DashboardInvestor/ConfimOderManager';
+import ConfirmBookingManager from './Components/DashboardInvestor/ConfirmBookingManager';
 import DistributeApartment from './Components/DashboardInvestor/DistributeApartment';
 import EditBuilding from './Components/DashboardInvestor/EditBuilding';
 import ManageApartmentOfInvestor from './Components/DashboardInvestor/ManageApartmentOfInvestor';
 import ReviewUpdatedApartment from './Components/DashboardInvestor/ReviewUpdatedApartment';
+import ViewHistoryOrder from './Components/DashboardInvestor/ViewHistoryOrder';
 import PostsListing from './Components/Post/PostsList';
 import PostDetail from './Components/PostDetail/PostDetail';
 import FeaturedProjects from './Components/Project/FeaturedProjects ';
 import PropertyDetail from './Components/Property/ApartmentDetail';
 import PropertyList from './Components/Property/ApartmentList';
 import Registration from './Components/Register/RegistrationForm';
-import ConfirmBookingManager from './Components/DashboardInvestor/ConfirmBookingManager';
-import ConfimOderManager from './Components/DashboardInvestor/ConfimOderManager';
-import ViewHistoryOrder from './Components/DashboardInvestor/ViewHistoryOrder';
 
 
 //import ViewListBooking from './Components/DashboardAgency/ViewListBooking';
@@ -91,7 +91,7 @@ function App() {
 
         <Route path="/property/:buildingId" element={<PropertyList />} />
         <Route path="/agency" element={<AgencyListing />} />
-        <Route path="/agencydetail" element={<AgentsPage />} />
+        <Route path="/agenciesdetail/:agencyId" element={<AgentsPage />} />
         <Route path="/propertydetail/:apartmentId" element={<PropertyDetail />} />
         <Route path="/editproperty/:apartmentId" element={<EditProperty />} />
         <Route path="/listbooking/:apartmentId" element={<ListBooking />} />
@@ -100,6 +100,7 @@ function App() {
         <Route path="/postslisting/:projectId" element={<PostsListing />} />
         <Route path="/postdetail/:postId" element={<PostDetail />} />
         <Route path="/managerapartment" element={<ManageApartmentOfInvestor />} />
+        
 
         {/* Post tool box */}
         <Route path="/edit-post/:postId" element={<EditPostPage />} />

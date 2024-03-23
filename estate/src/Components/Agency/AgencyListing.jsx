@@ -6,34 +6,24 @@ const AgencyListing = () => {
   const [agents, setAgents] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-useEffect(() => {
-  const fetchAgents = async () => {
-    try {
-      const response = await axios.get('https://localhost:7137/api/Agencies');
-      // Assuming each agent has an image URL in the `Images` field
-      const agentsWithImages = await Promise.all(response.data.map(async (agent) => {
-        if (agent.Images && !agent.Images.startsWith('http')) {
-          // If the image URL is not absolute, prepend the server base URL
-          const imageUrl = `${process.env.REACT_APP_API_BASE_URL}/${agent.Images}`;
-          try {
-            const imageResponse = await axios.get(imageUrl, { responseType: 'blob' });
-            agent.Images = URL.createObjectURL(imageResponse.data);
-          } catch {
-            agent.Images = 'path-to-default-image/no-image.png';
-          }
-        }
-        return agent;
-      }));
-      setAgents(agentsWithImages);
-      setIsLoading(false);
-    } catch (error) {
-      console.error('Error fetching agents:', error);
-      setIsLoading(false);
-    }
-  };
+  useEffect(() => {
+    const fetchAgents = async () => {
+      try {
+        // Use Axios to make a GET request to the API
+        const response = await axios.get('https://localhost:7137/api/Agencies');
+        // Once data is received, update the agents state with this data
+        setAgents(response.data);
+      } catch (error) {
+        console.error('Error fetching agents:', error);
+      } finally {
+        // Set isLoading to false regardless of the outcome of the try/catch
+        setIsLoading(false);
+      }
+    };
 
-  fetchAgents();
-}, []);
+    fetchAgents();
+  }, []); // Empty dependency array means this effect runs once on mount
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
