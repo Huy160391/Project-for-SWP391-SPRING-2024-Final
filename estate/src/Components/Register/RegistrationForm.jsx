@@ -60,48 +60,32 @@ const Registration = () => {
     let formIsValid = true;
     let newErrors = {};
 
-    if (!formData.firstName.trim()) {
-      formIsValid = false;
-      newErrors.firstName = 'First Name is required.';
-    }
+    // Kiểm tra từng trường dữ liệu
+    ['firstName', 'lastName', 'gender', 'username', 'password', 'confirmPassword', 'address', 'phone', 'image'].forEach((field) => {
+      if (!formData[field] || !formData[field].trim()) { // Add check for null value
+        formIsValid = false;
+        newErrors[field] = `${field.charAt(0).toUpperCase() + field.slice(1)} is required.`;
+      }
+    });
 
-    if (!formData.lastName.trim()) {
-      formIsValid = false;
-      newErrors.lastName = 'Last Name is required.';
-    }
-
-    if (!formData.gender.trim()) {
-      formIsValid = false;
-      newErrors.gender = 'Gender is required.';
-    }
-
-    if (!formData.username.trim()) {
-      formIsValid = false;
-      newErrors.username = 'Username is required.';
-    }
-
-    if (!formData.password.trim()) {
-      formIsValid = false;
-      newErrors.password = 'Password is required.';
-    }
-
-    if (!formData.confirmPassword.trim()) {
-      formIsValid = false;
-      newErrors.confirmPassword = 'Confirm Password is required.';
-    }
-
-    if (!formData.address.trim()) {
-      formIsValid = false;
-      newErrors.address = 'Address is required.';
-    }
-
-    if (!formData.phone.trim()) { // Kiểm tra tính hợp lệ của phone (email)
-      formIsValid = false;
-      newErrors.phone = 'Email is required.';
-    } else if (!/^\S+@\S+\.(com|vn|edu\.vn)$/.test(formData.phone)
-    ) {
+    // Kiểm tra tính hợp lệ của email
+    if (!/^\S+@\S+\.(com|vn|edu\.vn)$/.test(formData.phone)) {
       formIsValid = false;
       newErrors.phone = 'Email is invalid.';
+    }
+
+    const nameRegex = /^[A-Z][a-zA-ZÀ-ÖØ-öø-ÿ\s'`-]*$/; // Biểu thức chính quy cho first name, last name, address, và username
+    ['firstName', 'lastName', 'address', 'username'].forEach((field) => {
+      if (!formData[field] || !nameRegex.test(formData[field])) { // Add check for null value
+        formIsValid = false;
+        newErrors[field] = `${field.charAt(0).toUpperCase() + field.slice(1)} is invalid. It should start with a capital letter and can include lowercase letters, spaces, accented characters, and certain special characters.`;
+      }
+    });
+
+    // Kiểm tra tính hợp lệ của password
+    if (formData.password.length < 8) {
+      formIsValid = false;
+      newErrors.password = 'Password must be at least 8 characters long.';
     }
 
     if (!formData.image) {
@@ -117,7 +101,7 @@ const Registration = () => {
     const dataToSend = new FormData();
     Object.entries(formData).forEach(([key, value]) => {
       if (value !== null) {
-        if (key === 'phone') { // Lưu email vào phần phone trong formData
+        if (key === 'phone') {
           dataToSend.append('phone', value);
         } else {
           dataToSend.append(key, value);
