@@ -9,13 +9,14 @@ const AgencyProfile = () => {
     const [editMode, setEditMode] = useState(false);
     const [updatedAgency, setUpdatedAgency] = useState({});
     const [avatar, setAvatar] = useState(null);
+    const [errors, setErrors] = useState({});
 
     // Correctly placed fetchAgencyInfo function
     const fetchAgencyInfo = async () => {
         try {
             const infoResponse = await axios.get(`https://localhost:7137/api/Agencies/${agencyId}`);
             let imageSrc = 'https://via.placeholder.com/400x300'; // Khởi tạo hình ảnh mặc định
-    
+
             try {
                 const imageResponse = await axios.get(`https://localhost:7137/api/Agencies/GetImage/${agencyId}`);
                 if (imageResponse && imageResponse.config && imageResponse.config.url) {
@@ -24,7 +25,7 @@ const AgencyProfile = () => {
             } catch (error) {
                 console.error('Failed to fetch agency image:', error);
             }
-    
+
             // Cập nhật thông tin đại lý và hình ảnh
             setAgency({ ...infoResponse.data, avatar: imageSrc });
             setUpdatedAgency({ ...infoResponse.data });
@@ -32,7 +33,7 @@ const AgencyProfile = () => {
             console.error("Failed to fetch agency info", error);
         }
     };
-        
+
     useEffect(() => {
         fetchAgencyInfo();
     }, [agencyId]); // Dependency array ensures fetchAgencyInfo is called when agencyId changes
@@ -51,6 +52,9 @@ const AgencyProfile = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const isValid = validateForm();
+        if (!isValid) return; // Do not proceed if form is not valid
+
         const formData = new FormData();
         formData.append('firstName', updatedAgency.firstName);
         formData.append('lastName', updatedAgency.lastName);
@@ -73,8 +77,30 @@ const AgencyProfile = () => {
             console.error("Failed to update agency info", error);
             alert('Failed to update agency info');
         }
+
     };
 
+    const validateForm = () => {
+        const errors = {};
+        const phoneRegex = /^\d{10,}$/;
+        if (!updatedAgency.firstName) {
+            errors.firstName = 'Please fill in this field.';
+        }
+        if (!updatedAgency.lastName) {
+            errors.lastName = 'Please fill in this field.';
+        }
+        if (!updatedAgency.address) {
+            errors.address = 'Please fill in this field.';
+        }
+        if (!updatedAgency.gender) {
+            errors.gender = 'Please select your gender.';
+        }
+        if (!updatedAgency.phone || !phoneRegex.test(updatedAgency.phone)) {
+            errors.phone = 'Please enter a valid phone number (at least 10 digits).';
+        }
+        setErrors(errors);
+        return Object.keys(errors).length === 0;
+    };
 
 
     if (!agency) return <div>Loading...</div>;
@@ -129,7 +155,8 @@ const AgencyProfile = () => {
                                                 type="button"
                                                 onClick={() => navigate(-1)}
                                                 className="ml-10 mt-4 px-6 py-3 bg-blue-600 text-white text-lg rounded-lg shadow-md
-                                                            hover:bg-blue-700 transition duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                                                            hover:bg-blue-700 transition duration-300 focus:outline-none
+                                                            focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
                                                 Back
                                             </button>
                                         </div>
@@ -155,23 +182,32 @@ const AgencyProfile = () => {
 
                                         <div>
                                             <label className="block text-sm font-medium text-gray-200">First Name</label>
-                                            <input type="text" name="firstName" value={updatedAgency.firstName || ''} onChange={handleChange} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500" />
+                                            <input type="text" name="firstName" value={updatedAgency.firstName || ''} onChange={handleChange} className={`mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 ${errors.firstName && 'border-red-500'}`} />
+                                            {errors.firstName && <p className="text-red-500">{errors.firstName}</p>}
                                         </div>
                                         <div>
                                             <label className="block text-sm font-medium text-gray-200">Last Name</label>
-                                            <input type="text" name="lastName" value={updatedAgency.lastName || ''} onChange={handleChange} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500" />
+                                            <input type="text" name="lastName" value={updatedAgency.lastName || ''} onChange={handleChange} className={`mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 ${errors.lastName && 'border-red-500'}`} />
+                                            {errors.lastName && <p className="text-red-500">{errors.lastName}</p>}
                                         </div>
                                         <div>
                                             <label className="block text-sm font-medium text-gray-200">Address</label>
-                                            <input type="text" name="address" value={updatedAgency.address || ''} onChange={handleChange} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500" />
+                                            <input type="text" name="address" value={updatedAgency.address || ''} onChange={handleChange} className={`mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 ${errors.address && 'border-red-500'}`} />
+                                            {errors.address && <p className="text-red-500">{errors.address}</p>}
                                         </div>
                                         <div>
                                             <label className="block text-sm font-medium text-gray-200">Gender</label>
-                                            <input type="text" name="gender" value={updatedAgency.gender || ''} onChange={handleChange} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500" />
+                                            <select name="gender" value={updatedAgency.gender || ''} onChange={handleChange} className={`mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 ${errors.gender && 'border-red-500'}`}>
+                                                <option value="">Select Gender</option>
+                                                <option value="Male">Male</option>
+                                                <option value="Female">Female</option>
+                                            </select>
+                                            {errors.gender && <p className="text-red-500">{errors.gender}</p>}
                                         </div>
                                         <div>
                                             <label className="block text-sm font-medium text-gray-200">Phone</label>
-                                            <input type="text" name="phone" value={updatedAgency.phone || ''} onChange={handleChange} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500" />
+                                            <input type="text" name="phone" value={updatedAgency.phone || ''} onChange={handleChange} className={`mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 ${errors.phone && 'border-red-500'}`} />
+                                            {errors.phone && <p className="text-red-500">{errors.phone}</p>}
                                         </div>
 
                                         <div className="flex  py-4 items-center justify-between space-x-4">
