@@ -82,7 +82,7 @@ const AgencyProfile = () => {
 
     const validateForm = () => {
         const errors = {};
-        const phoneRegex = /^\d{10,}$/;
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!updatedAgency.firstName) {
             errors.firstName = 'Please fill in this field.';
         }
@@ -95,8 +95,8 @@ const AgencyProfile = () => {
         if (!updatedAgency.gender) {
             errors.gender = 'Please select your gender.';
         }
-        if (!updatedAgency.phone || !phoneRegex.test(updatedAgency.phone)) {
-            errors.phone = 'Please enter a valid phone number (at least 10 digits).';
+        if (!updatedAgency.phone || !emailRegex.test(updatedAgency.phone)) {
+            errors.phone = 'Please enter a valid email address.';
         }
         setErrors(errors);
         return Object.keys(errors).length === 0;
@@ -139,7 +139,7 @@ const AgencyProfile = () => {
 
                                             <div className="p-4 border bg-gray-100 border-gray-200 rounded-lg ">
                                                 <p className="text-2xl text-gray-700">
-                                                    <span className="font-semibold">Phone:</span> {agency.phone}
+                                                    <span className="font-semibold">Email:</span> {agency.phone}
                                                 </p>
                                             </div>
                                         </div>
@@ -205,7 +205,7 @@ const AgencyProfile = () => {
                                             {errors.gender && <p className="text-red-500">{errors.gender}</p>}
                                         </div>
                                         <div>
-                                            <label className="block text-sm font-medium text-gray-200">Phone</label>
+                                            <label className="block text-sm font-medium text-gray-200">Email</label>
                                             <input type="text" name="phone" value={updatedAgency.phone || ''} onChange={handleChange} className={`mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 ${errors.phone && 'border-red-500'}`} />
                                             {errors.phone && <p className="text-red-500">{errors.phone}</p>}
                                         </div>
