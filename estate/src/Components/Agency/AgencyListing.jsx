@@ -42,7 +42,7 @@ const AgencyListing = () => {
       <div className="relative w-3/4 mb-10">
         <input
           type="text"
-          placeholder="Search projects..."
+          placeholder="Search agent..."
           value={searchTerm}
           onChange={handleSearchTermChange}
           className="border border-gray-300 px-3 py-2 rounded-lg w-full pr-10 focus:outline-none"
