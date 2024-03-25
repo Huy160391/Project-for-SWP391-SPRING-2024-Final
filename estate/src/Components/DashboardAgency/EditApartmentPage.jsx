@@ -17,7 +17,7 @@ const EditApartmentPage = () => {
     const navigateAndReload = (path) => {
         navigate(path);
         window.location.reload();
-      };
+    };
 
     useEffect(() => {
         const fetchApartmentData = async () => {
@@ -42,8 +42,52 @@ const EditApartmentPage = () => {
         }
     };
 
+    const [errors, setErrors] = useState({
+        description: '',
+        numberOfBedrooms: '',
+        numberOfBathrooms: '',
+        furniture: '',
+        price: '',
+        area: '',
+    });
+
     const handleSubmit = async (event) => {
         event.preventDefault();
+
+        // Check if any required field is empty
+        let formValid = true;
+        const newErrors = { ...errors };
+        if (!apartment.description) {
+            newErrors.description = 'Please fill in this field.';
+            formValid = false;
+        }
+        if (!apartment.numberOfBedrooms) {
+            newErrors.numberOfBedrooms = 'Please select the number of bedrooms.';
+            formValid = false;
+        }
+        if (!apartment.numberOfBathrooms) {
+            newErrors.numberOfBathrooms = 'Please select the number of bathrooms.';
+            formValid = false;
+        }
+        if (!apartment.furniture) {
+            newErrors.furniture = 'Please select the furniture type.';
+            formValid = false;
+        }
+        if (!apartment.price) {
+            newErrors.price = 'Please fill in this field.';
+            formValid = false;
+        }
+        if (!apartment.area) {
+            newErrors.area = 'Please fill in this field.';
+            formValid = false;
+        }
+
+        setErrors(newErrors);
+
+        if (!formValid) {
+            return;
+        }
+
         const formData = new FormData();
         formData.append('description', apartment.description);
         formData.append('numberOfBedrooms', apartment.numberOfBedrooms);
@@ -55,19 +99,19 @@ const EditApartmentPage = () => {
         if (image) { // Ensure there's an image to uploadnpm 
             formData.append('ApartmentType', image);
         }
-        
+
         try {
             await axios.post(`https://localhost:7137/api/Apartments/UploadInformationWithImage/${apartmentId}`, formData, {
                 headers: { 'Content-Type': 'multipart/form-data' },
             });
             alert('Apartment updated successfully');
             navigateAndReload(`/ManagerListApartmentOfAgency/${apartment.agencyId}/${apartment.buildingId}`);
- // Adjust the route as necessary
+            // Adjust the route as necessary
         } catch (error) {
             console.error('Error updating apartment:', error);
         }
     };
- console.log("concak", apartmentId)
+    console.log("concak", apartmentId)
     return (
         <div className="flex min-h-screen bg-gray-100">
             <div className="flex-grow max-w-4xl mx-auto p-8 bg-white shadow-lg rounded-lg">
@@ -82,44 +126,58 @@ const EditApartmentPage = () => {
                     <div className="form-group">
                         <label className="text-gray-700 font-semibold block mb-2">Description</label>
                         <textarea name="description" className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" value={apartment.description || ''} onChange={handleChange}></textarea>
+                        {errors.description && <p className="text-red-500">{errors.description}</p>}
                     </div>
 
                     {/* Number of Bedrooms */}
                     <div className="form-group">
                         <label className="text-gray-700 font-semibold block mb-2">Number of Bedrooms</label>
-                        <input
-                            type="number"
+                        <select
                             name="numberOfBedrooms"
                             className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            value={apartment.numberOfBedrooms || 0}
+                            value={apartment.numberOfBedrooms || ''}
                             onChange={handleChange}
-                            min="0"
-                        />
+                        >
+                            <option value="">Select Number of Bedrooms</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                        </select>
+                        {errors.numberOfBedrooms && <p className="text-red-500">{errors.numberOfBedrooms}</p>}
                     </div>
 
                     {/* Number of Bathrooms */}
                     <div className="form-group">
                         <label className="text-gray-700 font-semibold block mb-2">Number of Bathrooms</label>
-                        <input
-                            type="number"
+                        <select
                             name="numberOfBathrooms"
                             className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            value={apartment.numberOfBathrooms || 0}
+                            value={apartment.numberOfBathrooms || ''}
                             onChange={handleChange}
-                            min="0"
-                        />
+                        >
+                            <option value="">Select Number of Bathrooms</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                        </select>
+                        {errors.numberOfBathrooms && <p className="text-red-500">{errors.numberOfBathrooms}</p>}
                     </div>
 
                     {/* Furniture Type */}
                     <div className="form-group">
                         <label className="text-gray-700 font-semibold block mb-2">Furniture Type</label>
-                        <input
-                            type="text"
+                        <select
                             name="furniture"
                             className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             value={apartment.furniture || ''}
                             onChange={handleChange}
-                        />
+                        >
+                            <option value="">Select Furniture Type</option>
+                            <option value="Fully Furnished">Fully Furnished</option>
+                            <option value="Partially Furnished">Partially Furnished</option>
+                            <option value="Not Furnished">Not Furnished</option>
+                        </select>
+                        {errors.furniture && <p className="text-red-500">{errors.furniture}</p>}
                     </div>
 
                     {/* Price */}
@@ -133,6 +191,7 @@ const EditApartmentPage = () => {
                             onChange={handleChange}
                             min="0"
                         />
+                        {errors.price && <p className="text-red-500">{errors.price}</p>}
                     </div>
 
                     {/* Area */}
@@ -146,6 +205,7 @@ const EditApartmentPage = () => {
                             onChange={handleChange}
                             min="0"
                         />
+                        {errors.area && <p className="text-red-500">{errors.area}</p>}
                     </div>
                     <div className="flex justify-between">
                         <button type="button" onClick={() => navigate(-1)} className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out">
