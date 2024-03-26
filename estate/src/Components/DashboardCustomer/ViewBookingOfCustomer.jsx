@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const ViewBookingOfCustomer = () => {
     // State hooks
@@ -132,10 +131,9 @@ const ViewBookingOfCustomer = () => {
     const prevPage = () => setCurrentPage(prev => Math.max(prev - 1, 1));
 
     // Render error message if error state is set
-    if (error) {
-        return <div className="text-red-500 text-center font-bold">{error}</div>;
+    if (allBookings.length === 0) {
+        return <div className="text-center font-bold">Bạn không có booking nào.</div>;
     }
-
     return (
         <div className="flex flex-col w-full">
             <div className="mt-5 ml-5 flex justify-start items-center space-x-10">

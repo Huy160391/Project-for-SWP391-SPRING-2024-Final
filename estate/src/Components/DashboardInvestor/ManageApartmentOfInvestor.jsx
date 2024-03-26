@@ -205,7 +205,7 @@ const ManageApartmentOfInvestor = () => {
                   <td className="px-5 py-4">{apartment.roomNumber}</td>
                   <td className="px-5 py-4">
                     <img
-                      src={`https://localhost:7137/${apartment.apartmentType}`}
+                      src={`https://localhost:7137/api/Apartments/GetApartmentImage/${apartment.apartmentId}`}
                       alt="Apartment"
                       className="w-20 h-20 object-cover rounded-lg"
                     />

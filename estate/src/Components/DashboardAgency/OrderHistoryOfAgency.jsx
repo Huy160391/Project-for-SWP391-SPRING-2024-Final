@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { Link, useParams } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 const OrderHistoryOfAgency = () => {
     const [orders, setOrders] = useState([]);
@@ -95,10 +94,11 @@ const OrderHistoryOfAgency = () => {
         setOrders(allOrders.slice(indexOfFirstOrder, indexOfLastOrder));
     };
 
-    if (error) {
-        return <div className="text-red-500 text-center font-bold">{error}</div>;
-    }
 
+
+    if (allOrders.length === 0) {
+        return <div className="text-center font-bold">Chưa có order nào</div>;
+    }
     // Calculate page count
     const pageNumbers = [];
     for (let i = 1; i <= Math.ceil(allOrders.length / ordersPerPage); i++) {
