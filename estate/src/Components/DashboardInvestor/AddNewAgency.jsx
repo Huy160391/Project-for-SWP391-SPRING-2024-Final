@@ -1,5 +1,5 @@
 import axios from "axios";
-import emailjs from 'emailjs-com';
+import emailjs from "emailjs-com";
 import React, { useEffect, useState } from "react";
 
 const AddNewAgency = () => {
@@ -13,13 +13,12 @@ const AddNewAgency = () => {
     confirmPassword: "",
   };
 
-
   const [user, setUser] = useState(initialState);
   const [file, setFile] = useState(null);
   const [error, setError] = useState("");
   const [errors, setErrors] = useState({});
   const [success, setSuccess] = useState("");
-
+  const [imagePreviewUrl, setImagePreviewUrl] = useState("");
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUser({ ...user, [name]: value });
@@ -27,12 +26,13 @@ const AddNewAgency = () => {
   };
 
   const handleFileChange = (e) => {
-    setFile(e.target.files[0]);
-    if (e.target.files[0]) {
+    const file = e.target.files[0];
+    if (file) {
+      setFile(file);
+      setImagePreviewUrl(URL.createObjectURL(file));
       setErrors({ ...errors, file: "" }); // Reset file input error if needed
     }
   };
-
 
   useEffect(() => {
     // Khởi tạo EmailJS SDK khi component được render
@@ -44,7 +44,8 @@ const AddNewAgency = () => {
     let newErrors = {};
 
     // Validation patterns
-    const nameAndAddressPattern = /^([A-Z\u00C0-\u1EF9][a-z\u00C0-\u1EF9'´`]*(\s[A-Z\u00C0-\u1EF9][a-z\u00C0-\u1EF9'´`]*)*)$/;
+    const nameAndAddressPattern =
+      /^([A-Z\u00C0-\u1EF9][a-z\u00C0-\u1EF9'´`]*(\s[A-Z\u00C0-\u1EF9][a-z\u00C0-\u1EF9'´`]*)*)$/;
 
     // Allows accented characters for names
     const passwordPattern = /.{8,}/; // At least 8 characters, no other restrictions in this pattern
@@ -53,16 +54,18 @@ const AddNewAgency = () => {
     // First name and Last name validation
     if (!user.firstName.match(nameAndAddressPattern)) {
       formIsValid = false;
-      newErrors.firstName = "First Name is invalid. It should start with a capital letter and can include lowercase letters, spaces, accented characters, and certain special characters.";
+      newErrors.firstName =
+        "First Name is invalid. It should start with a capital letter and can include lowercase letters, spaces, accented characters, and certain special characters.";
     }
     if (!user.lastName.match(nameAndAddressPattern)) {
       formIsValid = false;
-      newErrors.lastName = "Last Name is invalid. It should start with a capital letter and can include lowercase letters, spaces, accented characters, and certain special characters.";
+      newErrors.lastName =
+        "Last Name is invalid. It should start with a capital letter and can include lowercase letters, spaces, accented characters, and certain special characters.";
     }
 
     if (!user.phoneNumber.match(emailPattern)) {
       formIsValid = false;
-      newErrors.phoneNumber = "Email is invalid"
+      newErrors.phoneNumber = "Email is invalid";
     }
     if (!user.username.trim()) {
       formIsValid = false;
@@ -71,7 +74,8 @@ const AddNewAgency = () => {
     // Address validation - simplified for demonstration
     if (!user.address.match(nameAndAddressPattern)) {
       formIsValid = false;
-      newErrors.address = "Address is invalid. It should start with a capital letter and can include lowercase letters, spaces, accented characters, and certain special characters.";
+      newErrors.address =
+        "Address is invalid. It should start with a capital letter and can include lowercase letters, spaces, accented characters, and certain special characters.";
     }
 
     // Password validation
@@ -93,23 +97,20 @@ const AddNewAgency = () => {
     return formIsValid;
   };
 
-
-
-
-
   const sendEmail = () => {
-    emailjs.send('Aptx4869', 'template_r7i6yha', {
-      email: user.phoneNumber, // Sử dụng số điện thoại làm email
-      username: user.username,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      password: user.password
-    })
+    emailjs
+      .send("Aptx4869", "template_r7i6yha", {
+        email: user.phoneNumber, // Sử dụng số điện thoại làm email
+        username: user.username,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        password: user.password,
+      })
       .then((response) => {
-        console.log('Email sent successfully:', response);
+        console.log("Email sent successfully:", response);
       })
       .catch((error) => {
-        console.error('Email sending failed:', error);
+        console.error("Email sending failed:", error);
         setError("Email is not exits.");
       });
   };
@@ -123,8 +124,6 @@ const AddNewAgency = () => {
       return; // Stop the form from being submitted
     }
 
-
-
     const formData = new FormData();
     formData.append("FirstName", user.firstName);
     formData.append("LastName", user.lastName);
@@ -135,12 +134,15 @@ const AddNewAgency = () => {
     formData.append("FileImage", file);
 
     try {
-      const response = await axios.post('https://localhost:7137/api/Agencies/PostAgencyWithImage', formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-
+      const response = await axios.post(
+        "https://localhost:7137/api/Agencies/PostAgencyWithImage",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
       if (response.status) {
         setSuccess("Agency added successfully!");
@@ -163,20 +165,32 @@ const AddNewAgency = () => {
   return (
     <div className="flex min-h-screen bg-gray-50 justify-center items-center">
       <div className="w-full max-w-4xl p-8 bg-white rounded-lg shadow-md">
-        <h2 className="text-2xl font-bold text-gray-800 mb-6">Add New Agency</h2>
-        {error && <div className="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg">{error}</div>}
-        {success && <div className="p-4 mb-4 text-sm text-green-700 bg-green-100 rounded-lg">{success}</div>}
+        <h2 className="text-2xl font-bold text-gray-800 mb-6">
+          Add New Agency
+        </h2>
+        {error && (
+          <div className="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg">
+            {error}
+          </div>
+        )}
+        {success && (
+          <div className="p-4 mb-4 text-sm text-green-700 bg-green-100 rounded-lg">
+            {success}
+          </div>
+        )}
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="flex justify-center mb-4">
-            <div className="relative w-24 h-24 bg-gray-200 rounded-full overflow-hidden">
-              <img src={user.avatarUrl || "default_avatar.png"} alt="Avatar" className="absolute w-full h-full object-cover" />
-              <input
-                type="file"
-                name="fileImage"
-                onChange={handleFileChange}
-                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-              />
-            </div>
+          <div className="relative w-24 h-24 bg-gray-200 rounded-full overflow-hidden">
+            <img
+              src={imagePreviewUrl || "default_avatar.png"}
+              alt="Avatar"
+              className="absolute w-full h-full object-cover"
+            />
+            <input
+              type="file"
+              name="fileImage"
+              onChange={handleFileChange}
+              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+            />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
@@ -186,9 +200,13 @@ const AddNewAgency = () => {
                 placeholder="First Name"
                 value={user.firstName}
                 onChange={handleChange}
-                className={`p-2 w-full border rounded shadow-sm ${errors.firstName ? 'border-red-500' : 'border-gray-300'}`}
+                className={`p-2 w-full border rounded shadow-sm ${
+                  errors.firstName ? "border-red-500" : "border-gray-300"
+                }`}
               />
-              {errors.firstName && <p className="text-red-500 text-xs mt-1">{errors.firstName}</p>}
+              {errors.firstName && (
+                <p className="text-red-500 text-xs mt-1">{errors.firstName}</p>
+              )}
             </div>
 
             <div>
@@ -198,9 +216,13 @@ const AddNewAgency = () => {
                 placeholder="Last Name"
                 value={user.lastName}
                 onChange={handleChange}
-                className={`p-2 w-full border rounded shadow-sm ${errors.lastName ? 'border-red-500' : 'border-gray-300'}`}
+                className={`p-2 w-full border rounded shadow-sm ${
+                  errors.lastName ? "border-red-500" : "border-gray-300"
+                }`}
               />
-              {errors.lastName && <p className="text-red-500 text-xs mt-1">{errors.lastName}</p>}
+              {errors.lastName && (
+                <p className="text-red-500 text-xs mt-1">{errors.lastName}</p>
+              )}
             </div>
             {/* Username */}
             <div className="col-span-1 md:col-span-2">
@@ -210,9 +232,13 @@ const AddNewAgency = () => {
                 placeholder="Username"
                 value={user.username}
                 onChange={handleChange}
-                className={`p-2 w-full border rounded shadow-sm ${errors.username ? 'border-red-500' : 'border-gray-300'}`}
+                className={`p-2 w-full border rounded shadow-sm ${
+                  errors.username ? "border-red-500" : "border-gray-300"
+                }`}
               />
-              {errors.username && <p className="text-red-500 text-xs mt-1">{errors.username}</p>}
+              {errors.username && (
+                <p className="text-red-500 text-xs mt-1">{errors.username}</p>
+              )}
             </div>
 
             <div className="col-span-1 md:col-span-2">
@@ -222,9 +248,13 @@ const AddNewAgency = () => {
                 placeholder="Address"
                 value={user.address}
                 onChange={handleChange}
-                className={`p-2 w-full border rounded shadow-sm ${errors.address ? 'border-red-500' : 'border-gray-300'}`}
+                className={`p-2 w-full border rounded shadow-sm ${
+                  errors.address ? "border-red-500" : "border-gray-300"
+                }`}
               />
-              {errors.address && <p className="text-red-500 text-xs mt-1">{errors.address}</p>}
+              {errors.address && (
+                <p className="text-red-500 text-xs mt-1">{errors.address}</p>
+              )}
             </div>
 
             <div>
@@ -234,9 +264,15 @@ const AddNewAgency = () => {
                 placeholder="Email"
                 value={user.phoneNumber}
                 onChange={handleChange}
-                className={`p-2 w-full border rounded shadow-sm ${errors.phoneNumber ? 'border-red-500' : 'border-gray-300'}`}
+                className={`p-2 w-full border rounded shadow-sm ${
+                  errors.phoneNumber ? "border-red-500" : "border-gray-300"
+                }`}
               />
-              {errors.phoneNumber && <p className="text-red-500 text-xs mt-1">{errors.phoneNumber}</p>}
+              {errors.phoneNumber && (
+                <p className="text-red-500 text-xs mt-1">
+                  {errors.phoneNumber}
+                </p>
+              )}
             </div>
 
             <div>
@@ -246,9 +282,13 @@ const AddNewAgency = () => {
                 placeholder="Password"
                 value={user.password}
                 onChange={handleChange}
-                className={`p-2 w-full border rounded shadow-sm ${errors.password ? 'border-red-500' : 'border-gray-300'}`}
+                className={`p-2 w-full border rounded shadow-sm ${
+                  errors.password ? "border-red-500" : "border-gray-300"
+                }`}
               />
-              {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password}</p>}
+              {errors.password && (
+                <p className="text-red-500 text-xs mt-1">{errors.password}</p>
+              )}
             </div>
 
             <div>
@@ -258,9 +298,15 @@ const AddNewAgency = () => {
                 placeholder="Confirm Password"
                 value={user.confirmPassword}
                 onChange={handleChange}
-                className={`p-2 w-full border rounded shadow-sm ${errors.confirmPassword ? 'border-red-500' : 'border-gray-300'}`}
+                className={`p-2 w-full border rounded shadow-sm ${
+                  errors.confirmPassword ? "border-red-500" : "border-gray-300"
+                }`}
               />
-              {errors.confirmPassword && <p className="text-red-500 text-xs mt-1">{errors.confirmPassword}</p>}
+              {errors.confirmPassword && (
+                <p className="text-red-500 text-xs mt-1">
+                  {errors.confirmPassword}
+                </p>
+              )}
             </div>
           </div>
           <div className="flex justify-between mt-6">
@@ -291,5 +337,5 @@ const AddNewAgency = () => {
       </div>
     </div>
   );
-}
+};
 export default AddNewAgency;
