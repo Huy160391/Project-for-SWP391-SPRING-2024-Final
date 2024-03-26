@@ -11,6 +11,7 @@ const EditApartmentPage = () => {
         price: 0,
         area: 0,
     });
+    const [descriptionError, setDescriptionError] = useState('');
     const [image, setImage] = useState(null);
     const { apartmentId } = useParams();
     const navigate = useNavigate();
@@ -30,6 +31,18 @@ const EditApartmentPage = () => {
         };
         fetchApartmentData();
     }, [apartmentId]);
+
+    //Check valid for description: at least 10 characters and not exceed 1000 characters
+    useEffect(() => {
+        if (apartment.description.length < 10) {
+            setDescriptionError('Description must be at least 10 characters long.');
+        } else if (apartment.description.length > 1000) {
+            setDescriptionError('Description cannot exceed 1000 characters.');
+        } else {
+            setDescriptionError('');
+        }
+    }, [apartment.description]);
+
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -96,7 +109,7 @@ const EditApartmentPage = () => {
         formData.append('price', apartment.price);
         formData.append('area', apartment.area);
 
-        if (image) { // Ensure there's an image to uploadnpm 
+        if (image) { // Ensure there's an image to upload
             formData.append('ApartmentType', image);
         }
 
@@ -127,6 +140,7 @@ const EditApartmentPage = () => {
                         <label className="text-gray-700 font-semibold block mb-2">Description</label>
                         <textarea name="description" className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" value={apartment.description || ''} onChange={handleChange}></textarea>
                         {errors.description && <p className="text-red-500">{errors.description}</p>}
+                        {descriptionError && <p className="text-red-500">{descriptionError}</p>} {/* Validation for number of characters in description*/}
                     </div>
 
                     {/* Number of Bedrooms */}
@@ -142,6 +156,7 @@ const EditApartmentPage = () => {
                             <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
+                            <option value="4">4</option>
                         </select>
                         {errors.numberOfBedrooms && <p className="text-red-500">{errors.numberOfBedrooms}</p>}
                     </div>
@@ -187,7 +202,7 @@ const EditApartmentPage = () => {
                             type="number"
                             name="price"
                             className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            value={apartment.price || 0}
+                            value={apartment.price}
                             onChange={handleChange}
                             min="0"
                         />
@@ -201,7 +216,7 @@ const EditApartmentPage = () => {
                             type="number"
                             name="area"
                             className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            value={apartment.area || 0}
+                            value={apartment.area}
                             onChange={handleChange}
                             min="0"
                         />

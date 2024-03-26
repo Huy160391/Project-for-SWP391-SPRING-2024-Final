@@ -124,11 +124,12 @@ const ManagerListApartmentOfAgency = () => {
                             <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
+                            <option value="4">4</option>
                         </select>
                         <select name="numberOfBathrooms" onChange={handleChange} value={searchParams.numberOfBathrooms}>
                             <option value="">Number of Bathrooms</option>
                             <option value="1">1</option>
-                            <option value="2">2</option>
+                            <option value="2">2</option> 
                             <option value="3">3</option>
                         </select>
 
