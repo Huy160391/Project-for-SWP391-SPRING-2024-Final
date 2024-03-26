@@ -181,7 +181,7 @@ const ConfimOderManager = () => {
     
     This order will be deleted`)) {
 
-                await axios.delete(`https://localhost:7137/api/Orders/DeleteOrder/${orderId}`);
+                await axios.delete(`https://localhost:7137/api/Orders/DeleteOrderAndHealingBooking/${orderId}`);
                 alert("Cancel Order Success")
                 fetchOrders();
             }
