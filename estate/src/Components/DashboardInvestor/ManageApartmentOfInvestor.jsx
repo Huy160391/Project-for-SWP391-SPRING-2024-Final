@@ -9,7 +9,6 @@ const ManageApartmentOfInvestor = () => {
 
   const [apartmentId, setApartmentId] = useState();
 
-
   useEffect(() => {
     fetchApartments();
     fetchAgencies();
@@ -45,6 +44,7 @@ const ManageApartmentOfInvestor = () => {
   const fetchApartments = async () => {
 
     try {
+
 
       const response = await axios.get("https://localhost:7137/api/Apartments/GetWaitingApartments");
       setApartments(response.data);
