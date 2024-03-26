@@ -12,12 +12,18 @@ const Registration = () => {
     password: '',
     confirmPassword: '',
     address: '',
-    phone: '', // Thay đổi từ email sang phone
+    phone: '',
     image: null,
   });
+
   const [avatarPreview, setAvatarPreview] = useState(null);
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Initialize EmailJS SDK when the component is rendered
+    emailjs.init("YOUR_USER_ID");
+  }, []);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -30,13 +36,8 @@ const Registration = () => {
     setErrors({ ...errors, [name]: '' });
   };
 
-  useEffect(() => {
-    // Khởi tạo EmailJS SDK khi component được render
-    emailjs.init("GRGyUXUQNJZWmAVmh");
-  }, []);
-
   const sendEmail = () => {
-    emailjs.send('Aptx4869', 'template_nv5w3qn1', {
+    emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', {
       firstName: formData.firstName,
       lastName: formData.lastName,
       email: formData.phone
@@ -48,6 +49,7 @@ const Registration = () => {
         console.error('Email sending failed:', error);
       });
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrors({});
@@ -57,44 +59,34 @@ const Registration = () => {
       return;
     }
 
-    let formIsValid = true;
-    let newErrors = {};
-
-    // Kiểm tra từng trường dữ liệu
-    ['firstName', 'lastName', 'gender', 'username', 'password', 'confirmPassword', 'address', 'phone', 'image'].forEach((field) => {
-      if (!formData[field] || !formData[field].trim()) { // Add check for null value
-        formIsValid = false;
-        newErrors[field] = `${field.charAt(0).toUpperCase() + field.slice(1)} is required.`;
+    const formErrors = {};
+    Object.entries(formData).forEach(([key, value]) => {
+      if (!value || (typeof value === 'string' && !value.trim())) {
+        formErrors[key] = `${key.charAt(0).toUpperCase() + key.slice(1)} is required.`;
       }
     });
 
-    // Kiểm tra tính hợp lệ của email
-    if (!/^\S+@\S+\.(com|vn|edu\.vn)$/.test(formData.phone)) {
-      formIsValid = false;
-      newErrors.phone = 'Email is invalid.';
+    if (!/^[\w-]+(?:\.[\w-]+)*@(?:[\w-]+\.)+[a-zA-Z]{2,7}$/.test(formData.phone)) {
+      formErrors.phone = 'Email is invalid.';
     }
 
-    const nameRegex = /^[A-Z][a-zA-ZÀ-ÖØ-öø-ÿ\s'`-]*$/; // Biểu thức chính quy cho first name, last name, address, và username
+    const nameRegex = /^[A-Z][\wÀ-ÖØ-öø-ÿ\s'`-]*$/;
     ['firstName', 'lastName', 'address', 'username'].forEach((field) => {
-      if (!formData[field] || !nameRegex.test(formData[field])) { // Add check for null value
-        formIsValid = false;
-        newErrors[field] = `${field.charAt(0).toUpperCase() + field.slice(1)} is invalid. It should start with a capital letter and can include lowercase letters, spaces, accented characters, and certain special characters.`;
+      if (!nameRegex.test(formData[field])) {
+        formErrors[field] = `${field.charAt(0).toUpperCase() + field.slice(1)} is invalid. It should start with a capital letter and can include lowercase letters, spaces, accented characters, and certain special characters.`;
       }
     });
 
-    // Kiểm tra tính hợp lệ của password
     if (formData.password.length < 8) {
-      formIsValid = false;
-      newErrors.password = 'Password must be at least 8 characters long.';
+      formErrors.password = 'Password must be at least 8 characters long.';
     }
 
     if (!formData.image) {
-      formIsValid = false;
-      newErrors.image = 'Image is required.';
+      formErrors.image = 'Image is required.';
     }
 
-    if (!formIsValid) {
-      setErrors(newErrors);
+    if (Object.keys(formErrors).length > 0) {
+      setErrors(formErrors);
       return;
     }
 
@@ -174,7 +166,7 @@ const Registration = () => {
             <input
               type="text"
               name="username"
-              placeholder="Enter username or email" 
+              placeholder="Enter username or email"
               value={formData.username}
               onChange={handleChange}
               className={`w-full px-3 py-2 mt-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.username ? 'border-red-500' : 'border-gray-300'}`}
