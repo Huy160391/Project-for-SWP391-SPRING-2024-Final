@@ -70,13 +70,13 @@ const Registration = () => {
       formErrors.phone = 'Email is invalid.';
     }
 
-    const nameRegex = /^[A-Z][\wÀ-ÖØ-öø-ÿ\s'`-]*$/;
+    const nameRegex = /^[A-Za-zÀ-ÖØ-öø-ÿ][A-Za-zÀ-ÖØ-öø-ÿ\s',.\-\p{L}]*$/u; // Updated regex for Vietnamese addresses
     ['firstName', 'lastName', 'address', 'username'].forEach((field) => {
       if (!nameRegex.test(formData[field])) {
-        formErrors[field] = `${field.charAt(0).toUpperCase() + field.slice(1)} is invalid. It should start with a capital letter and can include lowercase letters, spaces, accented characters, and certain special characters.`;
+        formErrors[field] = `${field} is invalid. It can start with a letter and include lowercase letters, spaces, accented characters, and certain special characters.`;
       }
     });
-
+    
     if (formData.password.length < 8) {
       formErrors.password = 'Password must be at least 8 characters long.';
     }
@@ -121,7 +121,6 @@ const Registration = () => {
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <form className="w-full max-w-lg p-8 space-y-6 bg-white rounded-lg shadow" onSubmit={handleSubmit}>
         <h1 className="text-2xl font-bold text-center">Đăng Ký</h1>
-
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
           <div className="form-field">
             <label className="block text-sm font-medium text-gray-700">First Name</label>
