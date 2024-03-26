@@ -1,4 +1,5 @@
 import axios from 'axios';
+import emailjs from 'emailjs-com';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -16,6 +17,7 @@ const ConfirmBookingManager = () => {
     const [error, setError] = useState('');
     const navigate = useNavigate();
     const { customerId } = useParams();
+
     const [showModal, setShowModal] = useState(false);
     const [selectedImage, setSelectedImage] = useState('');
     const [sortedBookings, setSortedBookings] = useState([]);
@@ -26,6 +28,25 @@ const ConfirmBookingManager = () => {
     const handleImageClick = (imageSrc) => {
         setSelectedImage(imageSrc);
         setShowModal(true);
+    };
+
+    useEffect(() => {
+        emailjs.init("EMFqDgk_XqGNuAryz");
+    }, []);
+
+    const sendEmail = (apartmentId) => {
+        emailjs.send('Aptx4869', 'template_d2ona1k', {
+            email: selectedCustomer.phone,
+            apartmentId: apartmentId,
+            buildingId: selectedBuilding.buildingId,
+
+        })
+            .then((response) => {
+                console.log('Email sent successfully:', response);
+            })
+            .catch((error) => {
+                console.error('Email sending failed:', error);
+            });
     };
 
     // Pagination change page
@@ -74,6 +95,7 @@ const ConfirmBookingManager = () => {
             const sortedBookings = fetchedBookings.sort((a, b) => new Date(b.date) - new Date(a.date));
             setSortedBookings(sortedBookings);
             setAllBookings(sortedBookings);
+
             setBookings(sortedBookings.slice(0, bookingsPerPage));
             const buildingNames = [...new Set(sortedBookings.map(booking => booking.buildingName))];
             setBuildings(buildingNames);
@@ -151,12 +173,13 @@ const ConfirmBookingManager = () => {
     for (let i = 1; i <= Math.ceil(allBookings.length / bookingsPerPage); i++) {
         pageNumbers.push(i);
     }
-    const approveBooking = async (bookingId) => {
+    const approveBooking = async (bookingId, apartmentId) => {
         try {
+
             if (window.confirm(`Do you want to Approve Booking?`)) {
                 await axios.put(`https://localhost:7137/api/Bookings/ChangeBookingStatus/${bookingId}/Active`);
                 alert("Approve Booking Success")
-
+                sendEmail(apartmentId);
                 fetchBookings();
             }
 
@@ -336,7 +359,7 @@ const ConfirmBookingManager = () => {
                         </div>
                         <div className="px-4 py-4 sm:px-6 text-right">
                             <button
-                                onClick={() => approveBooking(booking.bookingId)}
+                                onClick={() => approveBooking(booking.bookingId, booking.apartmentId)}
                                 className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
                             >
                                 Approve Booking
