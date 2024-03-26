@@ -1,6 +1,6 @@
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
 
 const EditApartmentPage = () => {
     const [apartment, setApartment] = useState({
@@ -34,6 +34,7 @@ const EditApartmentPage = () => {
 
     //Check valid for description: at least 10 characters and not exceed 1000 characters
     useEffect(() => {
+<<<<<<< HEAD
         if (apartment.description) {
             if (apartment.description.length < 10) {
                 setDescriptionError('Description must be at least 10 characters long.');
@@ -42,10 +43,17 @@ const EditApartmentPage = () => {
             } else {
                 setDescriptionError('');
             }
+=======
+        if (apartment.description && apartment.description.length < 10) {
+            setDescriptionError('Description must be at least 10 characters long.');
+        } else if (apartment.description && apartment.description.length > 1000) {
+            setDescriptionError('Description cannot exceed 1000 characters.');
+        } else {
+            setDescriptionError('');
+>>>>>>> 6cb0f46d7ed58604bf5ab04476d28fbde189ef29
         }
     }, [apartment.description]);
-
-
+    
     const handleChange = (e) => {
         const { name, value } = e.target;
         setApartment(prevState => ({ ...prevState, [name]: value }));
