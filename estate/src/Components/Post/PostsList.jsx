@@ -22,17 +22,17 @@ const PostsListing = () => {
           }
         }));
         setPosts(postsWithBuildingNames);
-        setIsLoading(false);
       } catch (error) {
         console.error("Error fetching posts for project ID:", projectId, error);
-        setIsLoading(false);
       }
+      setIsLoading(false);
     };
 
     if (projectId) {
       fetchPosts();
     } else {
       console.error("No projectId provided");
+      setIsLoading(false);
     }
   }, [projectId]); // Re-run the effect if projectId changes
 
@@ -40,11 +40,15 @@ const PostsListing = () => {
     return <div className="text-center">Loading...</div>;
   }
 
+  if (posts.length === 0) {
+    return <div className="text-center">Không có bài post thuộc tòa nhà này</div>;
+  }
+
   return (
     <div className="container mx-auto px-4 py-4">
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {posts.map(post => (
-          <PostCard key={post.projectId} post={post} />
+          <PostCard key={post.id} post={post} /> // Changed key from post.projectId to post.id for uniqueness
         ))}
       </div>
     </div>

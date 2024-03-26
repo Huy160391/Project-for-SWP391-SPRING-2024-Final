@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import {Link, useParams } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 const OderHistoryOfCustomer = () => {
     const [orders, setOrders] = useState([]);
@@ -10,48 +9,59 @@ const OderHistoryOfCustomer = () => {
     const [ordersPerPage] = useState(5);
     const [buildings, setBuildings] = useState([]);
     const [agencys, setAgencys] = useState([]);
+    const [statuses, setStatuses] = useState([]);
     const [selectedBuilding, setSelectedBuilding] = useState('');
     const [selectedAgency, setSelectedAgency] = useState('');
+    const [selectedStatus, setSelectedStatus] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
     const { customerId } = useParams();
+    const [transactionCode, setTransactionCode] = useState("");
+    const [userImage, setUserImage] = useState(null);
 
+
+    const fetchOrders = async () => {
+        if (!customerId) {
+            setError('Agency ID is undefined or not provided.');
+            return;
+        }
+        try {
+            const orderRes = await axios.get(`https://localhost:7137/api/Orders/GetAllOderByCustomerId/${customerId}`);
+            const fetchedOrders = await Promise.all(orderRes.data.map(async (order) => {
+                const buildingRes = await axios.get(`https://localhost:7137/api/Apartments/GetListBuildingIdByApartmentId/${order.apartmentId}`);
+                const buildingId = buildingRes.data[0];
+                const buildingDetails = await axios.get(`https://localhost:7137/api/Buildings/${buildingId}`);
+
+                const agencyRes = await axios.get(`https://localhost:7137/api/Agencies/${order.agencyId}`);
+                const agencyName = `${agencyRes.data.firstName} ${agencyRes.data.lastName}`;
+                const RemainingAmountRes = await axios.get(`https://localhost:7137/api/Orders/GetRemainingAmount/${order.orderId}`);
+                const RemainingAmount = RemainingAmountRes.data;
+
+                return {
+                    ...order,
+                    buildingName: buildingDetails.data.name,
+                    buildingAddress: buildingDetails.data.address,
+                    agencyName,
+                    RemainingAmount,
+                };
+            }));
+            setAllOrders(fetchedOrders);
+            setOrders(fetchedOrders.slice(0, ordersPerPage));
+
+            const buildingNames = [...new Set(fetchedOrders.map(order => order.buildingName))];
+            setBuildings(buildingNames);
+
+            const agencyNames = [...new Set(fetchedOrders.map(order => order.agencyName))];
+            setAgencys(agencyNames);
+
+            const orderstatus = [...new Set(fetchedOrders.map(order => order.status))];
+            setStatuses(orderstatus);
+        } catch (error) {
+            console.error('Failed to fetch orders:', error);
+            setError('Failed to fetch orders. Please check the console for more details.');
+        }
+    };
     useEffect(() => {
-        const fetchOrders = async () => {
-            if (!customerId) {
-                setError('Agency ID is undefined or not provided.');
-                return;
-            }
-            try {
-                const orderRes = await axios.get(`https://localhost:7137/api/Orders/GetAllOderByCustomerId/${customerId}`);
-                const fetchedOrders = await Promise.all(orderRes.data.map(async (order) => {
-                    const buildingRes = await axios.get(`https://localhost:7137/api/Apartments/GetListBuildingIdByApartmentId/${order.apartmentId}`);
-                    const buildingId = buildingRes.data[0];
-                    const buildingDetails = await axios.get(`https://localhost:7137/api/Buildings/${buildingId}`);
-
-                    const agencyRes = await axios.get(`https://localhost:7137/api/Agencies/${order.agencyId}`);
-                    const agencyName = `${agencyRes.data.firstName} ${agencyRes.data.lastName}`;
-
-                    return {
-                        ...order,
-                        buildingName: buildingDetails.data.name,
-                        buildingAddress: buildingDetails.data.address,
-                        agencyName,
-                    };
-                }));
-                setAllOrders(fetchedOrders);
-                setOrders(fetchedOrders.slice(0, ordersPerPage));
-
-                const buildingNames = [...new Set(fetchedOrders.map(order => order.buildingName))];
-                setBuildings(buildingNames);
-
-                const agencyNames = [...new Set(fetchedOrders.map(order => order.agencyName))];
-                setAgencys(agencyNames);
-            } catch (error) {
-                console.error('Failed to fetch orders:', error);
-                setError('Failed to fetch orders. Please check the console for more details.');
-            }
-        };
 
         fetchOrders();
     }, [customerId, ordersPerPage]);
@@ -64,6 +74,10 @@ const OderHistoryOfCustomer = () => {
         setSelectedAgency(event.target.value);
     };
 
+    const handleStatusChange = (event) => {
+        setSelectedStatus(event.target.value);
+    };
+
     const handleSearch = () => {
         let filtered = allOrders;
         if (selectedBuilding) {
@@ -71,6 +85,9 @@ const OderHistoryOfCustomer = () => {
         }
         if (selectedAgency) {
             filtered = filtered.filter(order => order.agencyName === selectedAgency);
+        }
+        if (selectedStatus) {
+            filtered = filtered.filter(order => order.status === selectedStatus);
         }
         setOrders(filtered.slice(0, ordersPerPage));
         setCurrentPage(1); // Reset to first page after filtering
@@ -84,21 +101,57 @@ const OderHistoryOfCustomer = () => {
         setOrders(allOrders.slice(indexOfFirstOrder, indexOfLastOrder));
     };
 
-    if (error) {
-        return <div className="text-red-500 text-center font-bold">{error}</div>;
-    }
+    
 
     // Calculate page count
     const pageNumbers = [];
     for (let i = 1; i <= Math.ceil(allOrders.length / ordersPerPage); i++) {
         pageNumbers.push(i);
     }
+    const handleTransactionCodeChange = (event) => {
+        setTransactionCode(event.target.value);
+    };
+    const handleImageUpload = (event) => {
+        setUserImage(event.target.files[0]);
+    };
 
+    const handleConfirmBooking = async (event, orderid) => {
+        event.preventDefault();
+        try {
+            const formData = new FormData();
+            // Gửi dữ liệu hình ảnh
+            if (userImage) {
+                formData.append('FileImage', userImage); // Đặt tên tham số là 'FileImage'
+            }
+
+
+
+            const response = await axios.post(
+                `https://localhost:7137/api/Orders/UploadImageOrder/${orderid}`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+
+            if (window.confirm(`Do you want to Confirm Order?`)) {
+                await axios.put(`https://localhost:7137/api/Orders/ChangeOrderStatus/${orderid}/Waiting`);
+                alert("Confirm Order Success")
+
+                fetchOrders();
+            }
+        } catch (error) {
+            console.error('Error confirming booking:', error);
+            // Xử lý lỗi ở đây
+        }
+    };
+    if (allOrders.length === 0) {
+        return <div className="text-center font-bold">Bạn chưa có có order nào</div>;
+    }
     return (
         <div className="flex flex-col w-full">
             <div className="mt-5 ml-5 flex justify-start items-center space-x-10">
                 <h1 className="text-4xl font-bold text-indigo-600  px-4 py-2 bg-white rounded-lg">
-                    View Your Oder History
+                    View Your Oder 
                 </h1>
             </div>
             <div className="mt-5 ml-5 mb-6 flex justify-start items-center space-x-10">
@@ -117,6 +170,15 @@ const OderHistoryOfCustomer = () => {
                         <option value="">All</option>
                         {agencys.map((agency, index) => (
                             <option key={index} value={agency}>{agency}</option>
+                        ))}
+                    </select>
+                </div>
+                <div>
+                    <label htmlFor="status-select" className="block text-sm font-medium text-gray-700">Status:</label>
+                    <select id="status-select" value={selectedStatus} onChange={handleStatusChange} className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md shadow">
+                        <option value="">All</option>
+                        {statuses.map((status, index) => (
+                            <option key={index} value={status}>{status}</option>
                         ))}
                     </select>
                 </div>
@@ -161,9 +223,74 @@ const OderHistoryOfCustomer = () => {
                     </div>
 
                     <div className="px-4 py-4 sm:px-6">
-                        <Link to={`/view-order-bill-of-customer/${order.orderId}`}
-                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded focus:outline-none focus:shadow-outline">
-                            View Bill Information</Link>
+
+                        {order.status === "Unpaid" && (
+                            <div>
+                                <h1 className="text-4xl font-bold text-red-600 px-4 py-2 w-44  bg-red-400 rounded-lg ml-20">
+                                    Unpaid
+                                </h1>
+                                <div className=" text-2xl font-medium text-gray-700 text-right mb-3 ">
+                                    <strong>Remaining Amount:</strong> <span className="text-green-600 text-4xl">${order.RemainingAmount}</span>
+                                </div>
+                                <div className="flex flex-col items-end bg-white p-2 rounded-md ">
+                                    <p className="text-lg text-gray-800 mb-4">Scan QR code to pay</p>
+                                    <div className="w-40 h-40 flex items-center justify-center border border-gray-300 rounded-md mb-4">
+                                        <img
+                                            src={`https://www.meme-arsenal.com/memes/3d983bc786e0fea7629d7ad884f3c417.jpg`}
+                                            alt="QR Code"
+                                            className="object-contain w-full h-full"
+                                        />
+                                    </div>
+                                    <div className="mb-4 w-full flex flex-col items-end">
+                                        <label htmlFor="transactionCode" className="text-lg text-gray-800 block mb-2">Transaction Code:</label>
+                                        <input type="text" id="transactionCode" value={transactionCode} onChange={handleTransactionCodeChange} className="w-72 shadow-md p-2 border border-gray-300 rounded focus:outline-none focus:ring-blue-500 focus:border-blue-500" />
+                                    </div>
+                                    <div className="mb-4 w-full flex flex-col items-end">
+                                        <label htmlFor="paymentImage" className="text-lg text-gray-800 block mb-2">Upload Payment Image:</label>
+                                        <input type="file" id="paymentImage" onChange={handleImageUpload} className="w-72 shadow-md p-2 border border-gray-300 rounded focus:outline-none focus:ring-blue-500 focus:border-blue-500" />
+                                        {userImage && (
+                                            <div className="mt-2">
+                                                <img
+                                                    src={typeof userImage === 'string' ? userImage : URL.createObjectURL(userImage)}
+                                                    alt="Uploaded"
+                                                    className="w-full max-h-32 object-cover rounded-md"
+                                                />
+                                            </div>
+                                        )}
+                                    </div>
+                                    <button
+                                        onClick={(event) => handleConfirmBooking(event, order.orderId)}
+                                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                                    >
+                                        Confirm Order
+                                    </button>
+                                </div>
+
+
+
+
+                            </div>
+                        )}
+                        {order.status === "Waiting" && (
+                            <h1 className="text-4xl font-bold text-gray-200 px-4 py-2 w-44 bg-gray-500 rounded-lg ml-20">
+                                Waiting
+                            </h1>
+                        )}
+
+                        {order.status === "Complete" && (
+                            <div>
+                                <h1 className="text-4xl font-bold text-green-200 px-2 py-2 w-44 bg-green-500 rounded-lg ml-20">
+                                    Complete
+                                </h1>
+                                <div className="px-4 py-4 sm:px-6 flex flex-col items-end">
+                                    <Link to={`/view-order-bill-of-customer/${order.orderId}`}
+                                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded focus:outline-none focus:shadow-outline">
+                                        View Bill Information
+                                    </Link>
+                                </div>
+                            </div>
+
+                        )}
                     </div>
                 </div>
             ))}

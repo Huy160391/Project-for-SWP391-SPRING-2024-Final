@@ -162,14 +162,15 @@ const ManagerPosts = () => {
                         <thead className="bg-gray-50">
                             <tr>
                                 <th className="px-2 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">No.</th>
-                                <th className="px-3 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Post ID</th>
+                                {/* <th className="px-3 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Post ID</th> */}
+                                <th className="px-6 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Building Name</th>
                                 <th className="px-6 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Description</th>
                                 <th className="px-2 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Sales Opening Date</th>
                                 <th className="px-2 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Sales Closing Date</th>
                                 <th className="px-2 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Post Date</th>
                                 <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Images</th>
                                 <th className="px-3 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Priority Method</th>
-                                <th className="px-6 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Building Name</th>
+                                
                                 <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Actions</th>
                             </tr>
                         </thead>
@@ -177,7 +178,8 @@ const ManagerPosts = () => {
                             {currentPosts.map((post, index) => (
                                 <tr key={index}>
                                     <td className="px-2 py-3 whitespace-nowrap text-sm text-gray-500">{indexOfFirstPost + index + 1}</td>
-                                    <td className="break-all px-3 py-3 whitespace-nowrap text-sm text-gray-900">{post.postId}</td>
+                                    {/* <td className="break-all px-3 py-3 whitespace-nowrap text-sm text-gray-900">{post.postId}</td> */}
+                                    <td className="px-5 py-3 whitespace-nowrap text-sm text-gray-500">{post.buildingName}</td>
                                     <td className="break-all px-6 py-3 whitespace-normal text-sm text-gray-700 break-words">{post.description}</td>
                                     <td className="px-2 py-3 whitespace-nowrap text-sm text-gray-500">{new Date(post.salesOpeningDate).toLocaleDateString()}</td>
                                     <td className="px-2 py-3 whitespace-nowrap text-sm text-gray-500">{new Date(post.salesClosingDate).toLocaleDateString()}</td>
@@ -186,7 +188,7 @@ const ManagerPosts = () => {
                                         <img src={`https://localhost:7137/api/Posts/GetImage/${post.postId}`} alt="Post" className="h-20 w-32 rounded-md" />
                                     </td>
                                     <td className="px-3 py-3 whitespace-nowrap text-sm text-gray-500">{post.priorityMethod}</td>
-                                    <td className="px-5 py-3 whitespace-nowrap text-sm text-gray-500">{post.buildingName}</td>
+                                    
                                     <td className="px-5 py-3 whitespace-nowrap text-sm text-gray-500 flex space-x-2">
                                         <Link to={`/view-post/${post.postId}`} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded focus:outline-none focus:shadow-outline">View</Link>
                                         <Link to={`/edit-post/${post.postId}`} className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-3 rounded focus:outline-none focus:shadow-outline">Edit</Link>

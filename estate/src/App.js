@@ -41,10 +41,13 @@ import DashboardCustomer from './Components/DashboardCustomer/DashboardCustomer'
 import OderHistoryOfCustomer from './Components/DashboardCustomer/OderHistoryOfCustomer';
 import ViewBookingOfCustomer from './Components/DashboardCustomer/ViewBookingOfCustomer';
 import ViewOderBillOfCustomer from './Components/DashboardCustomer/ViewOderBillOfCustomer';
+import ConfimOderManager from './Components/DashboardInvestor/ConfimOderManager';
+import ConfirmBookingManager from './Components/DashboardInvestor/ConfirmBookingManager';
 import DistributeApartment from './Components/DashboardInvestor/DistributeApartment';
 import EditBuilding from './Components/DashboardInvestor/EditBuilding';
 import ManageApartmentOfInvestor from './Components/DashboardInvestor/ManageApartmentOfInvestor';
 import ReviewUpdatedApartment from './Components/DashboardInvestor/ReviewUpdatedApartment';
+import ViewHistoryOrder from './Components/DashboardInvestor/ViewHistoryOrder';
 import PostsListing from './Components/Post/PostsList';
 import PostDetail from './Components/PostDetail/PostDetail';
 import FeaturedProjects from './Components/Project/FeaturedProjects ';
@@ -88,7 +91,7 @@ function App() {
 
         <Route path="/property/:buildingId" element={<PropertyList />} />
         <Route path="/agency" element={<AgencyListing />} />
-        <Route path="/agencydetail" element={<AgentsPage />} />
+        <Route path="/agenciesdetail/:agencyId" element={<AgentsPage />} />
         <Route path="/propertydetail/:apartmentId" element={<PropertyDetail />} />
         <Route path="/editproperty/:apartmentId" element={<EditProperty />} />
         <Route path="/listbooking/:apartmentId" element={<ListBooking />} />
@@ -97,6 +100,7 @@ function App() {
         <Route path="/postslisting/:projectId" element={<PostsListing />} />
         <Route path="/postdetail/:postId" element={<PostDetail />} />
         <Route path="/managerapartment" element={<ManageApartmentOfInvestor />} />
+        
 
         {/* Post tool box */}
         <Route path="/edit-post/:postId" element={<EditPostPage />} />
@@ -117,7 +121,11 @@ function App() {
         <Route path="/view-order-bill-of-agency/:orderId" element={<ViewOrderBillOfAgency />} />
         <Route path="/view-order-bill-of-customer/:orderId" element={<ViewOderBillOfCustomer />} />
         <Route path="/manageapartment" element={<ManageApartmentOfInvestor />} />
-        <Route path="/reviewupdatedapartment" element={<ReviewUpdatedApartment />} />
+        <Route path="/reviewupdatedapartment/:apartmentId" element={<ReviewUpdatedApartment />} />
+        <Route path="/confirmbookingManager" element={<ConfirmBookingManager />} />
+        <Route path="/confimOderManager" element={<ConfimOderManager />} />
+        <Route path="/viewHistoryOrder" element={<ViewHistoryOrder />} />
+
 
 
 

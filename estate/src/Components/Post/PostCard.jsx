@@ -1,7 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
 const PostCard = ({ post }) => {
   const navigate = useNavigate();
   const [imageSrc, setImageSrc] = useState('');
@@ -26,7 +25,10 @@ const PostCard = ({ post }) => {
   const viewPostDetail = () => {
     navigate(`/postdetail/${post.postId}`);
   };
-
+  const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString( options);
+  };
   return (
     <div className="flex flex-col rounded overflow-hidden shadow-lg transition duration-500 ease-in-out transform hover:-translate-y-1 hover:shadow-2xl m-4">
       <img
@@ -38,7 +40,7 @@ const PostCard = ({ post }) => {
       <div className="p-4 bg-white flex-grow">
         <h3 className="font-bold text-xl mb-2">{post.buildingName || `Post ${post.postId}`}</h3>
         <p className="text-gray-700 text-base">
-          Building ID: {post.buildingId}
+          Ngày đăng: {formatDate(post.postDate)} 
         </p>
         <button
           onClick={viewPostDetail}

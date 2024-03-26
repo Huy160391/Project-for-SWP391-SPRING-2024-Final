@@ -12,12 +12,18 @@ const Registration = () => {
     password: '',
     confirmPassword: '',
     address: '',
-    phone: '', // Thay đổi từ email sang phone
+    phone: '',
     image: null,
   });
+
   const [avatarPreview, setAvatarPreview] = useState(null);
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Initialize EmailJS SDK when the component is rendered
+    emailjs.init("YOUR_USER_ID");
+  }, []);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -30,13 +36,8 @@ const Registration = () => {
     setErrors({ ...errors, [name]: '' });
   };
 
-  useEffect(() => {
-    // Khởi tạo EmailJS SDK khi component được render
-    emailjs.init("GRGyUXUQNJZWmAVmh");
-  }, []);
-
   const sendEmail = () => {
-    emailjs.send('Aptx4869', 'template_nv5w3qn1', {
+    emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', {
       firstName: formData.firstName,
       lastName: formData.lastName,
       email: formData.phone
@@ -48,6 +49,7 @@ const Registration = () => {
         console.error('Email sending failed:', error);
       });
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrors({});
@@ -57,67 +59,41 @@ const Registration = () => {
       return;
     }
 
-    let formIsValid = true;
-    let newErrors = {};
+    const formErrors = {};
+    Object.entries(formData).forEach(([key, value]) => {
+      if (!value || (typeof value === 'string' && !value.trim())) {
+        formErrors[key] = `${key.charAt(0).toUpperCase() + key.slice(1)} is required.`;
+      }
+    });
 
-    if (!formData.firstName.trim()) {
-      formIsValid = false;
-      newErrors.firstName = 'First Name is required.';
+    if (!/^[\w-]+(?:\.[\w-]+)*@(?:[\w-]+\.)+[a-zA-Z]{2,7}$/.test(formData.phone)) {
+      formErrors.phone = 'Email is invalid.';
     }
 
-    if (!formData.lastName.trim()) {
-      formIsValid = false;
-      newErrors.lastName = 'Last Name is required.';
-    }
-
-    if (!formData.gender.trim()) {
-      formIsValid = false;
-      newErrors.gender = 'Gender is required.';
-    }
-
-    if (!formData.username.trim()) {
-      formIsValid = false;
-      newErrors.username = 'Username is required.';
-    }
-
-    if (!formData.password.trim()) {
-      formIsValid = false;
-      newErrors.password = 'Password is required.';
-    }
-
-    if (!formData.confirmPassword.trim()) {
-      formIsValid = false;
-      newErrors.confirmPassword = 'Confirm Password is required.';
-    }
-
-    if (!formData.address.trim()) {
-      formIsValid = false;
-      newErrors.address = 'Address is required.';
-    }
-
-    if (!formData.phone.trim()) { // Kiểm tra tính hợp lệ của phone (email)
-      formIsValid = false;
-      newErrors.phone = 'Email is required.';
-    } else if (!/^\S+@\S+\.(com|vn|edu\.vn)$/.test(formData.phone)
-    ) {
-      formIsValid = false;
-      newErrors.phone = 'Email is invalid.';
+    const nameRegex = /^[A-Za-zÀ-ÖØ-öø-ÿ][A-Za-zÀ-ÖØ-öø-ÿ\s',.\-\p{L}]*$/u; // Updated regex for Vietnamese addresses
+    ['firstName', 'lastName', 'address', 'username'].forEach((field) => {
+      if (!nameRegex.test(formData[field])) {
+        formErrors[field] = `${field} is invalid. It can start with a letter and include lowercase letters, spaces, accented characters, and certain special characters.`;
+      }
+    });
+    
+    if (formData.password.length < 8) {
+      formErrors.password = 'Password must be at least 8 characters long.';
     }
 
     if (!formData.image) {
-      formIsValid = false;
-      newErrors.image = 'Image is required.';
+      formErrors.image = 'Image is required.';
     }
 
-    if (!formIsValid) {
-      setErrors(newErrors);
+    if (Object.keys(formErrors).length > 0) {
+      setErrors(formErrors);
       return;
     }
 
     const dataToSend = new FormData();
     Object.entries(formData).forEach(([key, value]) => {
       if (value !== null) {
-        if (key === 'phone') { // Lưu email vào phần phone trong formData
+        if (key === 'phone') {
           dataToSend.append('phone', value);
         } else {
           dataToSend.append(key, value);
@@ -145,7 +121,6 @@ const Registration = () => {
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <form className="w-full max-w-lg p-8 space-y-6 bg-white rounded-lg shadow" onSubmit={handleSubmit}>
         <h1 className="text-2xl font-bold text-center">Đăng Ký</h1>
-
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
           <div className="form-field">
             <label className="block text-sm font-medium text-gray-700">First Name</label>

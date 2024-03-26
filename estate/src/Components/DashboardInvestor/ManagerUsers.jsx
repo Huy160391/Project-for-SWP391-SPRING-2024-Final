@@ -68,7 +68,10 @@ const ManagerUsers = () => {
     }
   };
   
-
+  const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString( options);
+  };
   const filteredData = searchQuery
     ? managersData.filter(
         (manager) =>
@@ -125,7 +128,7 @@ const ManagerUsers = () => {
               <tr key={index} className="hover:bg-gray-50">
                 <td className="px-6 py-4">{manager.username}</td>
                 <td className="px-6 py-4">{manager.password}</td>
-                <td className="px-6 py-4">{manager.createDate}</td>
+                <td className="px-6 py-4">{formatDate(manager.createDate)}</td>
                 <td className="px-6 py-4">{manager.status}</td>
                 <td className="px-6 py-4">
                   <Link

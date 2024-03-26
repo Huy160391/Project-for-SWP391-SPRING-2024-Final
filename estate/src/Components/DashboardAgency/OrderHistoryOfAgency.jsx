@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { Link, useParams } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 const OrderHistoryOfAgency = () => {
     const [orders, setOrders] = useState([]);
@@ -10,8 +9,10 @@ const OrderHistoryOfAgency = () => {
     const [ordersPerPage] = useState(5);
     const [buildings, setBuildings] = useState([]);
     const [customers, setCustomers] = useState([]);
+    const [statuses, setStatuses] = useState([]);
     const [selectedBuilding, setSelectedBuilding] = useState('');
     const [selectedCustomer, setSelectedCustomer] = useState('');
+    const [selectedStatus, setSelectedStatus] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
     const { agencyId } = useParams();
@@ -47,6 +48,9 @@ const OrderHistoryOfAgency = () => {
 
                 const customerNames = [...new Set(fetchedOrders.map(order => order.customerName))];
                 setCustomers(customerNames);
+
+                const orderstatus = [...new Set(fetchedOrders.map(order => order.status))];
+                setStatuses(orderstatus);
             } catch (error) {
                 console.error('Failed to fetch orders:', error);
                 setError('Failed to fetch orders. Please check the console for more details.');
@@ -63,6 +67,9 @@ const OrderHistoryOfAgency = () => {
     const handleCustomerChange = (event) => {
         setSelectedCustomer(event.target.value);
     };
+    const handleStatusChange = (event) => {
+        setSelectedStatus(event.target.value);
+    };
 
     const handleSearch = () => {
         let filtered = allOrders;
@@ -71,6 +78,9 @@ const OrderHistoryOfAgency = () => {
         }
         if (selectedCustomer) {
             filtered = filtered.filter(order => order.customerName === selectedCustomer);
+        }
+        if (selectedStatus) {
+            filtered = filtered.filter(order => order.status === selectedStatus);
         }
         setOrders(filtered.slice(0, ordersPerPage));
         setCurrentPage(1); // Reset to first page after filtering
@@ -84,10 +94,11 @@ const OrderHistoryOfAgency = () => {
         setOrders(allOrders.slice(indexOfFirstOrder, indexOfLastOrder));
     };
 
-    if (error) {
-        return <div className="text-red-500 text-center font-bold">{error}</div>;
-    }
 
+
+    if (allOrders.length === 0) {
+        return <div className="text-center font-bold">Chưa có order nào</div>;
+    }
     // Calculate page count
     const pageNumbers = [];
     for (let i = 1; i <= Math.ceil(allOrders.length / ordersPerPage); i++) {
@@ -117,6 +128,15 @@ const OrderHistoryOfAgency = () => {
                         <option value="">All</option>
                         {customers.map((customer, index) => (
                             <option key={index} value={customer}>{customer}</option>
+                        ))}
+                    </select>
+                </div>
+                <div>
+                    <label htmlFor="status-select" className="block text-sm font-medium text-gray-700">Status:</label>
+                    <select id="status-select" value={selectedStatus} onChange={handleStatusChange} className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md shadow">
+                        <option value="">All</option>
+                        {statuses.map((status, index) => (
+                            <option key={index} value={status}>{status}</option>
                         ))}
                     </select>
                 </div>
@@ -161,9 +181,33 @@ const OrderHistoryOfAgency = () => {
                     </div>
 
                     <div className="px-4 py-4 sm:px-6">
-                        <Link to={`/view-order-bill-of-agency/${order.orderId}`}
-                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded focus:outline-none focus:shadow-outline">
-                            View Bill Information</Link>
+
+                        {order.status === "Unpaid" && (
+                            <div>
+                                <h1 className="text-4xl font-bold text-red-600 px-4 py-2 w-44  bg-red-400 rounded-lg ml-20">
+                                    Unpaid
+                                </h1>
+                            </div>
+                        )}
+                        {order.status === "Waiting" && (
+                            <h1 className="text-4xl font-bold text-gray-200 px-4 py-2 w-44 bg-gray-500 rounded-lg ml-20">
+                                Waiting
+                            </h1>
+                        )}
+
+                        {order.status === "Complete" && (
+                            <div>
+                                <h1 className="text-4xl font-bold text-green-200 px-2 py-2 w-44 bg-green-500 rounded-lg ml-20">
+                                    Complete
+                                </h1>
+                                <div className="px-4 py-4 sm:px-6 flex flex-col items-end">
+                                    <Link to={`/view-order-bill-of-customer/${order.orderId}`}
+                                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded focus:outline-none focus:shadow-outline">
+                                        View Bill Information</Link>
+                                </div>
+                            </div>
+
+                        )}
                     </div>
                 </div>
             ))}

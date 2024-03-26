@@ -14,13 +14,25 @@ const CustomerProfile = () => {
     const fetchCustomerInfo = async () => {
         try {
             const infoResponse = await axios.get(`https://localhost:7137/api/Customers/${customerId}`);
-            const imageResponse = await axios.get(`https://localhost:7137/api/Customers/GetImage/${customerId}`);
-            setCustomer({ ...infoResponse.data, avatar: imageResponse.config.url });
+            let imageSrc = 'https://via.placeholder.com/400x300'; // Khởi tạo hình ảnh mặc định
+
+            try {
+                const imageResponse = await axios.get(`https://localhost:7137/api/Customers/GetImage/${customerId}`);
+                if (imageResponse && imageResponse.config && imageResponse.config.url) {
+                    imageSrc = imageResponse.config.url; // Gán hình ảnh nếu có
+                }
+            } catch (error) {
+                console.error('Failed to fetch customer image:', error);
+            }
+
+            // Cập nhật thông tin khách hàng và hình ảnh
+            setCustomer({ ...infoResponse.data, avatar: imageSrc });
             setUpdatedCustomer({ ...infoResponse.data });
         } catch (error) {
             console.error("Failed to fetch customer info", error);
         }
     };
+
 
     useEffect(() => {
         fetchCustomerInfo();

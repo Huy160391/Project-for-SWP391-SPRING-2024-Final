@@ -1,6 +1,7 @@
 import { Disclosure, Menu, Transition } from '@headlessui/react';
-import axios from 'axios'; // Ensure axios is imported
 import { Fragment, useEffect, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import axios from 'axios'; // Ensure axios is imported
 
 const navigation = [
   { name: 'Home', href: '/', current: false },
@@ -18,6 +19,7 @@ export default function Example() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [agencyId, setAgencyId] = useState('');
   const [customerId, setCustomerId] = useState('');
+  const [userID, setUserId] = useState('');
 
   useEffect(() => {
     const storedData = localStorage.getItem('UserData');
@@ -25,10 +27,14 @@ export default function Example() {
       const parsedData = JSON.parse(storedData);
       setUserData(parsedData);
       setIsLoggedIn(true);
+      fetchUserId(parsedData.data.userId);
       fetchAgencyId(parsedData.data.userId);
       fetchCustomerId(parsedData.data.userId);// Ensure this userId is correct
     }
   }, []);
+  const fetchUserId = async (userId) => {
+    setUserId(userId);
+  };
 
   const fetchAgencyId = async (userId) => {
     try {
@@ -64,6 +70,18 @@ export default function Example() {
     window.location.href = "/login";
   };
 
+  const getAvatarUrl = () => {
+    switch (userData?.data?.roleId) {
+      case 'Investor':
+        return "https://cdn.sforum.vn/sforum/wp-content/uploads/2023/10/avatar-trang-94.jpg"; // Default avatar for Investors
+      case 'Agency':
+        return `https://localhost:7137/api/Agencies/GetImage/${agencyId}`; // Avatar URL for Agency
+      case 'Customer':
+        return `https://localhost:7137/api/Customers/GetImage/${customerId}`; // Avatar URL for Customer
+      default:
+        return "https://cdn.sforum.vn/sforum/wp-content/uploads/2023/10/avatar-trang-94.jpg"; // Fallback avatar
+    }
+  };
   const roleId = userData?.data?.roleId;
 
   return (
@@ -115,8 +133,8 @@ export default function Example() {
                     <Menu.Button className="bg-amber-600 p-1 rounded-full text-white hover:text-amber-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-600">
                       <span className="sr-only">Open user menu</span>
                       <img
-                        className="h-8 w-8 rounded-full"
-                        src="https://cdn.sforum.vn/sforum/wp-content/uploads/2023/10/avatar-trang-94.jpg"
+                        className="h-10 w-10 rounded-full"
+                        src={getAvatarUrl()} // Dynamically set the avatar URL
                         alt="User"
                       />
                     </Menu.Button>
@@ -130,18 +148,22 @@ export default function Example() {
                       leaveTo="transform opacity-0 scale-95"
                     >
                       <Menu.Items className="z-50 flex-shrink-0 origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
-
                         <Menu.Item>
                           {({ active }) => (
-                            <button
-                              className={classNames(active ? 'bg-amber-50' : '', 'block w-full text-left px-4 py-2 text-sm text-amber-800')}
-                              onClick={handleSignOut}
-                            >
+                            <Link to={`/change-password/${userID}`} className={classNames(active ? 'bg-amber-50' : '', 'block w-full text-left px-4 py-2 text-sm text-amber-800')}>
+                              Change Password
+                            </Link>
+                          )}
+                        </Menu.Item>
+                        <Menu.Item>
+                          {({ active }) => (
+                            <button className={classNames(active ? 'bg-amber-50' : '', 'block w-full text-left px-4 py-2 text-sm text-amber-800')} onClick={handleSignOut}>
                               Sign out
                             </button>
                           )}
                         </Menu.Item>
                       </Menu.Items>
+
                     </Transition>
 
                   </Menu>
