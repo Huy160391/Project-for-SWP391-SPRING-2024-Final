@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams, Link } from 'react-router-dom';
 import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const ViewListBooking = () => {
     const { apartmentId } = useParams();
@@ -83,8 +83,10 @@ const ViewListBooking = () => {
 
 
     if (loading) return <div>Loading...</div>;
-    if (error) return <div>Error: {error}</div>;
-
+  
+    if (bookings.length === 0) {
+        return <div className="text-center font-bold">Chưa có khách hàng nào booking căn hộ này</div>;
+    }
     return (
         <div className="flex min-h-screen bg-gray-100">
             <div className="flex-1 max-w-4xl mx-auto p-8">

@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { Link, useParams } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 const OderHistoryOfCustomer = () => {
     const [orders, setOrders] = useState([]);
@@ -102,9 +101,7 @@ const OderHistoryOfCustomer = () => {
         setOrders(allOrders.slice(indexOfFirstOrder, indexOfLastOrder));
     };
 
-    if (error) {
-        return <div className="text-red-500 text-center font-bold">{error}</div>;
-    }
+    
 
     // Calculate page count
     const pageNumbers = [];
@@ -147,7 +144,9 @@ const OderHistoryOfCustomer = () => {
             // Xử lý lỗi ở đây
         }
     };
-
+    if (allOrders.length === 0) {
+        return <div className="text-center font-bold">Bạn chưa có có order nào</div>;
+    }
     return (
         <div className="flex flex-col w-full">
             <div className="mt-5 ml-5 flex justify-start items-center space-x-10">
