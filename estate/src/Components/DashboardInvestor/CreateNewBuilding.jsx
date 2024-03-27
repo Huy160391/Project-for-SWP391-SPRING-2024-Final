@@ -39,12 +39,16 @@ const CreateNewBuilding = () => {
     if (projectDetails.projectId) {
       const selectedProject = projects.find(project => project.projectId === projectDetails.projectId);
       if (selectedProject) {
-        const projectPrefix = selectedProject.name; // Giả sử tên project là 'S1', 'S2', ...
-        // Cập nhật tên building dựa trên tên project, bạn có thể điều chỉnh logic tạo tên ở đây
-        setProjectDetails(prevDetails => ({
-          ...prevDetails,
-          name: `${projectPrefix}` // Thay đổi này sẽ đặt tên mặc định cho building dựa trên project
-        }));
+        // Tìm prefix như "S1" trong tên project
+        const match = selectedProject.name.match(/\bS\d+/);
+        if (match) {
+          const projectPrefix = match[0]; // Lấy được phần như "S1"
+          // Cập nhật tên building tự động với dấu "-" sau prefix
+          setProjectDetails(prevDetails => ({
+            ...prevDetails,
+            name: `${projectPrefix}-` // Đây là thay đổi để tự động thêm dấu "-" sau prefix
+          }));
+        }
       }
     }
   }, [projectDetails.projectId, projects]);
@@ -54,26 +58,20 @@ const CreateNewBuilding = () => {
     if (name === 'name') {
       const selectedProject = projects.find(project => project.projectId === projectDetails.projectId);
       if (selectedProject) {
-        const selectedProjectPrefix = selectedProject.name; // 'S1', 'S2', ...
-        // Kiểm tra giá trị nhập vào có phải là tiền tố của dự án đang được chọn
-        if (value.startsWith(selectedProjectPrefix)) {
-          // Lấy phần số sau tiền tố
-          const buildingNumber = value.slice(selectedProjectPrefix.length);
-          // Kiểm tra xem phần số có hợp lệ (chỉ chấp nhận 2 chữ số)
-          if (buildingNumber.length <= 2 && /^[0-9]*$/.test(buildingNumber)) {
-            setProjectDetails(prevDetails => ({ ...prevDetails, [name]: value }));
-          } else if (buildingNumber.length > 2) {
-            // Nếu người dùng nhập quá 2 chữ số, hiển thị thông báo và không cập nhật giá trị
-            alert("You can only add two more digits after the project prefix.");
+        // Updated regex to match 'S1' from 'Cụm S1' or similar patterns
+        const match = selectedProject.name.match(/\bS\d+/); // Finds the prefix, e.g., "S1"
+        if (match) {
+          const selectedProjectPrefixWithDash = `${match[0]}-`; // Constructs 'S1-' as the prefix
+          let newValue = value;
+          // Automatically prepend the prefix with a dash if it's not already there when the user starts typing
+          if (!newValue.startsWith(selectedProjectPrefixWithDash)) {
+              newValue = selectedProjectPrefixWithDash + value.replace(selectedProjectPrefixWithDash, "");
           }
-        } else if (value === selectedProjectPrefix || value === '') {
-          // Cho phép xóa hoàn toàn hoặc chỉ có tiền tố
-          setProjectDetails(prevDetails => ({ ...prevDetails, [name]: value }));
-        } else {
-          alert(`Building name must start with the project prefix "${selectedProjectPrefix}".`);
+          setProjectDetails(prevDetails => ({ ...prevDetails, [name]: newValue }));
         }
       }
     } else {
+      // For all other inputs, just update the value
       setProjectDetails(prevDetails => ({ ...prevDetails, [name]: value }));
     }
   };

@@ -8,36 +8,45 @@ const ViewListBooking = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const navigate = useNavigate();
-
+    const [apartmentName, setApartmentName] = useState('');
     useEffect(() => {
         const fetchBookings = async () => {
             try {
                 setLoading(true);
                 const response = await axios.get(`https://localhost:7137/api/Bookings/GetAllBookingByApartmentID/${apartmentId}`);
+                let fetchedApartmentName = ''; // Temporary variable to hold the apartment name
                 const bookingsWithDetails = await Promise.all(response.data.map(async (booking) => {
                     try {
                         const customerResponse = await axios.get(`https://localhost:7137/api/Customers/${booking.customerId}`);
+                        const apartmentNameResponse = await axios.get(`https://localhost:7137/api/Apartments/GetRoomNumberByApartmentId/${apartmentId}`);
+                        const apartmentName = apartmentNameResponse.data;
+                        // Set the fetched apartment name to our temporary variable if not already set
+                        if (!fetchedApartmentName) fetchedApartmentName = apartmentName;
+    
                         return {
                             ...booking,
                             customerName: `${customerResponse.data.firstName} ${customerResponse.data.lastName}`,
+                            apartmentName // include the apartment name in each booking for later use if needed
                         };
                     } catch (error) {
-                        console.error('Error fetching customer data:', error);
+                        console.error('Error fetching booking details:', error);
                         return {
                             ...booking,
-                            customerName: 'Name not available'
+                            customerName: 'Name not available',
+                            apartmentName: 'Apartment name not available'
                         };
                     }
-
                 }));
+                setApartmentName(fetchedApartmentName); // Set the apartment name state
                 setBookings(bookingsWithDetails);
             } catch (error) {
                 setError('Failed to fetch bookings');
+                console.error('Failed to fetch bookings:', error);
             } finally {
                 setLoading(false);
             }
         };
-
+    
         fetchBookings();
     }, [apartmentId]);
 
@@ -90,7 +99,7 @@ const ViewListBooking = () => {
     return (
         <div className="flex min-h-screen bg-gray-100">
             <div className="flex-1 max-w-4xl mx-auto p-8">
-                <h1 className="text-2xl font-semibold text-gray-900 mb-6">View List Booking for Apartment {apartmentId}</h1>
+                <h1 className="text-2xl font-semibold text-gray-900 mb-6">View List Booking for Apartment {apartmentName}</h1>
                 <div className="mb-3">
                     <button onClick={() => navigate(-1)} className="mt-3 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition ease-in-out duration-300">
                         Back

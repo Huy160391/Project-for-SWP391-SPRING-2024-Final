@@ -11,10 +11,22 @@ const ManagerDistribute = () => {
         const response = await axios.get(
           "https://localhost:7137/api/Apartments/GetAllAgencyAndNumberOfApartment"
         );
-        const modifiedData = response.data.map((manager) => ({
-          ...manager,
-          agencyName: `${manager.agencyFirstName} ${manager.agencyLastName}`, // Concatenate first name and last name
-        }));
+        
+        // Fetch agency details including phone numbers in parallel
+        const agencyDetailsPromises = response.data.map((manager) =>
+          axios.get(`https://localhost:7137/api/Agencies/${manager.agencyId}`)
+        );
+        const agencyDetailsResponses = await Promise.all(agencyDetailsPromises);
+        
+        const modifiedData = response.data.map((manager, index) => {
+          const agencyDetails = agencyDetailsResponses[index].data;
+          return {
+            ...manager,
+            agencyName: `${manager.agencyFirstName} ${manager.agencyLastName}`, // Concatenate first name and last name
+            phone: agencyDetails.phone, // Add phone number from the agency details response
+          };
+        });
+        
         setManagersData(modifiedData);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -22,7 +34,7 @@ const ManagerDistribute = () => {
     };
 
     fetchData();
-  }, []);
+}, []);
   const handleBack = () => {
     window.history.back();
   };
@@ -76,7 +88,7 @@ const ManagerDistribute = () => {
               {managersData.map((manager, index) => (
                 <tr key={index} className="border-b hover:bg-gray-50">
                   <td className="px-5 py-5">{manager.agencyName}</td>
-                  <td className="px-5 py-5">{manager.agencyId}</td>
+                  <td className="px-5 py-5">{manager.phone}</td>
                   <td className="px-5 py-5">{manager.numberOfApartments}</td>
                 </tr>
               ))}
