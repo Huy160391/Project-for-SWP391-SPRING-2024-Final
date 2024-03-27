@@ -55,11 +55,15 @@ const ConfimOderManager = () => {
                 const customer = customerResponse.data;
                 const apartmentResponse = await axios.get(`https://localhost:7137/api/Apartments/${order.apartmentId}`);
                 const apartment = apartmentResponse.data;
-
+                const apartmentNameRes = await axios.get(
+                    `https://localhost:7137/api/Apartments/GetRoomNumberByApartmentId/${order.apartmentId}`
+                  );
+                  const apartmentName = apartmentNameRes.data;
                 return {
                     ...order,
                     buildingName: buildingDetails.data.name,
                     buildingAddress: buildingDetails.data.address,
+                    apartmentName,
                     apartmentNumberOfBedrooms: apartment.numberOfBedrooms,
                     apartmentNumberOfBathrooms: apartment.numberOfBathrooms,
                     apartmentArea: apartment.area,
@@ -276,7 +280,7 @@ const ConfimOderManager = () => {
                                     <strong>Apartment Information</strong>
                                 </div>
                                 <div className="text-sm font-medium text-gray-700">
-                                    <strong>ID:</strong> <span className="text-gray-600">{order.apartmentId}</span>
+                                    <strong>Apartment:</strong> <span className="text-gray-600">{order.apartmentName}</span>
                                 </div>
                                 <div className="text-sm font-medium text-gray-700">
                                     <strong>Number Of Bedrooms:</strong> <span className="text-gray-600">{order.apartmentNumberOfBedrooms}</span>

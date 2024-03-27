@@ -32,12 +32,16 @@ const OrderHistoryOfAgency = () => {
 
                     const customerRes = await axios.get(`https://localhost:7137/api/Customers/${order.customerId}`);
                     const customerName = `${customerRes.data.firstName} ${customerRes.data.lastName}`;
-
+                    const apartmentNameRes = await axios.get(
+                        `https://localhost:7137/api/Apartments/GetRoomNumberByApartmentId/${order.apartmentId}`
+                      );
+                      const apartmentName = apartmentNameRes.data;
                     return {
                         ...order,
                         buildingName: buildingDetails.data.name,
                         buildingAddress: buildingDetails.data.address,
                         customerName,
+                        apartmentName,
                     };
                 }));
                 setAllOrders(fetchedOrders);
@@ -163,7 +167,7 @@ const OrderHistoryOfAgency = () => {
                             <strong>Date:</strong> <span className="text-gray-600">{new Date(order.date).toLocaleDateString()}</span>
                         </div>
                         <div className="text-sm font-medium text-gray-700">
-                            <strong>Apartment ID:</strong> <span className="text-gray-600">{order.apartmentId}</span>
+                            <strong>Apartment:</strong> <span className="text-gray-600">{order.apartmentName}</span>
                         </div>
 
                         <div className="text-sm font-medium text-gray-700">

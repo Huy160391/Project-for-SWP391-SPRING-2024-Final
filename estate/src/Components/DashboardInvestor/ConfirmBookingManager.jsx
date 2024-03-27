@@ -74,11 +74,15 @@ const ConfirmBookingManager = () => {
                 const customer = customerResponse.data;
                 const apartmentResponse = await axios.get(`https://localhost:7137/api/Apartments/${booking.apartmentId}`);
                 const apartment = apartmentResponse.data;
-
+                const apartmentNameResponse = await axios.get(
+                    `https://localhost:7137/api/Apartments/GetRoomNumberByApartmentId/${booking.apartmentId}`
+                  );
+                  const apartmentName = apartmentNameResponse.data;
                 return {
                     ...booking,
                     buildingName: buildingDetails.data.name,
                     buildingAddress: buildingDetails.data.address,
+                    apartmentName,
                     apartmentNumberOfBedrooms: apartment.numberOfBedrooms,
                     apartmentNumberOfBathrooms: apartment.numberOfBathrooms,
                     apartmentArea: apartment.area,
@@ -289,7 +293,7 @@ const ConfirmBookingManager = () => {
                                     <strong>Apartment Information</strong>
                                 </div>
                                 <div className="text-sm font-medium text-gray-700">
-                                    <strong>ID:</strong> <span className="text-gray-600">{booking.apartmentId}</span>
+                                    <strong>Apartment:</strong> <span className="text-gray-600">{booking.apartmentName}</span>
                                 </div>
                                 <div className="text-sm font-medium text-gray-700">
                                     <strong>Number Of Bedrooms:</strong> <span className="text-gray-600">{booking.apartmentNumberOfBedrooms}</span>

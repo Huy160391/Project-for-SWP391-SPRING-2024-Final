@@ -40,7 +40,7 @@ const AgentProfile = () => {
       </div>
       <div className="mt-4">
         <h3 className="text-xl font-semibold">GIỚI THIỆU</h3>
-        <p className="text-gray-600 mt-2">Chào mừng bạn đến với những dự án </p>
+        <p className="text-gray-600 mt-2">Chào mừng bạn đến với Vinhomes Grand Park, nơi mỗi dự án không chỉ là một công việc kinh doanh mà còn là một tác phẩm nghệ thuật, một dấu ấn sáng tạo không giới hạn. Hãy cùng chúng tôi khám phá những dự án tiêu biểu đã và đang tạo nên tên tuổi của  Vinhomes Grand Park và làm thế nào chúng tôi biến mỗi ý tưởng thành hiện thực.</p>
       </div>
     </div>
   );
