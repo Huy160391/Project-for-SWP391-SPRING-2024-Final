@@ -34,9 +34,9 @@ const ConfirmBookingManager = () => {
         emailjs.init("EMFqDgk_XqGNuAryz");
     }, []);
 
-    const sendEmail = (apartmentId) => {
+    const sendEmail = (apartmentId, customerPhone) => {
         emailjs.send('Aptx4869', 'template_d2ona1k', {
-            email: selectedCustomer.phone,
+            email: customerPhone,
             apartmentId: apartmentId,
             buildingId: selectedBuilding.buildingId,
 
@@ -177,13 +177,13 @@ const ConfirmBookingManager = () => {
     for (let i = 1; i <= Math.ceil(allBookings.length / bookingsPerPage); i++) {
         pageNumbers.push(i);
     }
-    const approveBooking = async (bookingId, apartmentId) => {
+    const approveBooking = async (bookingId, apartmentId, customerPhone) => {
         try {
-
+            sendEmail(apartmentId, customerPhone);
             if (window.confirm(`Do you want to Approve Booking?`)) {
                 await axios.put(`https://localhost:7137/api/Bookings/ChangeBookingStatus/${bookingId}/Active`);
                 alert("Approve Booking Success")
-                sendEmail(apartmentId);
+
                 fetchBookings();
             }
 
@@ -193,8 +193,9 @@ const ConfirmBookingManager = () => {
             setError('Failed to approve booking. Please check the console for more details.');
         }
     };
-    const cancelBooking = async (bookingId) => {
+    const cancelBooking = async (bookingId, apartmentId, customerPhone) => {
         try {
+            sendEmail(apartmentId, customerPhone);
             if (window.confirm(`Do you want to Cancel Booking?
     
     This booking will be deleted`)) {
@@ -363,13 +364,13 @@ const ConfirmBookingManager = () => {
                         </div>
                         <div className="px-4 py-4 sm:px-6 text-right">
                             <button
-                                onClick={() => approveBooking(booking.bookingId, booking.apartmentId)}
+                                onClick={() => approveBooking(booking.bookingId, booking.apartmentId, booking.customerPhone)}
                                 className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
                             >
                                 Approve Booking
                             </button>
                             <button
-                                onClick={() => cancelBooking(booking.bookingId)}
+                                onClick={() => cancelBooking(booking.bookingId, booking.apartmentId, booking.customerPhone)}
                                 className="ml-3 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-500 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
                             >
                                 Cancel Booking

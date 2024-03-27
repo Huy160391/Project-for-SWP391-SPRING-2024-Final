@@ -1,4 +1,5 @@
 import axios from 'axios';
+import emailjs from 'emailjs-com';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -26,6 +27,25 @@ const ConfimOderManager = () => {
     const handleImageClick = (imageSrc) => {
         setSelectedImage(imageSrc);
         setShowModal(true);
+    };
+
+    useEffect(() => {
+        emailjs.init("eIvOaqSYI44I2chb2");
+    }, []);
+
+    const sendEmail = (apartmentId, customerPhone, status) => {
+        emailjs.send('Aptx4869', 'template_1parjbc', {
+            email: customerPhone,
+            apartmentId: apartmentId,
+            status: status,
+
+        })
+            .then((response) => {
+                console.log('Email sent successfully:', response);
+            })
+            .catch((error) => {
+                console.error('Email sending failed:', error);
+            });
     };
 
     // Pagination change page
@@ -111,11 +131,11 @@ const ConfimOderManager = () => {
     };
 
     const handleSearch = () => {
-        
+
         const originalOrdersCopy = [...originalOrders];
-        
-        let filtered = originalOrdersCopy.slice(); 
-    
+
+        let filtered = originalOrdersCopy.slice();
+
         if (selectedBuilding) {
             filtered = filtered.filter(order => order.buildingName.toLowerCase() === selectedBuilding.toLowerCase());
         }
@@ -125,18 +145,18 @@ const ConfimOderManager = () => {
         if (selectedCustomer) {
             filtered = filtered.filter(order => order.customerName.toLowerCase() === selectedCustomer.toLowerCase());
         }
-    
+
         setAllOrders(filtered);
-    
+
         if (!selectedBuilding && !selectedAgency && !selectedCustomer) {
             setOrders(originalOrdersCopy.slice(0, ordersPerPage));
         } else {
             setOrders(filtered.slice(0, ordersPerPage));
         }
-    
+
         setCurrentPage(1);
     };
-    
+
 
 
 
@@ -149,8 +169,10 @@ const ConfimOderManager = () => {
     for (let i = 1; i <= Math.ceil(allOrders.length / ordersPerPage); i++) {
         pageNumbers.push(i);
     }
-    const approveOrder = async (orderId) => {
+    const approveOrder = async (orderId, apartmentId, customerPhone) => {
         try {
+            const status = "đã hoàn tất";
+            sendEmail(apartmentId, customerPhone, status)
             if (window.confirm(`Do you want to Approve Order?`)) {
                 await axios.put(`https://localhost:7137/api/Orders/ChangeOrderStatus/${orderId}/Complete`);
                 alert("Approve Order Success")
@@ -164,8 +186,10 @@ const ConfimOderManager = () => {
             setError('Failed to approve order. Please check the console for more details.');
         }
     };
-    const requesttotransferAmountagain = async (orderId) => {
+    const requesttotransferAmountagain = async (orderId, apartmentId, customerPhone) => {
         try {
+            const status = "chưa hoàn tất, vui lòng hoàn tất các thủ tục hành chính";
+            sendEmail(apartmentId, customerPhone, status)
             if (window.confirm(`Would you like to request a transfer of the amount again?`)) {
                 await axios.put(`https://localhost:7137/api/Orders/ChangeOrderStatus/${orderId}/Unpaid`);
                 alert("Request sent successfully")
@@ -179,8 +203,10 @@ const ConfimOderManager = () => {
             setError('Failed to request a transfer of the amount again. Please check the console for more details.');
         }
     };
-    const cancelOrder = async (orderId) => {
+    const cancelOrder = async (orderId, apartmentId, customerPhone) => {
         try {
+            const status = "đã bị từ chối";
+            sendEmail(apartmentId, customerPhone, status)
             if (window.confirm(`Do you want to Cancel Order?
     
     This order will be deleted`)) {
@@ -361,19 +387,19 @@ const ConfimOderManager = () => {
                         </div>
                         <div className="px-4 py-4 sm:px-6 text-right">
                             <button
-                                onClick={() => approveOrder(order.orderId)}
+                                onClick={() => approveOrder(order.orderId, order.apartmentId, order.customerPhone)}
                                 className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
                             >
                                 Approve Order
                             </button>
                             <button
-                                onClick={() => requesttotransferAmountagain(order.orderId)}
+                                onClick={() => requesttotransferAmountagain(order.orderId, order.apartmentId, order.customerPhone)}
                                 className="ml-3 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-yellow-500 hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
                             >
                                 Request To Transfer Amount Again
                             </button>
                             <button
-                                onClick={() => cancelOrder(order.orderId)}
+                                onClick={() => cancelOrder(order.orderId, order.apartmentId, order.customerPhone)}
                                 className="ml-3 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-500 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
                             >
                                 Cancel Order
