@@ -41,7 +41,7 @@ const ReviewUpdateApartment = () => {
   }
 
   return (
-    <div className="flex min-h-screen bg-gray-100">
+    <div className="flex min-h-screen bg-gray-100 font-serif">
       <div className="flex-1 max-w-5xl mx-auto p-8">
         <div className="bg-white shadow-xl rounded-lg overflow-hidden">
           <h1 className="text-4xl font-bold text-gray-900 text-center py-8">

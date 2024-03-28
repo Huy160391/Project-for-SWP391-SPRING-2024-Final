@@ -53,7 +53,7 @@ const PostDetail = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-5 py-10">
+    <div className="max-w-7xl mx-auto px-5 py-10 font-serif">
   <div className="bg-white shadow-xl rounded-lg p-8 mb-10">
     <img
       className="w-full h-80 object-cover mb-6 rounded"

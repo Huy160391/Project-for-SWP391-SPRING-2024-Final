@@ -180,7 +180,7 @@ const ViewHistoryOrder = () => {
   );
 
   return (
-    <div className="flex flex-col w-full p-4">
+    <div className="flex flex-col w-full p-4 font-serif">
       <div className="flex justify-between items-center">
         <h1 className="text-xl font-bold text-gray-800">Order History</h1>
         <button

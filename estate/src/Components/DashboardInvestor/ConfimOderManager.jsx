@@ -75,15 +75,11 @@ const ConfimOderManager = () => {
                 const customer = customerResponse.data;
                 const apartmentResponse = await axios.get(`https://localhost:7137/api/Apartments/${order.apartmentId}`);
                 const apartment = apartmentResponse.data;
-                const apartmentNameRes = await axios.get(
-                    `https://localhost:7137/api/Apartments/GetRoomNumberByApartmentId/${order.apartmentId}`
-                  );
-                  const apartmentName = apartmentNameRes.data;
+
                 return {
                     ...order,
                     buildingName: buildingDetails.data.name,
                     buildingAddress: buildingDetails.data.address,
-                    apartmentName,
                     apartmentNumberOfBedrooms: apartment.numberOfBedrooms,
                     apartmentNumberOfBathrooms: apartment.numberOfBathrooms,
                     apartmentArea: apartment.area,
@@ -222,7 +218,7 @@ const ConfimOderManager = () => {
     };
 
     return (
-        <div className="flex flex-col w-full border-8 rounded-lg border-gray-200  ">
+        <div className="flex flex-col w-full border-8 rounded-lg border-gray-200  font-serif">
             <div className="border-8">
                 <div className="mt-5 ml-3 mr-10 flex justify-start items-center space-x-10">
                     <h1 className="text-4xl font-bold text-indigo-600 px-4 py-2 bg-white rounded-lg">
@@ -306,7 +302,7 @@ const ConfimOderManager = () => {
                                     <strong>Apartment Information</strong>
                                 </div>
                                 <div className="text-sm font-medium text-gray-700">
-                                    <strong>Apartment:</strong> <span className="text-gray-600">{order.apartmentName}</span>
+                                    <strong>ID:</strong> <span className="text-gray-600">{order.apartmentId}</span>
                                 </div>
                                 <div className="text-sm font-medium text-gray-700">
                                     <strong>Number Of Bedrooms:</strong> <span className="text-gray-600">{order.apartmentNumberOfBedrooms}</span>
@@ -363,102 +359,128 @@ const ConfimOderManager = () => {
                                 <strong>Remaining Amount:</strong> <span className="text-green-600 text-4xl">${order.RemainingAmount}</span>
                             </div>
                             {order.status === "Unpaid" && (
-                                <h1 className="text-4xl font-bold text-gray-600 px-4 py-2 w-44  bg-gray-400 rounded-lg ml-20">
-                                    Unpaid
-                                </h1>
+                                <div>
+                                    <h1 className="text-4xl font-bold text-gray-600 px-4 py-2 w-44  bg-gray-400 rounded-lg ml-20">
+                                        Unpaid
+                                    </h1>
+                                    <div className="px-4 py-4 sm:px-6 text-right">
+                                        <button
+                                            onClick={() => requesttotransferAmountagain(order.orderId, order.apartmentId, order.customerPhone)}
+                                            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-yellow-500 hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                                        >
+                                            Request To Transfer Amount Again
+                                        </button>
+                                        <button
+                                            onClick={() => cancelOrder(order.orderId, order.apartmentId, order.customerPhone)}
+                                            className="ml-3 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-500 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                                        >
+                                            Cancel Order
+                                        </button>
+                                    </div>
+
+                                </div>
                             )}
                             {order.status === "Waiting" && (
-                                <h1 className="text-4xl font-bold text-green-200 px-4 py-2 w-44 bg-green-500 rounded-lg ml-20">
-                                    Waiting
-                                </h1>
+                                <div>
+                                    <h1 className="text-4xl font-bold text-green-200 px-3 py-2 w-44 bg-green-500 rounded-lg ml-20">
+                                        Waiting
+                                    </h1>
+                                    <div className="flex flex-col  lg:justify-end">
+                                        <div className="lg:col-span-3 lg:text-right">
+                                            <img
+                                                src={`https://localhost:7137/api/Orders/GetImage/${order.orderId}`}
+                                                alt="Apartment"
+                                                className="h-40 w-52 object-cover rounded-lg shadow-lg inline-block cursor-pointer"
+                                                onClick={() => handleImageClick(`https://localhost:7137/api/Orders/GetImage/${order.orderId}`)}
+                                            />
+                                            
+                                                <p className="text-gray-500">Click photo to view full</p>
+                                            
+                                        </div>
+                                        <div className="px-4 py-4 sm:px-6 text-right ">
+                                            <button
+                                                onClick={() => approveOrder(order.orderId, order.apartmentId, order.customerPhone)}
+                                                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                                            >
+                                                Approve Order
+                                            </button>
+                                            <button
+                                                onClick={() => requesttotransferAmountagain(order.orderId, order.apartmentId, order.customerPhone)}
+                                                className="ml-3 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-yellow-500 hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                                            >
+                                                Request To Transfer Amount Again
+                                            </button>
+                                            <button
+                                                onClick={() => cancelOrder(order.orderId, order.apartmentId, order.customerPhone)}
+                                                className="ml-3 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-500 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                                            >
+                                                Cancel Order
+                                            </button>
+                                        </div>
+                                    </div>
+
+
+                                </div>
                             )}
 
-                            <div className="lg:col-span-3 lg:text-right">
-                                <img
-                                    src={`https://localhost:7137/api/Orders/GetImage/${order.orderId}`}
-                                    alt="Apartment"
-                                    className="h-40 w-52 object-cover rounded-lg shadow-lg inline-block cursor-pointer"
-                                    onClick={() => handleImageClick(`https://localhost:7137/api/Orders/GetImage/${order.orderId}`)}
-                                />
-                                <p className="text-gray-500">Click photo to view full</p>
+
+
+
+
+                        </div>
+                        {showModal && (
+                            <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-100 bg-opacity-20">
+                                <div className="relative max-w-4xl w-full bg-white rounded-lg shadow flex justify-center items-center">
+                                    <button
+                                        onClick={() => setShowModal(false)}
+                                        className="absolute top-0 right-0 m-4 text-red-400 hover:gray-300 focus:outline-none"
+                                    >
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            className="h-6 w-6"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke="currentColor"
+                                        >
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                    </button>
+                                    <img src={selectedImage} alt="Selected" className="max-h-screen max-w-full" />
+                                </div>
                             </div>
 
 
-                        </div>
-                        <div className="px-4 py-4 sm:px-6 text-right">
-                            <button
-                                onClick={() => approveOrder(order.orderId, order.apartmentId, order.customerPhone)}
-                                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-                            >
-                                Approve Order
-                            </button>
-                            <button
-                                onClick={() => requesttotransferAmountagain(order.orderId, order.apartmentId, order.customerPhone)}
-                                className="ml-3 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-yellow-500 hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-                            >
-                                Request To Transfer Amount Again
-                            </button>
-                            <button
-                                onClick={() => cancelOrder(order.orderId, order.apartmentId, order.customerPhone)}
-                                className="ml-3 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-500 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-                            >
-                                Cancel Order
-                            </button>
-                        </div>
+                        )}
 
 
                     </div>
-                    {showModal && (
-                        <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-100 bg-opacity-20">
-                            <div className="relative max-w-4xl w-full bg-white rounded-lg shadow flex justify-center items-center">
-                                <button
-                                    onClick={() => setShowModal(false)}
-                                    className="absolute top-0 right-0 m-4 text-red-400 hover:gray-300 focus:outline-none"
-                                >
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        className="h-6 w-6"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="currentColor"
-                                    >
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                                    </svg>
-                                </button>
-                                <img src={selectedImage} alt="Selected" className="max-h-screen max-w-full" />
-                            </div>
+
+                    <div className="border-8">
+
+                        <div className="pagination flex justify-between items-center mt-4 mb-10 border-2 rounded-lg bg-white mx-5 px-4 py-2">
+                            <button onClick={prevPage} className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-l focus:outline-none focus:ring-2 focus:ring-blue-400">
+                                Previous
+                            </button>
+                            <span className="text-sm text-gray-700">
+                                Page {currentPage} of {Math.ceil(allOrders.length / ordersPerPage)}
+                            </span>
+                            <button onClick={nextPage} className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-r focus:outline-none focus:ring-2 focus:ring-blue-400">
+                                Next
+                            </button>
                         </div>
+                    </div>
 
 
-                    )}
+
+
 
 
                 </div>
             ))}
-            <div className="border-8">
-
-                <div className="pagination flex justify-between items-center mt-4 mb-10 border-2 rounded-lg bg-white mx-5 px-4 py-2">
-                    <button onClick={prevPage} className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-l focus:outline-none focus:ring-2 focus:ring-blue-400">
-                        Previous
-                    </button>
-                    <span className="text-sm text-gray-700">
-                        Page {currentPage} of {Math.ceil(allOrders.length / ordersPerPage)}
-                    </span>
-                    <button onClick={nextPage} className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-r focus:outline-none focus:ring-2 focus:ring-blue-400">
-                        Next
-                    </button>
-                </div>
-            </div>
-
-
-
-
-
-
         </div>
+
     );
 };
 
 export default ConfimOderManager;
-
 

@@ -71,10 +71,10 @@ const Login = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+    <div className="flex items-center justify-center min-h-screen bg-gray-100 font-serif">
     <div className="w-full max-w-md px-8 py-6 bg-white rounded-lg shadow-md">
-      <h1 className="mb-4 text-2xl font-bold text-center text-gray-900">Đăng Nhập</h1>
-      <div className="mb-4 text-sm text-center text-gray-600">or Login with Username</div>
+      <h1 className="mb-4 text-2xl font-bold text-center text-gray-900 py-10">LOG IN</h1>
+      <div className="mb-4 text-sm text-center text-gray-600"></div>
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="form-group">
           <label htmlFor="username" className="block text-sm font-medium text-gray-700">Username</label>
@@ -99,14 +99,14 @@ const Login = () => {
           />
         </div>
         <button type="submit" className="w-full px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-          ĐĂNG NHẬP
+        LOG IN
         </button>
         {loginError && <div className="text-sm text-red-600">{loginError}</div>}
       </form>
       <div className="mt-6 text-sm text-center text-gray-600">
-        <a href="/forgot-password" className="text-blue-600 hover:text-blue-700">Quên mật khẩu?</a>
+        <a href="/forgot-password" className="text-blue-600 hover:text-blue-700">Forgot password?</a>
         <span className="mx-2">|</span>
-        <span>Chưa có tài khoản? <a href="/registration" className="text-blue-600 hover:text-blue-700">Đăng ký</a></span>
+        <span>No account? <a href="/registration" className="text-blue-600 hover:text-blue-700">Register</a></span>
       </div>
     </div>
   </div>

@@ -22,9 +22,7 @@ const FeaturedProjects = () => {
     fetchProjects();
   }, []);
 
-  const handleSearchChange = (event) => {
-    setSearchTerm(event.target.value);
-  };
+ 
 
   const filteredProjects = projects.filter(project => {
     return project.name.toLowerCase().includes(searchTerm.toLowerCase());
@@ -35,35 +33,17 @@ const FeaturedProjects = () => {
   }
 
   return (
-    <section className="py-12 bg-white">
-      <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center mb-6">Featured Projects</h2>
+    
+    <section className="py-0 h-full font-serif" style={{ backgroundImage: `url('https://vinhome.com.vn/wp-content/uploads/2023/02/the-beverly-1.jpg')`, backgroundSize: 'cover', backgroundPosition: 'center',  height: '60vh'}}>
+      <div className=" mx-auto  bg-amber-100 bg-opacity-90 py-4 h-full w-full">
+        <h2 className="text-4xl font-bold text-amber-600 text-center mt-4 mb-6">Featured Projects</h2>
         <div className="flex justify-center mb-10">
           <div className="relative w-3/4">
-            <input
-              type="text"
-              placeholder="Search projects..."
-              value={searchTerm}
-              onChange={handleSearchChange}
-              className="border border-gray-300 px-3 py-2 rounded-lg w-full pr-10 focus:outline-none"
-            />
-            <span className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-              <svg
-                className="w-5 h-5 text-black"
-                fill="none"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path d="M21 21l-5.2-5.2M11 15c-3.3 0-6-2.7-6-6s2.7-6 6-6 6 2.7 6 6-2.7 6-6 6z"></path>
-              </svg>
-            </span>
+            
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
           {filteredProjects.length > 0 ? (
             filteredProjects.map((project) => (
               <ProjectCard key={project.projectId} project={project} />

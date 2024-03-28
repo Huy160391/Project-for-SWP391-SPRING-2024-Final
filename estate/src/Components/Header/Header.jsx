@@ -6,7 +6,7 @@ import axios from 'axios'; // Ensure axios is imported
 const navigation = [
   { name: 'Home', href: '/', current: false },
   { name: 'Project', href: '/projectlisting', current: false },
-  { name: 'Agent', href: '/agency', current: false },
+  { name: 'Agence', href: '/agency', current: false },
   { name: 'About Us', href: '/aboutus', current: false },
 ];
 
@@ -85,7 +85,7 @@ export default function Example() {
   const roleId = userData?.data?.roleId;
 
   return (
-    <Disclosure as="nav" className="bg-amber-400 shadow-lg">
+    <Disclosure as="nav" className="bg-amber-400 shadow-lg font-serif">
       {({ open }) => (
         <>
           <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">

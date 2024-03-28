@@ -44,7 +44,7 @@ const ReceiveFloorDistribution = () => {
     }, [agencyId]);
 
     return (
-        <div className="flex min-h-screen bg-gray-50"> {/* Change background for lighter shade */}
+        <div className="flex min-h-screen bg-gray-50 font-serif"> {/* Change background for lighter shade */}
     {/* <Sidebar /> */}
     <div className="flex-grow p-8">
         <h1 className="text-3xl font-bold text-gray-800 mb-8"> {/* Increase size and margin for heading */}

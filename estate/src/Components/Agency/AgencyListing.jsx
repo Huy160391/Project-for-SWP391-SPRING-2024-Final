@@ -37,7 +37,7 @@ const AgencyListing = () => {
   }
 
   return (
-    <div className="container mx-auto px-6 py-8">
+    <div className="container mx-auto px-6 py-8 font-serif">
       <h2 className="text-3xl font-semibold text-center mb-8">Agency Listings</h2>
       <div className="relative w-3/4 mb-10">
         <input

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
 
 const ViewOrderBillOfAgency = () => {
     const { orderId } = useParams();
@@ -13,23 +12,19 @@ const ViewOrderBillOfAgency = () => {
         const fetchOrderDetails = async () => {
             setLoading(true);
             try {
-                // Mock API call to get order by ID
                 const orderResponse = await axios.get(`https://localhost:7137/api/Orders/GetAllOderByOrderId/${orderId}`);
                 const orders = orderResponse.data;
 
                 const orderDetailsWithExtraInfo = await Promise.all(orders.map(async (order) => {
-                    // Fetch apartment details
                     const apartmentResponse = await axios.get(`https://localhost:7137/api/Apartments/${order.apartmentId}`);
                     const apartment = apartmentResponse.data;
 
-                    // Fetch building details
                     const buildingResponse = await axios.get(`https://localhost:7137/api/Buildings/${apartment.buildingId}`);
                     const building = buildingResponse.data;
 
                     const projectResponse = await axios.get(`https://localhost:7137/api/Projects/${building.projectId}`);
                     const project = projectResponse.data;
 
-                    // Fetch customer details
                     const customerResponse = await axios.get(`https://localhost:7137/api/Customers/${order.customerId}`);
                     const customer = customerResponse.data;
 
@@ -49,6 +44,7 @@ const ViewOrderBillOfAgency = () => {
                         projectName: project.name,
                     };
                 }));
+                console.log("a",orderDetailsWithExtraInfo);
 
                 setOrderDetails(orderDetailsWithExtraInfo);
             } catch (error) {
@@ -66,7 +62,7 @@ const ViewOrderBillOfAgency = () => {
     }
 
     return (
-        <div className="max-w-7xl mx-auto my-12 p-8">
+        <div className="max-w-7xl mx-auto my-12 p-8 font-serif">
             <h1 className="text-4xl font-bold text-center text-gray-900 mb-12">Order Bill Details</h1>
             {orderDetails.map((detail, index) => (
                 <div key={index} className="flex flex-col md:flex-row bg-white border-t shadow-xl rounded-lg overflow-hidden mb-8">
@@ -99,9 +95,6 @@ const ViewOrderBillOfAgency = () => {
                 Back
             </button>
         </div>
-
-
-
     );
 };
 

@@ -3,10 +3,13 @@ import { Link } from 'react-router-dom';
 
 const ApartmentCard = ({ apartment }) => {
   return (
-    <div className="flex flex-col rounded overflow-hidden shadow-lg transition duration-500 ease-in-out transform hover:-translate-y-1 hover:shadow-2xl m-4">
+    <div className="flex flex-col rounded overflow-hidden shadow-lg transition duration-500 ease-in-out transform hover:-translate-y-1 hover:shadow-2xl m-4 font-serif">
       <img
         className="w-full object-cover h-48"
         src={`https://localhost:7137/api/Apartments/GetApartmentImage/${apartment.apartmentId}`}
+
+// `https://localhost:7137/api/Apartments/GetApartmentImage/${apartment.apartmentId.split(':')[1].trim()}` || 
+
         alt={`Apartment ${apartment.apartmentId}`}
         onError={(e) => (e.target.src = "https://via.placeholder.com/400x300")}
       />

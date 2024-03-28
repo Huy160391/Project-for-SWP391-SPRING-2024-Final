@@ -11,7 +11,7 @@ const DashboardCustomer = () => {
     ];
 
     return (
-        <div className="flex min-h-screen bg-gray-50">
+        <div className="flex min-h-screen bg-gray-50 font-serif">
             <div className="max-w-4xl mx-auto py-8 h-max bg-gray-50 rounded-lg shadow-lg w-full">
                 <h2 className="text-3xl font-semibold text-center text-gray-800 mb-10">Customer Dashboard</h2>
                 <div className="grid grid-cols-2 gap-6 p-4">

@@ -81,7 +81,7 @@ const CustomerProfile = () => {
     if (!customer) return <div>Loading...</div>;
 
     return (
-        <div className="min-h-screen flex flex-col">
+        <div className="min-h-screen flex flex-col font-serif">
             <div className="flex-grow bg-gradient-to-b from-gray-100 to-gray-100 flex justify-center py-12">
 
                 {!editMode ? (
@@ -114,7 +114,7 @@ const CustomerProfile = () => {
 
                                             <div className="p-4 border bg-gray-100 border-gray-200 rounded-lg ">
                                                 <p className="text-2xl text-gray-700">
-                                                    <span className="font-semibold">Phone:</span> {customer.phone}
+                                                    <span className="font-semibold">Gmail:</span> {customer.phone}
                                                 </p>
                                             </div>
                                         </div>
@@ -171,7 +171,7 @@ const CustomerProfile = () => {
                                             <input type="text" name="gender" value={updatedCustomer.gender || ''} onChange={handleChange} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500" />
                                         </div>
                                         <div>
-                                            <label className="block text-sm font-medium text-gray-200">Phone</label>
+                                            <label className="block text-sm font-medium text-gray-200">Gmail</label>
                                             <input type="text" name="phone" value={updatedCustomer.phone || ''} onChange={handleChange} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500" />
                                         </div>
 

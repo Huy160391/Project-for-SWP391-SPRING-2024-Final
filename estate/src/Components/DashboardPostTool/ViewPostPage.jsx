@@ -32,7 +32,7 @@ const ViewPostPage = () => {
     const postImageSrc = post.images.startsWith('http') ? post.images : `https://localhost:7137/api/Posts/GetImage/${post.postId}`;
 
     return (
-        <div className="flex min-h-screen bg-gray-100">
+        <div className="flex min-h-screen bg-gray-100 font-serif">
         
         <div className="flex-1 max-w-5xl mx-auto p-8">
             <div className="bg-white shadow-xl rounded-lg overflow-hidden">

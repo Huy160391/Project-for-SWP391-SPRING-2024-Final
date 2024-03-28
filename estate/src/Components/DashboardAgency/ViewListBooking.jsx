@@ -94,10 +94,10 @@ const ViewListBooking = () => {
     if (loading) return <div>Loading...</div>;
   
     if (bookings.length === 0) {
-        return <div className="text-center font-bold">Chưa có khách hàng nào booking căn hộ này</div>;
+        return <div className="text-center font-bold">No customers have booked this apartment yet</div>;
     }
     return (
-        <div className="flex min-h-screen bg-gray-100">
+        <div className="flex min-h-screen bg-gray-100 font-serif">
             <div className="flex-1 max-w-4xl mx-auto p-8">
                 <h1 className="text-2xl font-semibold text-gray-900 mb-6">View List Booking for Apartment {apartmentName}</h1>
                 <div className="mb-3">
@@ -121,7 +121,7 @@ const ViewListBooking = () => {
                                 <div className="flex justify-end">
                                     {booking.status === "Complete" && (
                                         <div>
-                                            <h1 className="text-4xl font-bold text-green-600 px-2 py-2 w-44  bg-green-400 rounded-lg ml-20">
+                                            <h1 className="text-4xl font-bold w-full text-green-600 px-3 py-2 w-44  bg-green-400 rounded-xl ml-20">
                                             Complete
                                             </h1>
                                         </div>

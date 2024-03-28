@@ -22,8 +22,8 @@ const ListingsApartments = () => {
   }, [agencyId]); // Re-fetch if `agencyId` changes
 
   return (
-    <div className="mt-8">
-      <h3 className="text-xl font-semibold mb-6">DANH SÁCH CĂN HỘ ĐANG ĐẤU GIÁ</h3>
+    <div className="mt-8 font-serif">
+      <h3 className="text-xl font-semibold mb-6">LIST OF APARTMENTS UNDER AUCTION</h3>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {listings.length > 0 ? (
           listings.map((listing) => (
@@ -48,7 +48,7 @@ const ListingsApartments = () => {
             </div>
           ))
         ) : (
-          <div className="col-span-1 sm:col-span-2 lg:col-span-3">Không có bài viết nào</div>
+          <div className="col-span-1 sm:col-span-2 lg:col-span-3">There are no posts</div>
         )}
       </div>
     </div>

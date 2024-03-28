@@ -63,45 +63,36 @@ const ManagerPosts = () => {
 
 
     const handleSearch = () => {
-        // Lọc theo ngày
+        
         const filteredByDate = originalPosts.filter((post) => {
-            const postDate = new Date(post.postDate); // Lấy ngày đăng của bài viết
-            const start = startDate ? new Date(startDate) : null; // Ngày bắt đầu từ bộ lọc
-            const end = endDate ? new Date(endDate) : null; // Ngày kết thúc từ bộ lọc
+            const postDate = new Date(post.postDate); 
+            const start = startDate ? new Date(startDate) : null; 
+            const end = endDate ? new Date(endDate) : null; 
     
-            // Kiểm tra xem ngày đăng bài viết có nằm trong khoảng thời gian đã chọn hay không
             return (!start || postDate >= start) && (!end || postDate <= end);
         });
     
-        // Lọc theo tên tòa nhà từ kết quả lọc theo ngày
         const filteredByBuilding = filteredByDate.filter(post =>
             selectedBuilding === '' || post.buildingName.toLowerCase() === selectedBuilding.toLowerCase()
         );
     
-        // Cập nhật danh sách bài viết sau khi đã lọc
         setPosts(filteredByBuilding);
-        setCurrentPage(1); // Đặt lại về trang đầu tiên sau khi lọc
+        setCurrentPage(1); 
     };
 
     const handleDelete = async (postId) => {
-        // Hỏi người dùng xem họ có chắc chắn muốn xóa bài đăng không
         const isConfirmed = window.confirm('Are you sure you want to delete this post?');
 
         if (isConfirmed) {
             try {
-                // Nếu người dùng nhấn "OK", tiếp tục xóa bài đăng
                 await axios.delete(`https://localhost:7137/api/Posts/DeletePost/${postId}`);
-                // Cập nhật danh sách bài đăng để loại bỏ bài đăng đã xóa
                 const updatedPosts = originalPosts.filter(post => post.postId !== postId);
                 setOriginalPosts(updatedPosts);
                 setPosts(updatedPosts);
             } catch (error) {
-                // Xử lý lỗi nếu có
                 console.error('Error deleting post:', error);
-                // Bạn có thể thiết lập một trạng thái lỗi cụ thể nếu muốn hiển thị thông báo lỗi
             }
         } else {
-            // Nếu người dùng nhấn "Cancel", không làm gì cả
             console.log('Delete action was cancelled.');
         }
     };
@@ -120,8 +111,8 @@ const ManagerPosts = () => {
     if (error) return <div>{error}</div>;
 
     return (
-        <div className="flex min-h-screen bg-gray-50">
-            {/* <Sidebar /> */}
+        <div className="flex min-h-screen bg-gray-50 font-serif">
+            
             <div className="flex-1 bg-white shadow-lg rounded-lg mx-8 my-4 p-8">
                 <h1 className="text-3xl font-bold text-gray-800 mb-8">Manager Posts</h1>
                 <div className="mb-8">

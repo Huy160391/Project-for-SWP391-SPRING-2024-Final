@@ -82,7 +82,7 @@ const ViewOderBillOfCustomer = () => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto my-12 p-8">
+    <div className="max-w-7xl mx-auto my-12 p-8 font-serif">
       <h1 className="text-4xl font-bold text-center text-gray-900 mb-12">
         Order Bill Details
       </h1>

@@ -163,7 +163,7 @@ const AddNewAgency = () => {
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-50 justify-center items-center">
+    <div className="flex min-h-screen bg-gray-50 justify-center items-center font-serif">
       <div className="w-full max-w-4xl p-8 bg-white rounded-lg shadow-md">
         <h2 className="text-2xl font-bold text-gray-800 mb-6">
           Add New Agency
