@@ -282,9 +282,6 @@ const OrderHistoryOfCustomer = () => {
                 Apartment Name
               </th>
               <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Building Address
-              </th>
-              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Status
               </th>
               <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -292,6 +289,9 @@ const OrderHistoryOfCustomer = () => {
               </th>
               <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Agency Name
+              </th>
+              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Action
               </th>
             </tr>
           </thead>
@@ -308,9 +308,6 @@ const OrderHistoryOfCustomer = () => {
                   {order.apartmentName}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  {order.buildingAddress}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
                   {order.status}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
@@ -318,6 +315,14 @@ const OrderHistoryOfCustomer = () => {
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   {order.agencyName}
+                </td>
+                <td className="px-4 py-2">
+                  <Link
+                    to={`/view-order-bill-of-customer/${order.orderId}`}
+                    className="text-blue-600 hover:text-blue-900"
+                  >
+                    View Bill
+                  </Link>
                 </td>
               </tr>
             ))}
@@ -332,8 +337,8 @@ const OrderHistoryOfCustomer = () => {
                 <button
                   onClick={() => paginate(number)}
                   className={`px-4 py-2 text-sm font-semibold leading-5 transition-colors duration-150 border border-gray-300 rounded-md focus:outline-none focus:shadow-outline-blue ${currentPage === number
-                      ? "bg-blue-500 text-white border-blue-600"
-                      : "text-blue-700 bg-white hover:bg-blue-100 hover:text-blue-700"
+                    ? "bg-blue-500 text-white border-blue-600"
+                    : "text-blue-700 bg-white hover:bg-blue-100 hover:text-blue-700"
                     }`}
                 >
                   {number}
