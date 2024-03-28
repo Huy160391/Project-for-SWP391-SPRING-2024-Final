@@ -125,7 +125,7 @@ const ManagerBuildings = () => {
                       to={`/property/${manager.buildingId}`}
                       className="text-blue-500 hover:text-blue-600"
                     >
-                      View 
+                      View
                     </Link>
                   </td>
                   {/* <td className="py-4 px-4">
