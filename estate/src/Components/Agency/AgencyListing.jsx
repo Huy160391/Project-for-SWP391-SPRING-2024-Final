@@ -1,19 +1,19 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import AgencyCard from './AgencyCard';
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import AgencyCard from "./AgencyCard";
 
 const AgencyListing = () => {
   const [agents, setAgents] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     const fetchAgents = async () => {
       try {
-        const response = await axios.get('https://localhost:7137/api/Agencies');
+        const response = await axios.get("https://localhost:7137/api/Agencies");
         setAgents(response.data);
       } catch (error) {
-        console.error('Error fetching agents:', error);
+        console.error("Error fetching agents:", error);
       } finally {
         setIsLoading(false);
       }
@@ -27,7 +27,7 @@ const AgencyListing = () => {
   };
 
   // Filter agents based on search term
-  const filteredAgents = agents.filter(agent => {
+  const filteredAgents = agents.filter((agent) => {
     const fullName = `${agent.firstName} ${agent.lastName}`;
     return fullName.toLowerCase().includes(searchTerm.toLowerCase());
   });
@@ -38,7 +38,9 @@ const AgencyListing = () => {
 
   return (
     <div className="container mx-auto px-6 py-8 font-serif">
-      <h2 className="text-3xl font-semibold text-center mb-8">Agency Listings</h2>
+      <h2 className="text-3xl font-semibold text-center mb-8">
+        Agency Listings
+      </h2>
       <div className="relative w-3/4 mb-10">
         <input
           type="text"
@@ -61,10 +63,9 @@ const AgencyListing = () => {
           </svg>
         </span>
       </div>
-      {/* Display filtered agents or "No agents found" message */}
       {filteredAgents.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-          {filteredAgents.map(agent => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+          {filteredAgents.map((agent) => (
             <AgencyCard key={agent.id} agent={agent} />
           ))}
         </div>

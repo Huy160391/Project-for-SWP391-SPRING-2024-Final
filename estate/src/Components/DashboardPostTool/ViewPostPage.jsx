@@ -8,7 +8,7 @@ import { useParams } from 'react-router-dom';
 const ViewPostPage = () => {
     const [post, setPost] = useState(null);
     const { postId } = useParams();
-
+    const [buildingName, setBuildingName] = useState('');
     useEffect(() => {
         const fetchPostDetails = async () => {
             try {
@@ -23,7 +23,20 @@ const ViewPostPage = () => {
 
         fetchPostDetails();
     }, [postId]);
+    useEffect(() => {
+        const fetchBuildingName = async () => {
+            if (post?.buildingId) {
+                try {
+                    const response = await axios.get(`https://localhost:7137/api/Buildings/${post.buildingId}`);
+                    setBuildingName(response.data.name); // Assuming the API returns an object with a name property
+                } catch (error) {
+                    console.error('Error fetching building name:', error);
+                }
+            }
+        };
 
+        fetchBuildingName();
+    }, [post?.buildingId]);
     if (!post) {
         return <div>Loading...</div>;
     }
@@ -49,9 +62,7 @@ const ViewPostPage = () => {
                     <p className="text-xl"><span className="font-semibold">Sales Opening Date:</span> {new Date(post.salesOpeningDate).toLocaleDateString()}</p>
                     <p className="text-xl"><span className="font-semibold">Sales Closing Date:</span> {new Date(post.salesClosingDate).toLocaleDateString()}</p>
                     <p className="text-xl"><span className="font-semibold">Priority Method:</span> {post.priorityMethod}</p>
-                    <p className="text-xl"><span className="font-semibold">Post ID:</span> {post.postId}</p>
-                    <p className="text-xl"><span className="font-semibold">Building ID:</span> {post.buildingId}</p>
-                    <p className="text-xl"><span className="font-semibold">Agency ID:</span> {post.agencyId}</p>
+                    <p className="text-xl"><span className="font-semibold">Building ID:</span> {buildingName}</p>
                     {/* Include additional post details as needed */}
                 </div>
                 
