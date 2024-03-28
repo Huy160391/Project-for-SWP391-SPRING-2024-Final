@@ -20,7 +20,7 @@ const EditApartmentPage = () => {
     window.location.reload();
   };
 
-useEffect(() => {
+  useEffect(() => {
     const fetchApartmentData = async () => {
       try {
         const response = await axios.get(
@@ -45,28 +45,28 @@ useEffect(() => {
     }
   }, [apartment.description]);
 
-// <<<<<<< HEAD
-//     //Check valid for description: at least 10 characters and not exceed 1000 characters
-//     useEffect(() => {
+  // <<<<<<< HEAD
+  //     //Check valid for description: at least 10 characters and not exceed 1000 characters
+  //     useEffect(() => {
 
-//         if (apartment.description) {
+  //         if (apartment.description) {
 
-//             if (apartment.description && apartment.description.length < 10) {
-//                 setDescriptionError('Description must be at least 10 characters long.');
-//             } else if (apartment.description && apartment.description.length > 1000) {
-//                 setDescriptionError('Description cannot exceed 1000 characters.');
-//             } else {
-//                 setDescriptionError('');
+  //             if (apartment.description && apartment.description.length < 10) {
+  //                 setDescriptionError('Description must be at least 10 characters long.');
+  //             } else if (apartment.description && apartment.description.length > 1000) {
+  //                 setDescriptionError('Description cannot exceed 1000 characters.');
+  //             } else {
+  //                 setDescriptionError('');
 
-//             }
-//         }
-//     }, [apartment.description]);
+  //             }
+  //         }
+  //     }, [apartment.description]);
 
-//     const handleChange = (e) => {
-//         const { name, value } = e.target;
-//         setApartment(prevState => ({ ...prevState, [name]: value }));
-//     };
-// =======
+  //     const handleChange = (e) => {
+  //         const { name, value } = e.target;
+  //         setApartment(prevState => ({ ...prevState, [name]: value }));
+  //     };
+  // =======
   const handleChange = (e) => {
     const { name, value } = e.target;
     setApartment((prevState) => ({ ...prevState, [name]: value }));
@@ -292,6 +292,7 @@ useEffect(() => {
               value={apartment.area}
               onChange={handleChange}
               min="0"
+              step="0.01" // Cho phép nhập số thập phân với 2 chữ số sau dấu phẩy
             />
             {errors.area && <p className="text-red-500">{errors.area}</p>}
           </div>

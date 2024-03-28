@@ -1,6 +1,6 @@
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
 
 const ViewOrderBillOfAgency = () => {
     const { orderId } = useParams();
@@ -27,12 +27,17 @@ const ViewOrderBillOfAgency = () => {
 
                     const customerResponse = await axios.get(`https://localhost:7137/api/Customers/${order.customerId}`);
                     const customer = customerResponse.data;
+                    const apartmentNameResponse = await axios.get(
+                        `https://localhost:7137/api/Apartments/GetRoomNumberByApartmentId/${order.apartmentId}`
+                      );
+                      const apartmentName = apartmentNameResponse.data;
 
                     return {
                         ...order,
                         apartmentImage: `https://localhost:7137/api/Apartments/GetApartmentImage/${order.apartmentId}`,
                         apartmentNumberOfBedrooms: apartment.numberOfBedrooms,
                         apartmentNumberOfBathrooms: apartment.numberOfBathrooms,
+                        apartmentName,
                         apartmentArea: apartment.area,
                         apartmentFloorNumber: apartment.floorNumber,
                         buildingName: building.name,
@@ -75,7 +80,7 @@ const ViewOrderBillOfAgency = () => {
                         <p className="text-gray-600"><span className="font-medium">Building Address:</span> {detail.buildingAddress}</p>
                         <p className="text-gray-600"><span className="font-medium">Type of Real Estate:</span> {detail.buildingTypeOfRealEstate}</p>
                         <p className="text-gray-600"><span className="font-medium">Date:</span> {detail.date}</p>
-                        <p className="text-gray-600"><span className="font-medium">Apartment ID:</span> {detail.apartmentId}</p>
+                        <p className="text-gray-600"><span className="font-medium">Apartment:</span> {detail.apartmentName}</p>
                         <p className="text-gray-600"><span className="font-medium">Apartment Number Of Bedrooms:</span> {detail.apartmentNumberOfBedrooms}</p>
                         <p className="text-gray-600"><span className="font-medium">Apartment Number Of Bathrooms:</span> {detail.apartmentNumberOfBathrooms}</p>
                         <p className="text-gray-600"><span className="font-medium">Apartment Area:</span> {detail.apartmentArea}</p>
