@@ -44,8 +44,7 @@ const AddNewAgency = () => {
     let newErrors = {};
 
     // Validation patterns
-    const nameAndAddressPattern =
-      /^([A-Z\u00C0-\u1EF9][a-z\u00C0-\u1EF9'´`]*(\s[A-Z\u00C0-\u1EF9][a-z\u00C0-\u1EF9'´`]*)*)$/;
+    const nameAndAddressPattern = /^([A-Za-z\u00C0-\u1EF9\u0020']+)(,\s*[A-Za-z\u00C0-\u1EF9\u0020']+)*$/;
 
     // Allows accented characters for names
     const passwordPattern = /.{8,}/; // At least 8 characters, no other restrictions in this pattern
@@ -200,9 +199,8 @@ const AddNewAgency = () => {
                 placeholder="First Name"
                 value={user.firstName}
                 onChange={handleChange}
-                className={`p-2 w-full border rounded shadow-sm ${
-                  errors.firstName ? "border-red-500" : "border-gray-300"
-                }`}
+                className={`p-2 w-full border rounded shadow-sm ${errors.firstName ? "border-red-500" : "border-gray-300"
+                  }`}
               />
               {errors.firstName && (
                 <p className="text-red-500 text-xs mt-1">{errors.firstName}</p>
@@ -216,9 +214,8 @@ const AddNewAgency = () => {
                 placeholder="Last Name"
                 value={user.lastName}
                 onChange={handleChange}
-                className={`p-2 w-full border rounded shadow-sm ${
-                  errors.lastName ? "border-red-500" : "border-gray-300"
-                }`}
+                className={`p-2 w-full border rounded shadow-sm ${errors.lastName ? "border-red-500" : "border-gray-300"
+                  }`}
               />
               {errors.lastName && (
                 <p className="text-red-500 text-xs mt-1">{errors.lastName}</p>
@@ -232,9 +229,8 @@ const AddNewAgency = () => {
                 placeholder="Username"
                 value={user.username}
                 onChange={handleChange}
-                className={`p-2 w-full border rounded shadow-sm ${
-                  errors.username ? "border-red-500" : "border-gray-300"
-                }`}
+                className={`p-2 w-full border rounded shadow-sm ${errors.username ? "border-red-500" : "border-gray-300"
+                  }`}
               />
               {errors.username && (
                 <p className="text-red-500 text-xs mt-1">{errors.username}</p>
@@ -248,9 +244,8 @@ const AddNewAgency = () => {
                 placeholder="Address"
                 value={user.address}
                 onChange={handleChange}
-                className={`p-2 w-full border rounded shadow-sm ${
-                  errors.address ? "border-red-500" : "border-gray-300"
-                }`}
+                className={`p-2 w-full border rounded shadow-sm ${errors.address ? "border-red-500" : "border-gray-300"
+                  }`}
               />
               {errors.address && (
                 <p className="text-red-500 text-xs mt-1">{errors.address}</p>
@@ -264,9 +259,8 @@ const AddNewAgency = () => {
                 placeholder="Email"
                 value={user.phoneNumber}
                 onChange={handleChange}
-                className={`p-2 w-full border rounded shadow-sm ${
-                  errors.phoneNumber ? "border-red-500" : "border-gray-300"
-                }`}
+                className={`p-2 w-full border rounded shadow-sm ${errors.phoneNumber ? "border-red-500" : "border-gray-300"
+                  }`}
               />
               {errors.phoneNumber && (
                 <p className="text-red-500 text-xs mt-1">
@@ -282,9 +276,8 @@ const AddNewAgency = () => {
                 placeholder="Password"
                 value={user.password}
                 onChange={handleChange}
-                className={`p-2 w-full border rounded shadow-sm ${
-                  errors.password ? "border-red-500" : "border-gray-300"
-                }`}
+                className={`p-2 w-full border rounded shadow-sm ${errors.password ? "border-red-500" : "border-gray-300"
+                  }`}
               />
               {errors.password && (
                 <p className="text-red-500 text-xs mt-1">{errors.password}</p>
@@ -298,9 +291,8 @@ const AddNewAgency = () => {
                 placeholder="Confirm Password"
                 value={user.confirmPassword}
                 onChange={handleChange}
-                className={`p-2 w-full border rounded shadow-sm ${
-                  errors.confirmPassword ? "border-red-500" : "border-gray-300"
-                }`}
+                className={`p-2 w-full border rounded shadow-sm ${errors.confirmPassword ? "border-red-500" : "border-gray-300"
+                  }`}
               />
               {errors.confirmPassword && (
                 <p className="text-red-500 text-xs mt-1">

@@ -21,11 +21,11 @@ const ManageApartmentOfInvestor = () => {
 
 
 
-  const sendEmail = (email, status) => {
+  const sendEmail = (email, status, roomNumber) => {
     if (email) {
       emailjs
         .send("Aptx4869", "template_9h8jz5a77", {
-          apartmentId: apartmentId,
+          roomNumber: roomNumber,
           status: status,
           email: email,
         })
@@ -90,7 +90,7 @@ const ManageApartmentOfInvestor = () => {
 
 
 
-  const handleAccept = async (apartmentId, agencyId) => {
+  const handleAccept = async (apartmentId, agencyId, roomNumber) => {
     const agency = agencies.find((agency) => agency.agencyId === agencyId);
 
     const isConfirmed = window.confirm(
@@ -101,7 +101,7 @@ const ManageApartmentOfInvestor = () => {
 
       await changeApartmentStatus(apartmentId, "Updated");
 
-      sendEmail(agency.phone, "xác nhận");
+      sendEmail(agency.phone, "xác nhận", roomNumber);
       //window.location.reload(); // Reload the page to reflect the changes
       const updatedApartments = apartments.filter(apartment => apartment.apartmentId !== apartmentId);
       setApartments(updatedApartments);
@@ -109,7 +109,7 @@ const ManageApartmentOfInvestor = () => {
     }
   };
 
-  const handleReject = async (apartmentId, agencyId) => {
+  const handleReject = async (apartmentId, agencyId, roomNumber) => {
     const agency = agencies.find((agency) => agency.agencyId === agencyId);
     const isConfirmed = window.confirm(
       "Are you sure you want to reject this apartment update?"
@@ -120,7 +120,7 @@ const ManageApartmentOfInvestor = () => {
 
       await changeApartmentStatus(apartmentId, "Distributed");
 
-      sendEmail(agency.phone, "từ chối");
+      sendEmail(agency.phone, "từ chối", roomNumber);
       // window.location.reload(); // Reload the page to reflect the changes
       const updatedApartments = apartments.filter(apartment => apartment.apartmentId !== apartmentId);
       setApartments(updatedApartments);
@@ -212,17 +212,17 @@ const ManageApartmentOfInvestor = () => {
                   </td>
                   <td className="px-5 py-4">{apartment.status}</td>
                   <td className="px-5 py-4">
-                  <Link to={`/reviewupdatedapartment/${apartment.apartmentId}`} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded focus:outline-none focus:shadow-outline">View</Link>
+                    <Link to={`/reviewupdatedapartment/${apartment.apartmentId}`} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded focus:outline-none focus:shadow-outline">View</Link>
                   </td>
                   <td className="px-5 py-4">
                     <button
-                      onClick={() => handleAccept(apartment.apartmentId, apartment.agencyId)}
+                      onClick={() => handleAccept(apartment.apartmentId, apartment.agencyId, apartment.roomNumber)}
                       className="mr-2 px-4 py-2 text-sm text-white bg-green-500 rounded hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
                     >
                       Accept
                     </button>
                     <button
-                      onClick={() => handleReject(apartment.apartmentId, apartment.agencyId)}
+                      onClick={() => handleReject(apartment.apartmentId, apartment.agencyId, apartment.roomNumber)}
                       className="px-4 py-2 text-sm text-white bg-red-500 rounded hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
                     >
                       Reject
@@ -232,7 +232,7 @@ const ManageApartmentOfInvestor = () => {
               ))}
             </tbody>
           </table>
-         
+
         </div>
         <div className="pagination flex justify-center space-x-2 mt-6">
           {/* Example pagination - adjust as necessary */}
