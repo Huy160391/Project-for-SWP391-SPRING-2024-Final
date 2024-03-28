@@ -3,21 +3,15 @@ import { FaPhone, FaEnvelope, FaYoutube, FaInstagram, FaFacebookF } from 'react-
 
 export const AboutUs = () => {
     return (
-        <div className="bg-gray-50 text-gray-800 p-10">
+        <div className="bg-gray-50 text-gray-800 p-10 font-serif">
             <div className="max-w-6xl mx-auto bg-white p-6 rounded-lg shadow-lg">
                 <div className="grid lg:grid-cols-2 gap-12">
                     <div className="space-y-6">
                         <h2 className="text-4xl font-extrabold text-gray-900">Vinhomes Online</h2>
                         <p className="text-lg text-gray-700">
-                            Vinhomes Online được ra đời và phát triển với mong muốn mang đến một dịch vụ đẳng cấp, thuận tiện và
-                            tiết kiệm hơn cho Khách hàng khi mua BĐS. Tại Vinhomes Online, Quý khách có thể dễ dàng tìm kiếm BĐS phù
-                            hợp với nhu cầu. Với tiêu chí Chính Xác, Minh Bạch, Đa Dạng, Tiết Kiệm và Đầy đủ Ưu Đãi, chúng tôi luôn
-                            cung cấp tới khách hàng thông tin, chính sách bán hàng đầy đủ, kịp thời, rõ ràng, cùng với phương thức
-                            thanh toán an toàn, tiện lợi. Giờ đây, khách hàng có thể mua BĐS ở bất cứ đâu, bất cứ lúc nào, với chỉ
-                            vài thao tác trên máy tính hoặc điện thoại di động. Hãy cùng chúng tôi trải nghiệm một nền tảng số hoàn
-                            toàn mới!
+                            Vinhomes Online was founded and developed with the desire to provide a premium, convenient, and cost-effective service for customers when purchasing real estate. At Vinhomes Online, customers can easily find real estate properties that meet their needs. With the criteria of Accuracy, Transparency, Diversity, Savings, and Full Offers, we always provide customers with timely, clear, and complete information and sales policies, along with safe and convenient payment methods. Now, customers can buy real estate anywhere, anytime, with just a few clicks on a computer or mobile phone. Let's experience a completely new digital platform together!
                         </p>
-                        <p className="text-lg font-semibold">TRUNG TÂM BÁN HÀNG TRỰC TUYẾN</p>
+                        <p className="text-lg font-semibold">ONLINE SALES CENTER</p>
                         <p className="text-md">&copy; 2023 Vinhomes Online. All rights reserved.</p>
                     </div>
                     <div className="space-y-6">
@@ -25,7 +19,7 @@ export const AboutUs = () => {
                             <FaPhone className="w-6 h-6 mr-4 text-blue-600" />
                             <div>
                                 <span className="text-lg font-semibold">Hotline - 1900 2323 89</span>
-                                <p className="text-md">(Giờ làm việc 24/7)</p>
+                                <p className="text-md">(24/7)</p>
                             </div>
                         </div>
                         <div className="flex items-center">
@@ -49,42 +43,42 @@ export const AboutUs = () => {
 
                 {/* Additional information */}
                 <div className="mt-12 space-y-8">
-                    <h3 className="text-3xl font-bold text-gray-900">Từ những năm 1980</h3>
+                    <h3 className="text-3xl font-bold text-gray-900">Since the 1980s</h3>
                     <p className="text-lg text-gray-700">
-                        Công ty Bất Động Sản Vin Group đã khởi sự từ một văn phòng nhỏ ở trung tâm Thành Phố Hồ Chí Minh với mục tiêu trở thành nhà cung cấp bất động sản hàng đầu tại Việt Nam. Ban đầu, công ty chỉ có một vài nhân viên, nhưng với sự lãnh đạo sáng suốt và tầm nhìn xa của người sáng lập - ông Nguyễn Vin Group, công ty đã từng bước xây dựng uy tín và phát triển mạnh mẽ.
+                        Vin Group Real Estate Company started from a small office in the center of Ho Chi Minh City with the goal of becoming the leading real estate provider in Vietnam. Initially, the company had only a few employees, but with the visionary leadership of the founder - Mr. Nguyen Vin Group, the company gradually built reputation and strong development.
                     </p>
                     <p className="text-lg text-gray-700">
-                        Trong suốt hơn 40 năm hoạt động, Vin Group không ngừng mở rộng quy mô và nâng cao chất lượng dịch vụ. Đến nay, Vin Group không chỉ là cái tên đứng sau hàng loạt dự án chung cư cao cấp, biệt thự sang trọng mà còn là đối tác tin cậy của nhiều nhà đầu tư bất động sản lớn trong và ngoài nước.
+                        Throughout over 40 years of operation, Vin Group has continuously expanded its scale and improved service quality. To date, Vin Group is not only the name behind a series of luxury apartment projects, luxurious villas but also a reliable partner of many major real estate investors inside and outside the country.
                     </p>
-                    {/* Dự Án Tiêu Biểu */}
+                    {/* Outstanding Projects */}
                     <div className="space-y-6">
-                        <p className="text-xl font-semibold">Dự Án Tiêu Biểu:</p>
+                        <p className="text-xl font-semibold">Outstanding Projects:</p>
                         <ul className="list-disc list-inside space-y-4 text-lg text-gray-700">
                             <li>
-                                <strong>Khu Đô Thị Thành Đạt Riverside</strong>: Mang lại không gian sống xanh, trong lành cho cư dân với các tiện ích đẳng cấp.
+                                <strong>Thanh Dat Riverside Urban Area</strong>: Providing a green, fresh living space for residents with premium amenities.
                                 <div className="mt-2">
-                                    <img src="https://storage.googleapis.com/vinhomes-data-02/styles/images_870_x_530/public/2023_07/gDEHQfH0_1689751750.jpeg?itok=R6lbOml4" alt="Thành Đạt Riverside" className="rounded-lg shadow-md" />
+                                    <img src="https://storage.googleapis.com/vinhomes-data-02/styles/images_870_x_530/public/2023_07/gDEHQfH0_1689751750.jpeg?itok=R6lbOml4" alt="Thanh Dat Riverside" className="rounded-lg shadow-md" />
                                 </div>
                             </li>
                             <li>
-                                <strong>Thành Đạt Tower</strong>: Biểu tượng mới của sự thịnh vượng tại trung tâm thành phố.
+                                <strong>Thanh Dat Tower</strong>: The new symbol of prosperity in the city center.
                                 <div className="mt-2">
-                                    <img src="https://storage.googleapis.com/vinhomes-data-02/styles/images_870_x_530/public/2021_02/Secton 1 (Headbanner)_2.jpg?itok=317k4AVs" alt="Thành Đạt Tower" className="rounded-lg shadow-md" />
+                                    <img src="https://storage.googleapis.com/vinhomes-data-02/styles/images_870_x_530/public/2021_02/Secton 1 (Headbanner)_2.jpg?itok=317k4AVs" alt="Thanh Dat Tower" className="rounded-lg shadow-md" />
                                 </div>
                             </li>
                             <li>
-                                <strong>Biệt Thự Sinh Thái Thành Đạt Hill</strong>: Sự kết hợp hoàn hảo giữa thiên nhiên và kiến trúc.
+                                <strong>Thanh Dat Hill Ecological Villa</strong>: The perfect combination of nature and architecture.
                                 <div className="mt-2">
-                                    <img src="https://storage.googleapis.com/vinhomes-data-02/styles/images_870_x_530/public/2023_04/PC02_OP3 The Crown_Tổng thể công viên hướng BBQ_1681119684.jpg?itok=vExYeqVS" alt="Thành Đạt Hill" className="rounded-lg shadow-md" />
+                                    <img src="https://storage.googleapis.com/vinhomes-data-02/styles/images_870_x_530/public/2023_04/PC02_OP3 The Crown_Tổng thể công viên hướng BBQ_1681119684.jpg?itok=vExYeqVS" alt="Thanh Dat Hill" className="rounded-lg shadow-md" />
                                 </div>
                             </li>
                         </ul>
                     </div>
                     <p className="text-lg text-gray-700">
-                        Với đội ngũ chuyên gia giàu kinh nghiệm, công nghệ tiên tiến và sự tập trung vào chất lượng dịch vụ, Vin Group tự hào là lựa chọn hàng đầu cho khách hàng và nhà đầu tư khi tìm kiếm giải pháp bất động sản tốt nhất.
+                        With an experienced team of experts, advanced technology, and a focus on service quality, Vin Group is proud to be the top choice for customers and investors when seeking the best real estate solutions.
                     </p>
                     <p className="text-lg text-gray-700">
-                        Trong tương lai, Vin Group tiếp tục hướng tới mục tiêu mở rộng quy mô quốc tế, mang thương hiệu và dịch vụ Việt Nam ra thế giới, đồng thời không ngừng nâng cao chất lượng cuộc sống cho cộng đồng.
+                        In the future, Vin Group continues to aim for international expansion, bringing Vietnamese brand and services to the world, while constantly improving the quality of life for the community.
                     </p>
                 </div>
             </div>

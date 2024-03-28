@@ -15,9 +15,6 @@ const PropertyList = () => {
   const [selectedPriceMax, setSelectedPriceMax] = useState('');
 
   useEffect(() => {
-
-
-
     const fetchApartments = async () => {
       try {
         const response = await axios.get(`https://localhost:7137/api/Apartments/GetApartmentsByBuildingIDForBooking?buildingId=${buildingId}`);
@@ -32,15 +29,15 @@ const PropertyList = () => {
 
   const handleFilterChange = () => {
     if (selectedPriceMin && parseInt(selectedPriceMin) < 0) {
-      alert('Giá tiền không thể là số âm');
+      alert('Price cannot be negative');
       return;
     }
     if (selectedPriceMax && parseInt(selectedPriceMax) < 0) {
-      alert('Giá tiền không thể là số âm');
+      alert('Price cannot be negative');
       return;
     }
     if (selectedPriceMin && selectedPriceMax && parseInt(selectedPriceMin) > parseInt(selectedPriceMax)) {
-      alert('Giá tiền không hợp lệ');
+      alert('Invalid price range');
       return;
     }
 
@@ -62,7 +59,7 @@ const PropertyList = () => {
 
   return (
     <>
-      <div className="flex justify-center my-6">
+      <div className="flex justify-center my-6 font-serif">
         <div className="space-x-4 flex">
           {/* Bedroom filter */}
           <div className="flex items-center space-x-2">
@@ -74,9 +71,9 @@ const PropertyList = () => {
               onChange={(e) => setSelectedBedroom(e.target.value)}
               className="border p-2 rounded"
             >
-              <option value="">Tất cả</option>
+              <option value="">All</option>
               {[...Array(5).keys()].map(num => (
-                <option key={num + 1} value={num + 1}>{num + 1} phòng ngủ</option>
+                <option key={num + 1} value={num + 1}>{num + 1} bedrooms</option>
               ))}
             </select>
           </div>
@@ -90,9 +87,9 @@ const PropertyList = () => {
               onChange={(e) => setSelectedBathroom(e.target.value)}
               className="border p-2 rounded"
             >
-              <option value="">Tất cả</option>
+              <option value="">All</option>
               {[...Array(5).keys()].map(num => (
-                <option key={num + 1} value={num + 1}>{num + 1} phòng tắm</option>
+                <option key={num + 1} value={num + 1}>{num + 1} bathrooms</option>
               ))}
             </select>
           </div>
@@ -105,7 +102,7 @@ const PropertyList = () => {
               name="priceMin"
               value={selectedPriceMin}
               onChange={(e) => setSelectedPriceMin(e.target.value)}
-              placeholder="Giá từ"
+              placeholder="Price from"
               className="border p-2 rounded"
             />
             <input
@@ -114,24 +111,24 @@ const PropertyList = () => {
               name="priceMax"
               value={selectedPriceMax}
               onChange={(e) => setSelectedPriceMax(e.target.value)}
-              placeholder="Giá đến"
+              placeholder="Price to"
               className="border p-2 rounded"
             />
           </div>
           {/* Filter button */}
           <button onClick={handleFilterChange} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-            <FontAwesomeIcon icon={faFilter} /> Lọc
+            <FontAwesomeIcon icon={faFilter} /> Filter
           </button>
         </div>
       </div>
 
       {/* Apartment cards */}
       <div className="flex flex-wrap justify-center">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-        {apartments.map(apartment => (
-          <ApartmentCard key={apartment.apartmentId} apartment={apartment} />
-        ))}
-      </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          {apartments.map(apartment => (
+            <ApartmentCard key={apartment.apartmentId} apartment={apartment} />
+          ))}
+        </div>
       </div>
     </>
   );

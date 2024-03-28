@@ -118,7 +118,7 @@ const ManagerListApartmentOfAgency = () => {
     }, [apartments]);
 
     return (
-        <div className="flex min-h-screen bg-gray-50">
+        <div className="flex min-h-screen bg-gray-50 font-serif">
             <div className="flex-grow p-10">
                 <h1 className="text-4xl font-bold text-gray-900 mb-10">{buildingName} Apartments</h1>
                 <button

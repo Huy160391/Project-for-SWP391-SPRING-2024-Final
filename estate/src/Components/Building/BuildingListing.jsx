@@ -58,10 +58,10 @@ const BuildingListing = () => {
     <>
 
 
-      <div className="">{ }</div>
+      <div className="font-serif">
       <div className="container real-estate-listing">
         <SearchBar onSearchChange={handleSearchChange} onSearch={handleSearch} />
-        <div className="results-count">Có {filteredProperties.length} kết quả phù hợp</div>
+        <div className="results-count">Have {filteredProperties.length} suitable results</div>
         <div className="row">
           {filteredProperties.map((property) => (
             <div className="col-md-4" key={property.buildingId}>
@@ -69,7 +69,7 @@ const BuildingListing = () => {
             </div>
           ))}
         </div>
-      </div>
+      </div></div>
     </>
   );
 };

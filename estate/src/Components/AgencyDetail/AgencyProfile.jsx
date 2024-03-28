@@ -25,7 +25,7 @@ const AgentProfile = () => {
 
   const fullName = `${agent.firstName} ${agent.lastName}`;
   return (
-    <div className="bg-white p-6 rounded-lg shadow-lg">
+    <div className="bg-white p-6 rounded-lg shadow-lg font-serif">
       <div className="flex items-center space-x-4">
         <img
           className="w-32 h-32 rounded-full object-cover"
@@ -39,8 +39,8 @@ const AgentProfile = () => {
         </div>
       </div>
       <div className="mt-4">
-        <h3 className="text-xl font-semibold">GIỚI THIỆU</h3>
-        <p className="text-gray-600 mt-2">Chào mừng bạn đến với Vinhomes Grand Park, nơi mỗi dự án không chỉ là một công việc kinh doanh mà còn là một tác phẩm nghệ thuật, một dấu ấn sáng tạo không giới hạn. Hãy cùng chúng tôi khám phá những dự án tiêu biểu đã và đang tạo nên tên tuổi của  Vinhomes Grand Park và làm thế nào chúng tôi biến mỗi ý tưởng thành hiện thực.</p>
+        <h3 className="text-xl font-semibold">INTRODUCE</h3>
+        <p className="text-gray-600 mt-2">Welcome to Vinhomes Grand Park, where each project is not only a business but also a work of art, an unlimited creative mark. Join us to explore the typical projects that have made Vinhomes Grand Park famous and how we turn each idea into reality.</p>
       </div>
     </div>
   );

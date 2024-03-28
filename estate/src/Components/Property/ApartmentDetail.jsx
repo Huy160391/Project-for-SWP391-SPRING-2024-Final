@@ -144,7 +144,7 @@ const PropertyDetail = () => {
   };
 
   return (
-    <div className="container mx-auto py-8">
+    <div className="container mx-auto py-8 font-serif">
       <div className="flex flex-wrap bg-white shadow-md rounded-lg overflow-hidden">
         <div className="w-full md:w-1/2">
           <img

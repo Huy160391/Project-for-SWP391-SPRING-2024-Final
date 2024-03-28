@@ -34,7 +34,7 @@ const ListDistributeAgency = () => {
     : managersData;
 
   return (
-    <div className="investor-dashboard">
+    <div className="investor-dashboard font-serif">
       <div className="managers-container">
         <h1>Managers</h1>
         <div className="managers-search">

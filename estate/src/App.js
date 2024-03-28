@@ -54,7 +54,7 @@ import FeaturedProjects from './Components/Project/FeaturedProjects ';
 import PropertyDetail from './Components/Property/ApartmentDetail';
 import PropertyList from './Components/Property/ApartmentList';
 import Registration from './Components/Register/RegistrationForm';
-
+import ChangePassword from './Components/ChangePasswordUser/ChangePassword';
 
 //import ViewListBooking from './Components/DashboardAgency/ViewListBooking';
 //import DashboardToolOfAgency from './Components/DashboardAgency/DashboardToolOfAgency';
@@ -125,7 +125,7 @@ function App() {
         <Route path="/confirmbookingManager" element={<ConfirmBookingManager />} />
         <Route path="/confimOderManager" element={<ConfimOderManager />} />
         <Route path="/viewHistoryOrder" element={<ViewHistoryOrder />} />
-
+        <Route path="/change-password/:userID" element={<ChangePassword />} />
 
 
 

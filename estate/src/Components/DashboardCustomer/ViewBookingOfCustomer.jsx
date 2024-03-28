@@ -42,14 +42,11 @@ const ViewBookingOfCustomer = () => {
                 // Fetch apartment details
                 const apartmentResponse = await axios.get(`https://localhost:7137/api/Apartments/${booking.apartmentId}`);
                 const apartment = apartmentResponse.data;
-                const apartmentNameResponse = await axios.get(`https://localhost:7137/api/Apartments/GetRoomNumberByApartmentId/${booking.apartmentId}`);
-                const apartmentName = apartmentNameResponse.data;
-    
+
                 return {
                     ...booking,
                     buildingName: buildingDetails.data.name,
                     buildingAddress: buildingDetails.data.address,
-                    apartmentName, 
                     apartmentNumberOfBedrooms: apartment.numberOfBedrooms,
                     apartmentNumberOfBathrooms: apartment.numberOfBathrooms,
                     apartmentArea: apartment.area,
@@ -135,10 +132,10 @@ const ViewBookingOfCustomer = () => {
 
     // Render error message if error state is set
     if (allBookings.length === 0) {
-        return <div className="text-center font-bold">Bạn không có booking nào.</div>;
+        return <div className="text-center font-bold font-serif">You don't have any bookings.</div>;
     }
     return (
-        <div className="flex flex-col w-full">
+        <div className="flex flex-col w-full font-serif">
             <div className="mt-5 ml-5 flex justify-start items-center space-x-10">
                 <h1 className="text-4xl font-bold text-indigo-600 px-4 py-2 bg-white rounded-lg">
                     View Your Booking
@@ -175,7 +172,7 @@ const ViewBookingOfCustomer = () => {
                 </button>
             </div>
             {currentBookings.map((booking, index) => (
-                <div key={index} className="bg-white shadow overflow-hidden sm:rounded-lg mb-5">
+                <div key={index} className="bg-white shadow overflow-hidden sm:rounded-lg mb-5 ">
                     <div className="px-4 py-5 sm:px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 bg-white rounded-lg">
                         <div className="lg:col-span-3 mb-4">
                             <h3 className="text-lg leading-6 font-medium text-indigo-600">Booking #{index + 1} </h3>
@@ -208,7 +205,7 @@ const ViewBookingOfCustomer = () => {
                                     <strong>Apartment Information</strong>
                                 </div>
                                 <div className="text-sm font-medium text-gray-700">
-                                    <strong>Apartment:</strong> <span className="text-gray-600">{booking.apartmentName}</span>
+                                    <strong>ID:</strong> <span className="text-gray-600">{booking.apartmentId}</span>
                                 </div>
                                 <div className="text-sm font-medium text-gray-700">
                                     <strong>Number Of Bedrooms:</strong> <span className="text-gray-600">{booking.apartmentNumberOfBedrooms}</span>
@@ -245,12 +242,12 @@ const ViewBookingOfCustomer = () => {
 
                     {/* Improved button styling for "View Bill" */}
                     <div className="px-4 py-4 sm:px-6 text-right">
-                        <button
+                        {/* <button
                             onClick={() => console.log('View bill clicked for booking', booking.bookingId)}
                             className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
                         >
                             View Information
-                        </button>
+                        </button> */}
                     </div>
                 </div>
 

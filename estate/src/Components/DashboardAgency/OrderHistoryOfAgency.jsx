@@ -32,16 +32,12 @@ const OrderHistoryOfAgency = () => {
 
                     const customerRes = await axios.get(`https://localhost:7137/api/Customers/${order.customerId}`);
                     const customerName = `${customerRes.data.firstName} ${customerRes.data.lastName}`;
-                    const apartmentNameRes = await axios.get(
-                        `https://localhost:7137/api/Apartments/GetRoomNumberByApartmentId/${order.apartmentId}`
-                    );
-                    const apartmentName = apartmentNameRes.data;
+
                     return {
                         ...order,
                         buildingName: buildingDetails.data.name,
                         buildingAddress: buildingDetails.data.address,
                         customerName,
-                        apartmentName,
                     };
                 }));
                 setAllOrders(fetchedOrders);
@@ -101,7 +97,7 @@ const OrderHistoryOfAgency = () => {
 
 
     if (allOrders.length === 0) {
-        return <div className="text-center font-bold">Chưa có order nào</div>;
+        return <div className="text-center font-bold">There are no orders yet</div>;
     }
     // Calculate page count
     const pageNumbers = [];
@@ -110,16 +106,16 @@ const OrderHistoryOfAgency = () => {
     }
 
     return (
-        <div className="flex flex-col w-full">
+        <div className="flex flex-col w-full font-serif">
             <div className="mt-5 ml-5 flex justify-start items-center space-x-10">
                 <h1 className="text-4xl font-bold text-indigo-600  px-4 py-2 bg-white rounded-lg">
-                    View Order History
+                    View Oder History
                 </h1>
             </div>
             <div className="mt-5 ml-5 mb-6 flex justify-start items-center space-x-10">
                 <div>
-                    <label htmlFor="building-select" className="block text-sm font-medium text-gray-700">Building Name:</label>
-                    <select id="building-select" value={selectedBuilding} onChange={handleBuildingChange} className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md shadow">
+                    <label htmlFor="building-select" className="block textfont-medium text-gray-700">Building Name:</label>
+                    <select id="building-select" value={selectedBuilding} onChange={handleBuildingChange} className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:textrounded-md shadow">
                         <option value="">All</option>
                         {buildings.map((building, index) => (
                             <option key={index} value={building}>{building}</option>
@@ -127,8 +123,8 @@ const OrderHistoryOfAgency = () => {
                     </select>
                 </div>
                 <div>
-                    <label htmlFor="customer-select" className="block text-sm font-medium text-gray-700">Customer Name:</label>
-                    <select id="customer-select" value={selectedCustomer} onChange={handleCustomerChange} className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md shadow">
+                    <label htmlFor="customer-select" className="block textfont-medium text-gray-700">Customer Name:</label>
+                    <select id="customer-select" value={selectedCustomer} onChange={handleCustomerChange} className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:textrounded-md shadow">
                         <option value="">All</option>
                         {customers.map((customer, index) => (
                             <option key={index} value={customer}>{customer}</option>
@@ -136,59 +132,76 @@ const OrderHistoryOfAgency = () => {
                     </select>
                 </div>
                 <div>
-                    <label htmlFor="status-select" className="block text-sm font-medium text-gray-700">Status:</label>
-                    <select id="status-select" value={selectedStatus} onChange={handleStatusChange} className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md shadow">
+                    <label htmlFor="status-select" className="block textfont-medium text-gray-700">Status:</label>
+                    <select id="status-select" value={selectedStatus} onChange={handleStatusChange} className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:textrounded-md shadow">
                         <option value="">All</option>
                         {statuses.map((status, index) => (
                             <option key={index} value={status}>{status}</option>
                         ))}
                     </select>
                 </div>
-                <button onClick={handleSearch} className="mt-4 inline-flex justify-center py-3 px-5 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-500 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 shadow">
+                <button onClick={handleSearch} className="mt-4 inline-flex justify-center py-3 px-5 border border-transparent shadowtextfont-medium rounded-md text-white bg-blue-500 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 shadow">
                     Search
                 </button>
                 <button
                     type="button"
                     onClick={() => navigate(-1)}
-                    className="mt-4 inline-flex justify-center py-3 px-5 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-500 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 shadow">
+                    className="mt-4 inline-flex justify-center py-3 px-5 border border-transparent shadowtextfont-medium rounded-md text-white bg-blue-500 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 shadow">
                     Back
                 </button>
             </div>
+            {orders.map((order, index) => (
+                <div key={index} className="bg-white shadow overflow-hidden sm:rounded-lg mb-5">
+                    <div className="px-4 py-5 sm:px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 bg-white  rounded-lg">
+                        <div className="md:col-span-2 lg:col-span-3">
+                            <div className="text-lg font-semibold text-indigo-600">Order #{index + 1} Details</div>
+                        </div> {/* Enhanced header styling */}
+                        <div className="text font-medium text-gray-700">
+                            <strong>Building Name:</strong> <span className="text-gray-600">{order.buildingName}</span>
+                        </div>
 
-            <div className="overflow-x-auto mt-6">
-                <table className="min-w-full table-auto">
-                    <thead className="bg-gray-200">
-                        <tr>
-                            <th className="px-4 py-2">Building Name</th>
-                            <th className="px-4 py-2">Apartment Name</th>
-                            <th className="px-4 py-2">Customer Name</th>
-                            <th className="px-4 py-2">Status</th>
-                            <th className="px-4 py-2">Date</th>
-                            <th className="px-4 py-2">View Bill</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {orders.map((order, index) => (
-                            <tr key={index} className="bg-white border-b">
-                                <td className="px-4 py-2">{order.buildingName}</td>
-                                <td className="px-4 py-2">{order.apartmentName}</td>
-                                <td className="px-4 py-2">{order.customerName}</td>
-                                <td className="px-4 py-2">{order.status}</td>
-                                <td className="px-4 py-2">{new Date(order.date).toLocaleDateString()}</td>
-                                <td className="px-4 py-2">
-                                    <Link
-                                        to={`/view-order-bill-of-customer/${order.orderId}`}
-                                        className="text-blue-600 hover:text-blue-900"
-                                    >
-                                        View Bill
-                                    </Link>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
+                        <div className="text font-medium text-gray-700">
+                            <strong>Apartment Room:</strong> <span className="text-gray-600">{order.name || ` ${typeof order.apartmentId === 'string' && order.apartmentId.includes(":") ? order.apartmentId.split(":").pop() : order.apartmentId}`}</span>
+                        </div>
+                        <div className="text font-medium text-gray-700 ">
+                            <strong>Customer Name:</strong> <span className="text-gray-600">{order.customerName}</span>
+                        </div>
+                        <div className="textfont-medium text-gray-700">
+                            <strong>Date:</strong> <span className="text-gray-600">{new Date(order.date).toLocaleDateString()}</span>
+                        </div>
+                    </div>
 
+                    <div className="px-4 py-4 sm:px-6">
+
+                        {order.status === "Unpaid" && (
+                            <div>
+                                <h1 className="text-4xl font-bold text-red-600 px-3 py-2 w-44  bg-red-400 rounded-lg ml-20">
+                                    Unpaid
+                                </h1>
+                            </div>
+                        )}
+                        {order.status === "Waiting" && (
+                            <h1 className="text-4xl font-bold text-gray-200 px-3 py-2 w-44 bg-gray-500 rounded-lg ml-20">
+                                Waiting
+                            </h1>
+                        )}
+
+                        {order.status === "Complete" && (
+                            <div>
+                                <h1 className="text-4xl font-bold  text-green-200 px-2 py-2 w-52 bg-green-500 rounded-lg ml-20">
+                                    Complete
+                                </h1>
+                                <div className="px-4 py-4 sm:px-6 flex flex-col items-end">
+                                    <Link to={`/view-order-bill-of-agency/${order.orderId}`}
+                                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded focus:outline-none focus:shadow-outline">
+                                        View Bill Information</Link>
+                                </div>
+                            </div>
+
+                        )}
+                    </div>
+                </div>
+            ))}
             <div className="flex justify-center mt-8 mb-8">
                 <nav aria-label="Page navigation" className="select-none">
                     <ul className="inline-flex -space-x-px">
@@ -196,7 +209,7 @@ const OrderHistoryOfAgency = () => {
                             <li key={number} className="mx-1">
                                 <button
                                     onClick={() => paginate(number)}
-                                    className={`px-4 py-2 text-sm font-semibold leading-5 transition-colors duration-150 border border-gray-300 rounded-md focus:outline-none focus:shadow-outline-blue ${currentPage === number ? 'bg-blue-500 text-white border-blue-600' : 'text-blue-700 bg-white hover:bg-blue-100 hover:text-blue-700'}`}
+                                    className={`px-4 py-2 textfont-semibold leading-5 transition-colors duration-150 border border-gray-300 rounded-md focus:outline-none focus:shadow-outline-blue ${currentPage === number ? 'bg-blue-500 text-white border-blue-600' : 'text-blue-700 bg-white hover:bg-blue-100 hover:text-blue-700'}`}
                                 >
                                     {number}
                                 </button>
@@ -205,8 +218,11 @@ const OrderHistoryOfAgency = () => {
                     </ul>
                 </nav>
             </div>
+
+
         </div>
     );
 };
 
 export default OrderHistoryOfAgency;
+

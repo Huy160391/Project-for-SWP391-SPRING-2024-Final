@@ -106,7 +106,7 @@ const AgencyProfile = () => {
     if (!agency) return <div>Loading...</div>;
 
     return (
-        <div className="min-h-screen flex flex-col">
+        <div className="min-h-screen flex flex-col font-serif">
             <div className="flex-grow bg-gradient-to-b from-gray-100 to-gray-100 flex justify-center py-12">
 
                 {!editMode ? (

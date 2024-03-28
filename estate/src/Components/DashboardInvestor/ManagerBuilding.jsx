@@ -64,7 +64,7 @@ const ManagerBuildings = () => {
   };
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen font-serif">
       <div className="flex-1 p-6 bg-gray-50">
         <h1 className="text-2xl font-bold text-gray-800 mb-4">Managers</h1>
         <div className="flex justify-between mb-6">
@@ -122,7 +122,7 @@ const ManagerBuildings = () => {
                   <td className="py-4 px-4">{manager.numberOfApartments}</td>
                   <td className="py-4 px-4">
                     <Link
-                      to={`/building/${manager.buildingId}`}
+                      to={`/property/${manager.buildingId}`}
                       className="text-blue-500 hover:text-blue-600"
                     >
                       View 

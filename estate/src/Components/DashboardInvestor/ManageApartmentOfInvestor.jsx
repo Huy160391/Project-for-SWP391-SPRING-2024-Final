@@ -153,7 +153,7 @@ const ManageApartmentOfInvestor = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-50">
+    <div className="flex flex-col min-h-screen bg-gray-50 font-serif">
       <div className="flex-1 p-6">
         <h1 className="text-2xl font-bold text-gray-800 mb-6">
           Manage Apartment

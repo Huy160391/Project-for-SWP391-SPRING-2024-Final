@@ -83,7 +83,7 @@ const EditApartment = () => {
   };
 
   return (
-    <div className="container mx-auto py-8">
+    <div className="container mx-auto py-8 font-serif">
       <form
         onSubmit={handleSubmit}
         className="max-w-lg mx-auto bg-white shadow-lg rounded-lg overflow-hidden p-6 mb-4"

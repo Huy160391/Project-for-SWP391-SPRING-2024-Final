@@ -2,6 +2,8 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import PostCard from './PostCard';
+import HomePageDecorationBuilding from '../HomePage/HomePageDecorationBuilding';
+
 
 const PostsListing = () => {
   const [posts, setPosts] = useState([]);
@@ -45,13 +47,16 @@ const PostsListing = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-4">
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+    <div>
+  <HomePageDecorationBuilding/>
+    <div className="container mx-auto px-4 py-4 font-serif mt-9">
+      
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  gap-4">
         {posts.map(post => (
           <PostCard key={post.id} post={post} /> // Changed key from post.projectId to post.id for uniqueness
         ))}
       </div>
-    </div>
+    </div></div>
   );
 };
 

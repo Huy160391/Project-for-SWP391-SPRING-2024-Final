@@ -22,7 +22,7 @@ const FeaturesSection = () => {
   ];
 
   return (
-    <div className="py-12 bg-gray-100">
+    <div className="py-12 bg-amber-50">
       <div className="container mx-auto px-6">
         <h2 className="text-4xl font-bold text-center mb-6">Why Choose Us</h2>
         <p className="text-center text-gray-600 mb-12">We provide full service at every step.</p>

@@ -2,17 +2,17 @@ import React from "react";
 
 const Footer = () => {
   return (
-    <footer className="w-full bg-gray-900 text-gray-400 py-12 mt-auto">
+    <footer className="w-full bg-gray-900 text-gray-400 py-12 mt-auto font-serif">
       <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
           <div className="sm:col-span-2">
-            <a href="/" aria-label="Go home" title="Company" className="inline-flex items-center">
+            <a href="/aboutus" aria-label="Go home" title="Company" className="inline-flex items-center">
               <span className="text-2xl font-bold tracking-wide text-gray-100 uppercase">
-                Websites Online Vinhomes
+                Vinhomes About Us
               </span>
             </a>
             <p className="mt-6 max-w-md text-gray-500">
-              Vinhomes Online được ra đời và phát triển với mong muốn mang đến một dịch vụ đẳng cấp, thuận tiện và tiết kiệm hơn cho Khách hàng khi mua BĐS. Tại Vinhomes Online, Quý khách có thể dễ dàng tìm kiếm BĐS phù hợp với nhu cầu.
+            Vinhomes Online was established and developed with the desire to provide premium, convenient, and cost-effective services to customers when purchasing real estate. At Vinhomes Online, customers can easily find real estate properties that suit their needs.
             </p>
           </div>
 

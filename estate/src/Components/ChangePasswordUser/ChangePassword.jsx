@@ -63,8 +63,8 @@ const ChangePassword = () => {
     };
 
     return (
-        <div className="flex items-center justify-center min-h-screen bg-gray-100">
-            <div className="w-full max-w-md px-8 py-6 bg-white rounded-lg shadow-md">
+        <div className="flex items-center justify-center min-h-screen  font-serif">
+            <div className="w-full max-w-md px-8 py-6 rounded-md rounded-lg shadow-md">
                 <h1 className="mb-4 text-2xl font-bold text-center text-gray-900">Change Password</h1>
                 <form onSubmit={handleChangePassword} className="space-y-6">
                     <div className="form-group">
@@ -131,7 +131,8 @@ const ChangePassword = () => {
                                 }`}
                         />
                     </div>
-                    <button type="submit" className="w-full px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">Change Password</button>
+                    <button id="changePasswordBtn" class="mb-9 w-full px-4 py-2 text-sm font-medium rounded-md text-white  bg-blue-600  hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">Change Password</button>
+
                     {errorMessage && <div className="text-sm text-red-600">{errorMessage}</div>}
                     {successMessage && <div className="text-sm text-green-600">{successMessage}</div>}
                 </form>

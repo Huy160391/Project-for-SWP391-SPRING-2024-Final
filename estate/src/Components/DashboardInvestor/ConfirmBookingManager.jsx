@@ -211,7 +211,7 @@ const ConfirmBookingManager = () => {
     };
 
     return (
-        <div className="flex flex-col w-full border-8 rounded-lg border-gray-200  ">
+        <div className="flex flex-col w-full border-8 rounded-lg border-gray-200  font-serif">
             <div className="border-8">
                 <div className="mt-5 ml-3 mr-10 flex justify-start items-center space-x-10">
                     <h1 className="text-4xl font-bold text-indigo-600 px-4 py-2 bg-white rounded-lg">
@@ -380,7 +380,7 @@ const ConfirmBookingManager = () => {
 
                     </div>
                     {showModal && (
-                        <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-100 bg-opacity-20">
+                        <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-100 bg-opacity-50">
                             <div className="relative max-w-4xl w-full bg-white rounded-lg shadow flex justify-center items-center">
                                 <button
                                     onClick={() => setShowModal(false)}

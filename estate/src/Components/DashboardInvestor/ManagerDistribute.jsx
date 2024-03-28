@@ -40,7 +40,7 @@ const ManagerDistribute = () => {
   };
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen font-serif">
       <div className="flex-1 p-6 bg-gray-50">
         <h1 className="text-2xl font-bold text-gray-800 mb-4">Managers Distribute</h1>
         <div className="flex justify-between mb-6">
@@ -59,13 +59,13 @@ const ManagerDistribute = () => {
             to="/distributefloor"
             className="ml-4 px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
           >
-            Phân công tầng
+           Floor assignment
           </Link>
           <Link
             to="/distributeapartment"
             className="ml-4 px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
           >
-            Phân công phòng
+            Room assignment
           </Link>
         </div>
         <div className="mt-6 overflow-x-auto bg-white shadow-md rounded-lg">
@@ -77,7 +77,7 @@ const ManagerDistribute = () => {
                   Agency
                 </th>
                 <th className="px-5 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                  AgencyId
+                  Agency mail
                 </th>
                 <th className="px-5 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                   Total Apartment

@@ -87,7 +87,7 @@ const ManagerUsers = () => {
   if (error) return <p>Error loading managers: {error}</p>;
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen font-serif">
     <div className="flex-1 p-8">
       <div className="flex items-center mb-6">
         <button
