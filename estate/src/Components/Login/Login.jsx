@@ -104,6 +104,7 @@ const Login = () => {
           {loginError && <div className="text-sm text-red-600">{loginError}</div>}
         </form>
         <div className="mt-6 text-sm text-center text-gray-600">
+          <a href="/forgot-password" className="text-blue-600 hover:text-blue-700">Forgot password?</a>
           <span className="mx-2">|</span>
           <span>No account? <a href="/registration" className="text-blue-600 hover:text-blue-700">Register</a></span>
         </div>
