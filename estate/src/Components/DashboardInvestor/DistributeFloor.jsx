@@ -270,9 +270,8 @@ const DistributeFloor = () => {
             <input
               id="price"
               type="number"
-              className={`w-full mt-1 p-2 border ${
-                priceError ? "border-red-500" : "border-gray-300"
-              } rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
+              className={`w-full mt-1 p-2 border ${priceError ? "border-red-500" : "border-gray-300"
+                } rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
               value={price}
               onChange={handlePriceChange}
               placeholder="Enter price"

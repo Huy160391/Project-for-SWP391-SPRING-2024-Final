@@ -104,9 +104,7 @@ const ManagerBuildings = () => {
                 <th className="text-left py-3 px-4 font-semibold text-sm text-gray-600 uppercase tracking-wider">
                   Number apartments
                 </th>
-                <th className="text-left py-3 px-4 font-semibold text-sm text-gray-600 uppercase tracking-wider">
-                  View
-                </th>
+
 
                 {/* <th className="text-left py-3 px-4 font-semibold text-sm text-gray-600 uppercase tracking-wider">
                   Actions
@@ -120,14 +118,7 @@ const ManagerBuildings = () => {
                   <td className="py-4 px-4">{manager.buildingName}</td>
                   <td className="py-4 px-4">{manager.numberOfFloors}</td>
                   <td className="py-4 px-4">{manager.numberOfApartments}</td>
-                  <td className="py-4 px-4">
-                    <Link
-                      to={`/property/${manager.buildingId}`}
-                      className="text-blue-500 hover:text-blue-600"
-                    >
-                      View
-                    </Link>
-                  </td>
+
                   {/* <td className="py-4 px-4">
                   <Link to={`/realestate/${manager.buildingId}`} className="text-blue-500 hover:text-blue-600">View</Link>
                 </td> */}

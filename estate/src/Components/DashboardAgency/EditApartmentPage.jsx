@@ -292,7 +292,7 @@ const EditApartmentPage = () => {
               value={apartment.area}
               onChange={handleChange}
               min="0"
-              step="0.01" // Cho phép nhập số thập phân với 2 chữ số sau dấu phẩy
+              readOnly // This makes the input read-only
             />
             {errors.area && <p className="text-red-500">{errors.area}</p>}
           </div>
