@@ -55,6 +55,7 @@ import PropertyDetail from './Components/Property/ApartmentDetail';
 import PropertyList from './Components/Property/ApartmentList';
 import Registration from './Components/Register/RegistrationForm';
 import ChangePassword from './Components/ChangePasswordUser/ChangePassword';
+import ForgotPassword from './Components/Login/ForgotPassword';
 
 //import ViewListBooking from './Components/DashboardAgency/ViewListBooking';
 //import DashboardToolOfAgency from './Components/DashboardAgency/DashboardToolOfAgency';
@@ -100,7 +101,7 @@ function App() {
         <Route path="/postslisting/:projectId" element={<PostsListing />} />
         <Route path="/postdetail/:postId" element={<PostDetail />} />
         <Route path="/managerapartment" element={<ManageApartmentOfInvestor />} />
-        
+
 
         {/* Post tool box */}
         <Route path="/edit-post/:postId" element={<EditPostPage />} />
@@ -126,6 +127,8 @@ function App() {
         <Route path="/confimOderManager" element={<ConfimOderManager />} />
         <Route path="/viewHistoryOrder" element={<ViewHistoryOrder />} />
         <Route path="/change-password/:userID" element={<ChangePassword />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+
 
 
 

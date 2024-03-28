@@ -229,7 +229,17 @@ const Registration = () => {
             />
             {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone}</p>} {/* Thay đổi từ 'email' thành 'phone' */}
           </div>
-
+          <div className="form-field">
+            <label className="block text-sm font-medium text-gray-700">Image</label>
+            <input
+              type="file"
+              name="image"
+              onChange={handleChange}
+              className={`w-full px-3 py-2 mt-1 text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 ${errors.image ? 'border-red-500' : ''}`}
+            />
+            {avatarPreview && <img src={avatarPreview} alt="Avatar Preview" className="mt-2" style={{ maxWidth: '100px' }} />}
+            {errors.image && <p className="text-red-500 text-xs mt-1">{errors.image}</p>}
+          </div>
         </div>
         <button type="submit" className="w-full px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">ĐĂNG KÝ</button>
         <div className="text-sm text-center">
