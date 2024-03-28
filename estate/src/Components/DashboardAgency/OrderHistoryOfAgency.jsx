@@ -34,8 +34,8 @@ const OrderHistoryOfAgency = () => {
                     const customerName = `${customerRes.data.firstName} ${customerRes.data.lastName}`;
                     const apartmentNameRes = await axios.get(
                         `https://localhost:7137/api/Apartments/GetRoomNumberByApartmentId/${order.apartmentId}`
-                      );
-                      const apartmentName = apartmentNameRes.data;
+                    );
+                    const apartmentName = apartmentNameRes.data;
                     return {
                         ...order,
                         buildingName: buildingDetails.data.name,
@@ -164,6 +164,7 @@ const OrderHistoryOfAgency = () => {
                             <th className="px-4 py-2">Customer Name</th>
                             <th className="px-4 py-2">Status</th>
                             <th className="px-4 py-2">Date</th>
+                            <th className="px-4 py-2">View Bill</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -174,6 +175,14 @@ const OrderHistoryOfAgency = () => {
                                 <td className="px-4 py-2">{order.customerName}</td>
                                 <td className="px-4 py-2">{order.status}</td>
                                 <td className="px-4 py-2">{new Date(order.date).toLocaleDateString()}</td>
+                                <td className="px-4 py-2">
+                                    <Link
+                                        to={`/view-order-bill-of-customer/${order.orderId}`}
+                                        className="text-blue-600 hover:text-blue-900"
+                                    >
+                                        View Bill
+                                    </Link>
+                                </td>
                             </tr>
                         ))}
                     </tbody>
