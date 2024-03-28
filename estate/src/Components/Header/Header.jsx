@@ -6,7 +6,7 @@ import axios from 'axios'; // Ensure axios is imported
 const navigation = [
   { name: 'Home', href: '/', current: false },
   { name: 'Project', href: '/projectlisting', current: false },
-  { name: 'Agence', href: '/agency', current: false },
+  { name: 'Agency', href: '/agency', current: false },
   { name: 'About Us', href: '/aboutus', current: false },
 ];
 

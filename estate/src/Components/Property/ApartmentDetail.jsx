@@ -15,6 +15,9 @@ const PropertyDetail = () => {
   const [userData, setUserData] = useState(null);
   const [transactionCode, setTransactionCode] = useState("");
   const [userImage, setUserImage] = useState(null);
+  const [roomNumber, setRoomNumber] = useState("");
+
+
 
   useEffect(() => {
     const fetchApartment = async () => {
@@ -35,9 +38,9 @@ const PropertyDetail = () => {
 
   const sendEmail = () => {
     emailjs.send('Aptx4869', 'template_c0nsj3h', {
-      apartmentID: apartment.apartmentId,
-      buildingID: apartment.buildingId,
-      downPayment: apartment.price * depositAmount,
+      roomNumber: roomNumber,
+      building: building.name,
+      downPayment: depositAmount,
       transactionCode: transactionCode,
     })
       .then((response) => {
@@ -89,6 +92,7 @@ const PropertyDetail = () => {
 
   const handleDepositSelect = (percentage) => {
     const depositAmount = apartment.price * percentage;
+
     setDepositAmount(depositAmount);
   };
   const [showDepositAmount, setShowDepositAmount] = useState(false);
@@ -208,6 +212,9 @@ const PropertyDetail = () => {
                       onClick={() => {
                         handleDepositSelect(0.5);
                         setShowDepositAmount(true);
+                        const roomNumber = typeof apartment.apartmentId === 'string' && apartment.apartmentId.includes(":") ? apartment.apartmentId.split(":").pop() : apartment.apartmentId;
+
+                        setRoomNumber(roomNumber)
                       }}
                       className={`py-1 px-3 rounded ${depositAmount === (apartment.price * 0.5) ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-600'}`}
                     >
@@ -217,6 +224,10 @@ const PropertyDetail = () => {
                       onClick={() => {
                         handleDepositSelect(0.2);
                         setShowDepositAmount(true);
+                        const roomNumber = typeof apartment.apartmentId === 'string' && apartment.apartmentId.includes(":") ? apartment.apartmentId.split(":").pop() : apartment.apartmentId;
+
+                        setRoomNumber(roomNumber)
+
                       }}
                       className={`py-1 px-3 rounded ${depositAmount === (apartment.price * 0.2) ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-600'}`}
                     >

@@ -22,7 +22,7 @@ const FeaturedProjects = () => {
     fetchProjects();
   }, []);
 
- 
+
 
   const filteredProjects = projects.filter(project => {
     return project.name.toLowerCase().includes(searchTerm.toLowerCase());
@@ -33,13 +33,13 @@ const FeaturedProjects = () => {
   }
 
   return (
-    
-    <section className="py-0 h-full font-serif" style={{ backgroundImage: `url('https://vinhome.com.vn/wp-content/uploads/2023/02/the-beverly-1.jpg')`, backgroundSize: 'cover', backgroundPosition: 'center',  height: '60vh'}}>
+
+    <section className="py-0 h-full font-serif" style={{ backgroundImage: `url('https://vinhome.com.vn/wp-content/uploads/2023/02/the-beverly-1.jpg')`, backgroundSize: 'cover', backgroundPosition: 'center', height: '80vh' }}>
       <div className=" mx-auto  bg-amber-100 bg-opacity-90 py-4 h-full w-full">
         <h2 className="text-4xl font-bold text-amber-600 text-center mt-4 mb-6">Featured Projects</h2>
         <div className="flex justify-center mb-10">
           <div className="relative w-3/4">
-            
+
           </div>
         </div>
 

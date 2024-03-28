@@ -22,7 +22,7 @@ const Registration = () => {
 
   useEffect(() => {
     // Initialize EmailJS SDK when the component is rendered
-    emailjs.init("YOUR_USER_ID");
+    emailjs.init("GRGyUXUQNJZWmAVmh");
   }, []);
 
   const handleChange = (e) => {
@@ -37,7 +37,7 @@ const Registration = () => {
   };
 
   const sendEmail = () => {
-    emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', {
+    emailjs.send('Aptx4869', 'template_nv5w3qn1', {
       firstName: formData.firstName,
       lastName: formData.lastName,
       email: formData.phone
@@ -70,13 +70,22 @@ const Registration = () => {
       formErrors.phone = 'Email is invalid.';
     }
 
-    const nameRegex = /^[A-Za-zÀ-ÖØ-öø-ÿ][A-Za-zÀ-ÖØ-öø-ÿ\s',.\-\p{L}]*$/u; // Updated regex for Vietnamese addresses
-    ['firstName', 'lastName', 'address', 'username'].forEach((field) => {
+    const nameRegex = /^[A-Za-zÀ-ÖØ-öø-ÿ][A-Za-zÀ-ÖØ-öø-ÿ\s',.\-\p{L}]*$/u;
+    const addressAndUsernameRegex = /^[A-Za-zÀ-ÖØ-öø-ÿ0-9\s',.\-\p{L}]*$/u;
+
+    ['firstName', 'lastName'].forEach((field) => {
       if (!nameRegex.test(formData[field])) {
         formErrors[field] = `${field} is invalid. It can start with a letter and include lowercase letters, spaces, accented characters, and certain special characters.`;
       }
     });
-    
+
+    ['address', 'username'].forEach((field) => {
+      if (!addressAndUsernameRegex.test(formData[field])) {
+        formErrors[field] = `${field} is invalid. It can include letters, numbers, spaces, accented characters, and certain special characters.`;
+      }
+    });
+
+
     if (formData.password.length < 8) {
       formErrors.password = 'Password must be at least 8 characters long.';
     }
@@ -234,7 +243,7 @@ const Registration = () => {
         </div>
         <button type="submit" className="w-full px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">ĐĂNG KÝ</button>
         <div className="text-sm text-center">
-        Already have an account? <Link to="/" className="text-blue-600 hover:text-blue-700">Log in</Link>
+          Already have an account? <Link to="/" className="text-blue-600 hover:text-blue-700">Log in</Link>
         </div>
       </form >
     </div >
