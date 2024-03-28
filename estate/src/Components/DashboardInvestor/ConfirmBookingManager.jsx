@@ -34,11 +34,12 @@ const ConfirmBookingManager = () => {
         emailjs.init("EMFqDgk_XqGNuAryz");
     }, []);
 
-    const sendEmail = (roomNumber, customerPhone) => {
+    const sendEmail = (apartmentName, customerPhone, status) => {
         emailjs.send('Aptx4869', 'template_d2ona1k', {
             email: customerPhone,
-            roomNumber: roomNumber,
-            buiding: selectedBuilding.name,
+            roomNumber: apartmentName,
+            buiding: buildings,
+            status: status
 
         })
             .then((response) => {
@@ -177,9 +178,10 @@ const ConfirmBookingManager = () => {
     for (let i = 1; i <= Math.ceil(allBookings.length / bookingsPerPage); i++) {
         pageNumbers.push(i);
     }
-    const approveBooking = async (bookingId, roomNumber, customerPhone) => {
+    const approveBooking = async (bookingId, apartmentName, customerPhone) => {
         try {
-            sendEmail(roomNumber, customerPhone);
+            const status = "phê duyệt";
+            sendEmail(apartmentName, customerPhone, status);
             if (window.confirm(`Do you want to Approve Booking?`)) {
                 await axios.put(`https://localhost:7137/api/Bookings/ChangeBookingStatus/${bookingId}/Active`);
                 alert("Approve Booking Success")
@@ -193,9 +195,10 @@ const ConfirmBookingManager = () => {
             setError('Failed to approve booking. Please check the console for more details.');
         }
     };
-    const cancelBooking = async (bookingId, roomNumber, customerPhone) => {
+    const cancelBooking = async (bookingId, apartmentName, customerPhone) => {
         try {
-            sendEmail(roomNumber, customerPhone);
+            const status = "từ chối";
+            sendEmail(apartmentName, customerPhone, status);
             if (window.confirm(`Do you want to Cancel Booking?
     
     This booking will be deleted`)) {
@@ -320,7 +323,7 @@ const ConfirmBookingManager = () => {
                                     <strong>Name:</strong> <span className="text-gray-600">{booking.agencyName}</span>
                                 </div>
                                 <div className="text-sm font-medium text-gray-700">
-                                    <strong>Phone:</strong> <span className="text-gray-600">{booking.agencyPhone}</span>
+                                    <strong>Email:</strong> <span className="text-gray-600">{booking.agencyPhone}</span>
                                 </div>
                                 <div className="text-sm font-medium text-gray-700 lg:col-span-2">
                                     <strong>Address:</strong> <span className="text-gray-600">{booking.agencyAddress}</span>
@@ -334,7 +337,7 @@ const ConfirmBookingManager = () => {
                                     <strong>Name:</strong> <span className="text-gray-600">{booking.customerName}</span>
                                 </div>
                                 <div className="text-sm font-medium text-gray-700 ">
-                                    <strong>Phone:</strong> <span className="text-gray-600">{booking.customerPhone}</span>
+                                    <strong>Email:</strong> <span className="text-gray-600">{booking.customerPhone}</span>
                                 </div>
                                 <div className="text-sm font-medium text-gray-700 lg:col-span-2">
                                     <strong>Address:</strong> <span className="text-gray-600">{booking.customerAddress}</span>
@@ -366,9 +369,8 @@ const ConfirmBookingManager = () => {
                             <button
 
                                 onClick={() => {
-                                    const roomNumber = typeof booking.apartmentId === 'string' && booking.apartmentId.includes(":") ? booking.apartmentId.split(":").pop() : booking.apartmentId;
 
-                                    approveBooking(booking.bookingId, roomNumber, booking.customerPhone)
+                                    approveBooking(booking.bookingId, booking.apartmentName, booking.customerPhone)
                                 }}
                                 className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
                             >
@@ -376,9 +378,8 @@ const ConfirmBookingManager = () => {
                             </button>
                             <button
                                 onClick={() => {
-                                    const roomNumber = typeof booking.apartmentId === 'string' && booking.apartmentId.includes(":") ? booking.apartmentId.split(":").pop() : booking.apartmentId;
 
-                                    cancelBooking(booking.bookingId, roomNumber, booking.customerPhone)
+                                    cancelBooking(booking.bookingId, booking.apartmentName, booking.customerPhone)
                                 }}
                                 className="ml-3 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-500 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
                             >

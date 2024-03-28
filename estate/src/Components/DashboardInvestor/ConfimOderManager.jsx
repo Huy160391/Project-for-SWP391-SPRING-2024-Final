@@ -33,10 +33,10 @@ const ConfimOderManager = () => {
         emailjs.init("eIvOaqSYI44I2chb2");
     }, []);
 
-    const sendEmail = (apartmentId, customerPhone, status) => {
+    const sendEmail = (apartmentName, customerPhone, status) => {
         emailjs.send('Aptx4869', 'template_1parjbc', {
             email: customerPhone,
-            apartmentId: apartmentId,
+            roomNumber: apartmentName,
             status: status,
 
         })
@@ -76,9 +76,14 @@ const ConfimOderManager = () => {
                 const apartmentResponse = await axios.get(`https://localhost:7137/api/Apartments/${order.apartmentId}`);
                 const apartment = apartmentResponse.data;
 
+                const apartmentNameResponse = await axios.get(
+                    `https://localhost:7137/api/Apartments/GetRoomNumberByApartmentId/${order.apartmentId}`
+                );
+                const apartmentName = apartmentNameResponse.data;
                 return {
                     ...order,
                     buildingName: buildingDetails.data.name,
+                    apartmentName,
                     buildingAddress: buildingDetails.data.address,
                     apartmentNumberOfBedrooms: apartment.numberOfBedrooms,
                     apartmentNumberOfBathrooms: apartment.numberOfBathrooms,
@@ -165,10 +170,10 @@ const ConfimOderManager = () => {
     for (let i = 1; i <= Math.ceil(allOrders.length / ordersPerPage); i++) {
         pageNumbers.push(i);
     }
-    const approveOrder = async (orderId, apartmentId, customerPhone) => {
+    const approveOrder = async (orderId, apartmentName, customerPhone) => {
         try {
             const status = "đã hoàn tất";
-            sendEmail(apartmentId, customerPhone, status)
+            sendEmail(apartmentName, customerPhone, status)
             if (window.confirm(`Do you want to Approve Order?`)) {
                 await axios.put(`https://localhost:7137/api/Orders/ChangeOrderStatus/${orderId}/Complete`);
                 alert("Approve Order Success")
@@ -182,10 +187,10 @@ const ConfimOderManager = () => {
             setError('Failed to approve order. Please check the console for more details.');
         }
     };
-    const requesttotransferAmountagain = async (orderId, apartmentId, customerPhone) => {
+    const requesttotransferAmountagain = async (orderId, apartmentName, customerPhone) => {
         try {
             const status = "chưa hoàn tất, vui lòng hoàn tất các thủ tục hành chính";
-            sendEmail(apartmentId, customerPhone, status)
+            sendEmail(apartmentName, customerPhone, status)
             if (window.confirm(`Would you like to request a transfer of the amount again?`)) {
                 await axios.put(`https://localhost:7137/api/Orders/ChangeOrderStatus/${orderId}/Unpaid`);
                 alert("Request sent successfully")
@@ -199,10 +204,10 @@ const ConfimOderManager = () => {
             setError('Failed to request a transfer of the amount again. Please check the console for more details.');
         }
     };
-    const cancelOrder = async (orderId, apartmentId, customerPhone) => {
+    const cancelOrder = async (orderId, apartmentName, customerPhone) => {
         try {
             const status = "đã bị từ chối";
-            sendEmail(apartmentId, customerPhone, status)
+            sendEmail(apartmentName, customerPhone, status)
             if (window.confirm(`Do you want to Cancel Order?
     
     This order will be deleted`)) {
@@ -302,7 +307,7 @@ const ConfimOderManager = () => {
                                     <strong>Apartment Information</strong>
                                 </div>
                                 <div className="text-sm font-medium text-gray-700">
-                                    <strong>ID:</strong> <span className="text-gray-600">{order.apartmentId}</span>
+                                    <strong>Apartment:</strong> <span className="text-gray-600">{order.apartmentName}</span>
                                 </div>
                                 <div className="text-sm font-medium text-gray-700">
                                     <strong>Number Of Bedrooms:</strong> <span className="text-gray-600">{order.apartmentNumberOfBedrooms}</span>
@@ -365,13 +370,13 @@ const ConfimOderManager = () => {
                                     </h1>
                                     <div className="px-4 py-4 sm:px-6 text-right">
                                         <button
-                                            onClick={() => requesttotransferAmountagain(order.orderId, order.apartmentId, order.customerPhone)}
+                                            onClick={() => requesttotransferAmountagain(order.orderId, order.apartmentName, order.customerPhone)}
                                             className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-yellow-500 hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
                                         >
                                             Request To Transfer Amount Again
                                         </button>
                                         <button
-                                            onClick={() => cancelOrder(order.orderId, order.apartmentId, order.customerPhone)}
+                                            onClick={() => cancelOrder(order.orderId, order.apartmentName, order.customerPhone)}
                                             className="ml-3 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-500 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
                                         >
                                             Cancel Order
@@ -393,25 +398,25 @@ const ConfimOderManager = () => {
                                                 className="h-40 w-52 object-cover rounded-lg shadow-lg inline-block cursor-pointer"
                                                 onClick={() => handleImageClick(`https://localhost:7137/api/Orders/GetImage/${order.orderId}`)}
                                             />
-                                            
-                                                <p className="text-gray-500">Click photo to view full</p>
-                                            
+
+                                            <p className="text-gray-500">Click photo to view full</p>
+
                                         </div>
                                         <div className="px-4 py-4 sm:px-6 text-right ">
                                             <button
-                                                onClick={() => approveOrder(order.orderId, order.apartmentId, order.customerPhone)}
+                                                onClick={() => approveOrder(order.orderId, order.apartmentName, order.customerPhone)}
                                                 className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
                                             >
                                                 Approve Order
                                             </button>
                                             <button
-                                                onClick={() => requesttotransferAmountagain(order.orderId, order.apartmentId, order.customerPhone)}
+                                                onClick={() => requesttotransferAmountagain(order.orderId, order.apartmentName, order.customerPhone)}
                                                 className="ml-3 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-yellow-500 hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
                                             >
                                                 Request To Transfer Amount Again
                                             </button>
                                             <button
-                                                onClick={() => cancelOrder(order.orderId, order.apartmentId, order.customerPhone)}
+                                                onClick={() => cancelOrder(order.orderId, order.apartmentName, order.customerPhone)}
                                                 className="ml-3 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-500 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
                                             >
                                                 Cancel Order
