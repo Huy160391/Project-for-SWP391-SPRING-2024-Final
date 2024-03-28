@@ -113,7 +113,7 @@ const OrderHistoryOfAgency = () => {
         <div className="flex flex-col w-full">
             <div className="mt-5 ml-5 flex justify-start items-center space-x-10">
                 <h1 className="text-4xl font-bold text-indigo-600  px-4 py-2 bg-white rounded-lg">
-                    View Oder History
+                    View Oder Historyaaaaa
                 </h1>
             </div>
             <div className="mt-5 ml-5 mb-6 flex justify-start items-center space-x-10">
